@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BottomNav, { type Tab } from "./components/BottomNav";
 import TopBar from "./components/TopBar";
+import { useHabitReminders } from "./hooks/useHabitReminders";
 import CalendarPage from "./pages/CalendarPage";
 import FinancePage from "./pages/FinancePage";
 import FoodPage from "./pages/FoodPage";
@@ -76,6 +77,8 @@ function App() {
   const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
   const xp = calcXp(habits, completions, completedTasksCount);
   const streak = currentStreak(habits, completions);
+
+  useHabitReminders();
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#fbfbfb]">

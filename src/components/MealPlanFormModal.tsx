@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Ingredient, MealPlanEntry, MealType, Recipe } from "../types";
 import { DAY_LABELS } from "../utils/date";
 import { MEAL_TYPE_LABELS } from "../utils/food";
+import ConfirmDialog from "./ConfirmDialog";
 import ModalShell from "./ModalShell";
 import RecipeFormModal from "./RecipeFormModal";
 
@@ -34,6 +35,7 @@ export default function MealPlanFormModal({
   const [mealType, setMealType] = useState<MealType>(initial?.mealType ?? "janta");
   const [daysOfWeek, setDaysOfWeek] = useState<number[]>(initial?.daysOfWeek ?? []);
   const [showRecipeCreator, setShowRecipeCreator] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const canSave = recipeId.length > 0 && daysOfWeek.length > 0;
 
@@ -120,12 +122,22 @@ export default function MealPlanFormModal({
 
           {initial && onDelete && (
             <button
-              onClick={onDelete}
+              onClick={() => setConfirmingDelete(true)}
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
             >
               <Trash2 size={18} />
               Remover do planejamento
             </button>
+          )}
+
+          {confirmingDelete && onDelete && (
+            <ConfirmDialog
+              title="Remover do planejamento?"
+              message="Essa refeição vai deixar de ser gerada na lista de compras. A receita em si não é apagada."
+              confirmLabel="Remover"
+              onConfirm={onDelete}
+              onCancel={() => setConfirmingDelete(false)}
+            />
           )}
       </ModalShell>
 

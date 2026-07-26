@@ -2,6 +2,7 @@ import { Check, Plus, Trash2, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useHabitStore } from "../store/useHabitStore";
 import type { HouseholdMember } from "../types";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface MemberRowProps {
   member: HouseholdMember;
@@ -11,6 +12,7 @@ interface MemberRowProps {
 
 function MemberRow({ member, onRename, onRemove }: MemberRowProps) {
   const [value, setValue] = useState(member.name);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   useEffect(() => {
     setValue(member.name);
@@ -41,12 +43,25 @@ function MemberRow({ member, onRename, onRemove }: MemberRowProps) {
         <Check size={16} strokeWidth={3} />
       </button>
       <button
-        onClick={() => onRemove(member.id)}
+        onClick={() => setConfirmingDelete(true)}
         className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
         aria-label="Remover pessoa"
       >
         <Trash2 size={16} />
       </button>
+
+      {confirmingDelete && (
+        <ConfirmDialog
+          title="Remover pessoa?"
+          message={`"${member.name}" deixa de aparecer como responsável em hábitos e tarefas de casa já atribuídos a ela.`}
+          confirmLabel="Remover"
+          onConfirm={() => {
+            onRemove(member.id);
+            setConfirmingDelete(false);
+          }}
+          onCancel={() => setConfirmingDelete(false)}
+        />
+      )}
     </div>
   );
 }

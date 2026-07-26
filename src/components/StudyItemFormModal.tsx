@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { StudyItem, StudyStatus, StudyType } from "../types";
 import { DAY_LABELS } from "../utils/date";
 import { STUDY_EMOJIS, STUDY_STATUS_LABELS, STUDY_TYPE_LABELS } from "../utils/study";
+import ConfirmDialog from "./ConfirmDialog";
 import ModalShell from "./ModalShell";
 
 interface StudyItemFormModalProps {
@@ -38,6 +39,7 @@ export default function StudyItemFormModal({
   const [targetHours, setTargetHours] = useState(initial?.targetHoursPerWeek?.toString() ?? "");
   const [daysOfWeek, setDaysOfWeek] = useState<number[]>(initial?.daysOfWeek ?? []);
   const [time, setTime] = useState(initial?.time ?? "");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const canSave = title.trim().length > 0;
 
@@ -200,12 +202,21 @@ export default function StudyItemFormModal({
 
         {initial && onDelete && (
           <button
-            onClick={onDelete}
+            onClick={() => setConfirmingDelete(true)}
             className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir item
           </button>
+        )}
+
+        {confirmingDelete && onDelete && (
+          <ConfirmDialog
+            title="Excluir item de estudo?"
+            message={`Isso vai apagar "${title}", junto com as anotações e sessões registradas. Essa ação não pode ser desfeita.`}
+            onConfirm={onDelete}
+            onCancel={() => setConfirmingDelete(false)}
+          />
         )}
     </ModalShell>
   );

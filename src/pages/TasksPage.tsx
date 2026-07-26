@@ -1,5 +1,6 @@
 import { Check, Dices, Eye, EyeOff, PartyPopper, Plus, Shuffle, Timer, X } from "lucide-react";
 import { useState } from "react";
+import ConfirmDialog from "../components/ConfirmDialog";
 import EmptyState from "../components/EmptyState";
 import PomodoroModal from "../components/PomodoroModal";
 import { useHabitStore } from "../store/useHabitStore";
@@ -21,6 +22,7 @@ export default function TasksPage() {
   const [spinText, setSpinText] = useState("");
   const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
   const [showTimer, setShowTimer] = useState(false);
+  const [confirmingRemoveId, setConfirmingRemoveId] = useState<string | null>(null);
 
   const drawnTask = tasks.find((t) => t.id === drawnTaskId) ?? null;
 
@@ -176,7 +178,7 @@ export default function TasksPage() {
                     </span>
                   </button>
                   <button
-                    onClick={() => removeTask(t.id)}
+                    onClick={() => setConfirmingRemoveId(t.id)}
                     className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
                     aria-label="Remover tarefa"
                   >
@@ -186,6 +188,19 @@ export default function TasksPage() {
               );
             })}
           </div>
+
+          {confirmingRemoveId && (
+            <ConfirmDialog
+              title="Remover tarefa?"
+              message="Essa tarefa procrastinada vai sair da lista de sorteio. Essa ação não pode ser desfeita."
+              confirmLabel="Remover"
+              onConfirm={() => {
+                removeTask(confirmingRemoveId);
+                setConfirmingRemoveId(null);
+              }}
+              onCancel={() => setConfirmingRemoveId(null)}
+            />
+          )}
 
           <button
             onClick={handleDraw}

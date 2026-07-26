@@ -1,6 +1,7 @@
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Goal, GoalType, Habit, HabitColor, HouseholdMember } from "../types";
+import ConfirmDialog from "./ConfirmDialog";
 import HabitFormModal from "./HabitFormModal";
 import ModalShell from "./ModalShell";
 
@@ -47,6 +48,7 @@ export default function GoalFormModal({
   const [showHabitCreator, setShowHabitCreator] = useState(false);
   const [scheduledDate, setScheduledDate] = useState(initial?.scheduledDate ?? "");
   const [time, setTime] = useState(initial?.time ?? "");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const canSave =
     title.trim().length > 0 &&
@@ -190,12 +192,21 @@ export default function GoalFormModal({
 
           {initial && onDelete && (
             <button
-              onClick={onDelete}
+              onClick={() => setConfirmingDelete(true)}
               className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
             >
               <Trash2 size={18} />
               Excluir meta
             </button>
+          )}
+
+          {confirmingDelete && onDelete && (
+            <ConfirmDialog
+              title="Excluir meta?"
+              message={`Isso vai apagar a meta "${title}". Essa ação não pode ser desfeita.`}
+              onConfirm={onDelete}
+              onCancel={() => setConfirmingDelete(false)}
+            />
           )}
       </ModalShell>
 

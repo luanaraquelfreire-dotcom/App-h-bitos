@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Ingredient, Recipe } from "../types";
 import { RECIPE_EMOJIS, UNIT_OPTIONS } from "../utils/food";
 import { generateId } from "../utils/id";
+import ConfirmDialog from "./ConfirmDialog";
 import ModalShell from "./ModalShell";
 
 interface IngredientRow {
@@ -36,6 +37,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
   const [emoji, setEmoji] = useState(initial?.emoji ?? RECIPE_EMOJIS[0]);
   const [servings, setServings] = useState(initial?.servings?.toString() ?? "2");
   const [rows, setRows] = useState<IngredientRow[]>(toRows(initial?.ingredients));
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const validRows = rows.filter((r) => r.name.trim().length > 0);
   const canSave = name.trim().length > 0 && Number(servings) > 0 && validRows.length > 0;
@@ -167,12 +169,21 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
 
         {initial && onDelete && (
           <button
-            onClick={onDelete}
+            onClick={() => setConfirmingDelete(true)}
             className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir receita
           </button>
+        )}
+
+        {confirmingDelete && onDelete && (
+          <ConfirmDialog
+            title="Excluir receita?"
+            message={`Isso vai apagar "${name}" e remover ela de qualquer planejamento de refeição. Essa ação não pode ser desfeita.`}
+            onConfirm={onDelete}
+            onCancel={() => setConfirmingDelete(false)}
+          />
         )}
     </ModalShell>
   );

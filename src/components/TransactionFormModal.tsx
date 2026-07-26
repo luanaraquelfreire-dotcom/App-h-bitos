@@ -2,6 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Transaction, TransactionCategory, TransactionType } from "../types";
 import { todayKey } from "../utils/date";
+import ConfirmDialog from "./ConfirmDialog";
 import ModalShell from "./ModalShell";
 
 interface TransactionFormModalProps {
@@ -28,6 +29,7 @@ export default function TransactionFormModal({
   const [description, setDescription] = useState(initial?.description ?? "");
   const [amount, setAmount] = useState(initial?.amount?.toString() ?? "");
   const [date, setDate] = useState(initial?.date ?? todayKey());
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const canSave = description.trim().length > 0 && Number(amount) > 0 && date.length > 0;
 
@@ -142,12 +144,21 @@ export default function TransactionFormModal({
 
         {initial && onDelete && (
           <button
-            onClick={onDelete}
+            onClick={() => setConfirmingDelete(true)}
             className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir transação
           </button>
+        )}
+
+        {confirmingDelete && onDelete && (
+          <ConfirmDialog
+            title="Excluir transação?"
+            message={`Isso vai apagar "${description}" do seu histórico financeiro. Essa ação não pode ser desfeita.`}
+            onConfirm={onDelete}
+            onCancel={() => setConfirmingDelete(false)}
+          />
         )}
     </ModalShell>
   );

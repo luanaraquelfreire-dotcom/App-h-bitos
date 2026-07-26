@@ -3,6 +3,7 @@ import { Trash2, X } from "lucide-react";
 import type { Habit, HabitColor, HouseholdMember } from "../types";
 import { COLOR_MAP, HABIT_COLORS, HABIT_EMOJIS } from "../utils/colors";
 import { DAY_LABELS } from "../utils/date";
+import ConfirmDialog from "./ConfirmDialog";
 import ModalShell from "./ModalShell";
 
 interface HabitFormModalProps {
@@ -42,6 +43,7 @@ export default function HabitFormModal({
         : [""],
   );
   const [assignedTo, setAssignedTo] = useState(initial?.assignedTo ?? "");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const canSave = name.trim().length > 0 && daysOfWeek.length > 0;
 
@@ -203,12 +205,21 @@ export default function HabitFormModal({
 
         {initial && onDelete && (
           <button
-            onClick={onDelete}
+            onClick={() => setConfirmingDelete(true)}
             className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir hábito
           </button>
+        )}
+
+        {confirmingDelete && onDelete && (
+          <ConfirmDialog
+            title="Excluir hábito?"
+            message={`Isso vai apagar "${name}" e todo o histórico de conclusões dele. Essa ação não pode ser desfeita.`}
+            onConfirm={onDelete}
+            onCancel={() => setConfirmingDelete(false)}
+          />
         )}
     </ModalShell>
   );

@@ -2,6 +2,7 @@ import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Chore, HouseholdMember } from "../types";
 import { CHORE_EMOJIS, CHORE_INTERVAL_PRESETS } from "../utils/chores";
+import ConfirmDialog from "./ConfirmDialog";
 import ModalShell from "./ModalShell";
 
 interface ChoreFormModalProps {
@@ -30,6 +31,7 @@ export default function ChoreFormModal({
   const [intervalDays, setIntervalDays] = useState(initial?.intervalDays?.toString() ?? "7");
   const [assignedTo, setAssignedTo] = useState(initial?.assignedTo ?? "");
   const [time, setTime] = useState(initial?.time ?? "");
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   const canSave = name.trim().length > 0 && Number(intervalDays) > 0;
 
@@ -144,12 +146,21 @@ export default function ChoreFormModal({
 
         {initial && onDelete && (
           <button
-            onClick={onDelete}
+            onClick={() => setConfirmingDelete(true)}
             className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir tarefa
           </button>
+        )}
+
+        {confirmingDelete && onDelete && (
+          <ConfirmDialog
+            title="Excluir tarefa?"
+            message={`Isso vai apagar "${name}" e o histórico de quando foi feita. Essa ação não pode ser desfeita.`}
+            onConfirm={onDelete}
+            onCancel={() => setConfirmingDelete(false)}
+          />
         )}
     </ModalShell>
   );
