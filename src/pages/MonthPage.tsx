@@ -3,6 +3,7 @@ import { useState } from "react";
 import HabitCard from "../components/HabitCard";
 import { useHabitStore } from "../store/useHabitStore";
 import { dayCompletionRatio, goalForHabit, goalProgress } from "../utils/gamification";
+import { memberName } from "../utils/household";
 import {
   DAY_LABELS,
   formatLong,
@@ -30,6 +31,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const goals = useHabitStore((s) => s.goals);
+  const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
   const [reference, setReference] = useState(new Date());
   const [selected, setSelected] = useState(new Date());
@@ -126,6 +128,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
                         }
                       : undefined
                   }
+                  assigneeName={memberName(householdMembers, h.assignedTo)}
                 />
               );
             })}

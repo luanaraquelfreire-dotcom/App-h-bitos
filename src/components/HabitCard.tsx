@@ -1,4 +1,4 @@
-import { Check, Timer } from "lucide-react";
+import { Check, Timer, User } from "lucide-react";
 import { useState } from "react";
 import type { Habit } from "../types";
 import { COLOR_MAP } from "../utils/colors";
@@ -15,9 +15,10 @@ interface HabitCardProps {
   done: boolean;
   onToggle: () => void;
   goalBadge?: GoalBadge;
+  assigneeName?: string;
 }
 
-export default function HabitCard({ habit, done, onToggle, goalBadge }: HabitCardProps) {
+export default function HabitCard({ habit, done, onToggle, goalBadge, assigneeName }: HabitCardProps) {
   const colors = COLOR_MAP[habit.color];
   const [showTimer, setShowTimer] = useState(false);
 
@@ -39,8 +40,14 @@ export default function HabitCard({ habit, done, onToggle, goalBadge }: HabitCar
             <span className="block text-xs font-semibold text-duo-gray-dark">{habit.time}</span>
           )}
           {goalBadge && (
-            <span className="mt-0.5 inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
+            <span className="mt-0.5 mr-1 inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
               🎯 {goalBadge.current}/{goalBadge.target} {goalBadge.unitLabel ?? ""}
+            </span>
+          )}
+          {assigneeName && (
+            <span className="mt-0.5 inline-flex items-center gap-0.5 rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-extrabold text-duo-blue-dark">
+              <User size={10} />
+              {assigneeName}
             </span>
           )}
         </span>

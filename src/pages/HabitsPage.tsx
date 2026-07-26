@@ -6,6 +6,7 @@ import type { Habit } from "../types";
 import { COLOR_MAP } from "../utils/colors";
 import { DAY_LABELS } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
+import { memberName } from "../utils/household";
 
 interface HabitsPageProps {
   embedded?: boolean;
@@ -15,17 +16,49 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const goals = useHabitStore((s) => s.goals);
   const completions = useHabitStore((s) => s.completions);
+  const householdMembers = useHabitStore((s) => s.householdMembers);
   const addHabit = useHabitStore((s) => s.addHabit);
   const updateHabit = useHabitStore((s) => s.updateHabit);
   const removeHabit = useHabitStore((s) => s.removeHabit);
   const [showAdd, setShowAdd] = useState(false);
   const [editing, setEditing] = useState<Habit | null>(null);
+  const [personFilter, setPersonFilter] = useState<string>("all");
 
-  const activeHabits = habits.filter((h) => !h.archived);
+  const activeHabits = habits
+    .filter((h) => !h.archived)
+    .filter((h) => personFilter === "all" || h.assignedTo === personFilter);
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
       {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meus hábitos</h1>}
+
+      {householdMembers.length > 0 && (
+        <div className="mb-4 flex gap-1.5 overflow-x-auto">
+          <button
+            onClick={() => setPersonFilter("all")}
+            className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+              personFilter === "all"
+                ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
+                : "border-duo-gray text-duo-gray-dark"
+            }`}
+          >
+            Todos
+          </button>
+          {householdMembers.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => setPersonFilter(m.id)}
+              className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+                personFilter === m.id
+                  ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
+                  : "border-duo-gray text-duo-gray-dark"
+              }`}
+            >
+              {m.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       {activeHabits.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
@@ -42,6 +75,7 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
                 : h.daysOfWeek.map((d) => DAY_LABELS[d]).join(" ");
             const detailLabel = h.time ? `${h.time} · ${daysLabel}` : daysLabel;
             const goal = goalForHabit(goals, h.id);
+            const assignee = memberName(householdMembers, h.assignedTo);
             return (
               <button
                 key={h.id}
@@ -54,12 +88,19 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
                 <span className="flex-1">
                   <span className="block font-bold text-duo-text">{h.name}</span>
                   <span className="block text-xs font-semibold text-duo-gray-dark">{detailLabel}</span>
-                  {goal && (
-                    <span className="mt-1 inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
-                      🎯 {goal.title} · {goalProgress(goal, completions)}/{goal.targetCount}{" "}
-                      {goal.unitLabel}
-                    </span>
-                  )}
+                  <span className="mt-1 flex flex-wrap gap-1">
+                    {goal && (
+                      <span className="inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
+                        🎯 {goal.title} · {goalProgress(goal, completions)}/{goal.targetCount}{" "}
+                        {goal.unitLabel}
+                      </span>
+                    )}
+                    {assignee && (
+                      <span className="inline-block rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-extrabold text-duo-blue-dark">
+                        {assignee}
+                      </span>
+                    )}
+                  </span>
                 </span>
               </button>
             );
@@ -77,6 +118,7 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
 
       {showAdd && (
         <HabitFormModal
+          householdMembers={householdMembers}
           onClose={() => setShowAdd(false)}
           onSave={(data) => {
             addHabit(data);
@@ -88,6 +130,7 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
       {editing && (
         <HabitFormModal
           initial={editing}
+          householdMembers={householdMembers}
           onClose={() => setEditing(null)}
           onSave={(data) => {
             updateHabit(editing.id, data);

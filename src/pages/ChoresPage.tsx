@@ -4,6 +4,7 @@ import ChoreFormModal from "../components/ChoreFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import type { Chore } from "../types";
 import { choreStatus, sortChoresByUrgency, type ChoreUrgency } from "../utils/chores";
+import { memberName } from "../utils/household";
 
 const URGENCY_BADGE: Record<ChoreUrgency, string> = {
   never: "bg-duo-blue/15 text-duo-blue-dark",
@@ -29,6 +30,7 @@ interface ChoresPageProps {
 
 export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
   const chores = useHabitStore((s) => s.chores);
+  const householdMembers = useHabitStore((s) => s.householdMembers);
   const addChore = useHabitStore((s) => s.addChore);
   const updateChore = useHabitStore((s) => s.updateChore);
   const removeChore = useHabitStore((s) => s.removeChore);
@@ -36,8 +38,11 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
 
   const [showAdd, setShowAdd] = useState(false);
   const [editing, setEditing] = useState<Chore | null>(null);
+  const [personFilter, setPersonFilter] = useState<string>("all");
 
-  const sortedChores = sortChoresByUrgency(chores);
+  const sortedChores = sortChoresByUrgency(
+    chores.filter((c) => personFilter === "all" || c.assignedTo === personFilter),
+  );
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
@@ -47,6 +52,34 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Cadastre os afazeres domésticos e a recorrência de cada um.
       </p>
+
+      {householdMembers.length > 0 && (
+        <div className="mb-4 flex gap-1.5 overflow-x-auto">
+          <button
+            onClick={() => setPersonFilter("all")}
+            className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+              personFilter === "all"
+                ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
+                : "border-duo-gray text-duo-gray-dark"
+            }`}
+          >
+            Todos
+          </button>
+          {householdMembers.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => setPersonFilter(m.id)}
+              className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+                personFilter === m.id
+                  ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
+                  : "border-duo-gray text-duo-gray-dark"
+              }`}
+            >
+              {m.name}
+            </button>
+          ))}
+        </div>
+      )}
 
       {sortedChores.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
@@ -59,6 +92,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
         <div className="mb-5 space-y-2.5">
           {sortedChores.map((c) => {
             const badgeClass = URGENCY_BADGE[choreStatus(c).urgency];
+            const assignee = memberName(householdMembers, c.assignedTo);
             return (
               <div
                 key={c.id}
@@ -76,10 +110,17 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
                     <span className="block text-xs font-semibold text-duo-gray-dark">
                       A cada {c.intervalDays} dia{c.intervalDays !== 1 ? "s" : ""}
                     </span>
-                    <span
-                      className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-extrabold ${badgeClass}`}
-                    >
-                      {statusLabel(c)}
+                    <span className="mt-1 flex flex-wrap gap-1">
+                      <span
+                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-extrabold ${badgeClass}`}
+                      >
+                        {statusLabel(c)}
+                      </span>
+                      {assignee && (
+                        <span className="inline-block rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-extrabold text-duo-blue-dark">
+                          {assignee}
+                        </span>
+                      )}
                     </span>
                   </span>
                 </button>
@@ -106,6 +147,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
 
       {showAdd && (
         <ChoreFormModal
+          householdMembers={householdMembers}
           onClose={() => setShowAdd(false)}
           onSave={(data) => {
             addChore(data);
@@ -117,6 +159,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
       {editing && (
         <ChoreFormModal
           initial={editing}
+          householdMembers={householdMembers}
           onClose={() => setEditing(null)}
           onSave={(data) => {
             updateChore(editing.id, data);

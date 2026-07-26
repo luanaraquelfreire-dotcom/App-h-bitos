@@ -5,6 +5,7 @@ import type {
   Goal,
   Habit,
   HabitState,
+  HouseholdMember,
   MealPlanEntry,
   Recipe,
   StudyItem,
@@ -30,6 +31,10 @@ export const useHabitStore = create<HabitState>()(
       transactions: [],
       chores: [],
       studyItems: [],
+      householdMembers: [
+        { id: generateId(), name: "Eu" },
+        { id: generateId(), name: "Parceiro(a)" },
+      ],
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -284,6 +289,35 @@ export const useHabitStore = create<HabitState>()(
             i.id === itemId
               ? { ...i, sessions: i.sessions.filter((s) => s.id !== sessionId) }
               : i,
+          ),
+        }));
+      },
+
+      addHouseholdMember: (name) => {
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        const newMember: HouseholdMember = { id: generateId(), name: trimmed };
+        set((state) => ({ householdMembers: [...state.householdMembers, newMember] }));
+      },
+
+      renameHouseholdMember: (id, name) => {
+        const trimmed = name.trim();
+        if (!trimmed) return;
+        set((state) => ({
+          householdMembers: state.householdMembers.map((m) =>
+            m.id === id ? { ...m, name: trimmed } : m,
+          ),
+        }));
+      },
+
+      removeHouseholdMember: (id) => {
+        set((state) => ({
+          householdMembers: state.householdMembers.filter((m) => m.id !== id),
+          habits: state.habits.map((h) =>
+            h.assignedTo === id ? { ...h, assignedTo: undefined } : h,
+          ),
+          chores: state.chores.map((c) =>
+            c.assignedTo === id ? { ...c, assignedTo: undefined } : c,
           ),
         }));
       },

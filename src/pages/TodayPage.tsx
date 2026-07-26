@@ -6,11 +6,13 @@ import HabitFormModal from "../components/HabitFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import { formatLong, todayKey } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
+import { memberName } from "../utils/household";
 
 export default function TodayPage() {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const goals = useHabitStore((s) => s.goals);
+  const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
   const addHabit = useHabitStore((s) => s.addHabit);
   const [showAdd, setShowAdd] = useState(false);
@@ -78,6 +80,7 @@ export default function TodayPage() {
                     }
                   : undefined
               }
+              assigneeName={memberName(householdMembers, h.assignedTo)}
             />
           );
         })}
@@ -93,6 +96,7 @@ export default function TodayPage() {
 
       {showAdd && (
         <HabitFormModal
+          householdMembers={householdMembers}
           onClose={() => setShowAdd(false)}
           onSave={(data) => {
             addHabit(data);

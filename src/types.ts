@@ -11,6 +11,13 @@ export interface Habit {
   archived: boolean;
   /** horário programado, formato "HH:mm" (opcional) */
   time?: string;
+  /** id de HouseholdMember responsável (opcional) */
+  assignedTo?: string;
+}
+
+export interface HouseholdMember {
+  id: string;
+  name: string;
 }
 
 /** habitId -> array de datas (yyyy-MM-dd) em que o hábito foi concluído */
@@ -87,6 +94,8 @@ export interface Chore {
   /** yyyy-MM-dd da última vez que foi feita (undefined = nunca feita) */
   lastDoneAt?: string;
   createdAt: string;
+  /** id de HouseholdMember responsável (opcional) */
+  assignedTo?: string;
 }
 
 export type StudyType = "course" | "reading" | "language";
@@ -134,6 +143,7 @@ export interface HabitState {
   transactions: Transaction[];
   chores: Chore[];
   studyItems: StudyItem[];
+  householdMembers: HouseholdMember[];
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -173,4 +183,7 @@ export interface HabitState {
   removeStudyNote: (itemId: string, noteId: string) => void;
   addStudySession: (itemId: string, minutes: number) => void;
   removeStudySession: (itemId: string, sessionId: string) => void;
+  addHouseholdMember: (name: string) => void;
+  renameHouseholdMember: (id: string, name: string) => void;
+  removeHouseholdMember: (id: string) => void;
 }

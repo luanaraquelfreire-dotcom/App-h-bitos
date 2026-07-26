@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Trash2, X } from "lucide-react";
-import type { Habit, HabitColor } from "../types";
+import type { Habit, HabitColor, HouseholdMember } from "../types";
 import { COLOR_MAP, HABIT_COLORS, HABIT_EMOJIS } from "../utils/colors";
 import { DAY_LABELS } from "../utils/date";
 
 interface HabitFormModalProps {
   initial?: Habit;
+  householdMembers: HouseholdMember[];
   onClose: () => void;
   onSave: (data: {
     name: string;
@@ -13,18 +14,26 @@ interface HabitFormModalProps {
     color: HabitColor;
     daysOfWeek: number[];
     time?: string;
+    assignedTo?: string;
   }) => void;
   onDelete?: () => void;
 }
 
 const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
 
-export default function HabitFormModal({ initial, onClose, onSave, onDelete }: HabitFormModalProps) {
+export default function HabitFormModal({
+  initial,
+  householdMembers,
+  onClose,
+  onSave,
+  onDelete,
+}: HabitFormModalProps) {
   const [name, setName] = useState(initial?.name ?? "");
   const [emoji, setEmoji] = useState(initial?.emoji ?? HABIT_EMOJIS[0]);
   const [color, setColor] = useState<HabitColor>(initial?.color ?? "green");
   const [daysOfWeek, setDaysOfWeek] = useState<number[]>(initial?.daysOfWeek ?? ALL_DAYS);
   const [time, setTime] = useState(initial?.time ?? "");
+  const [assignedTo, setAssignedTo] = useState(initial?.assignedTo ?? "");
 
   const canSave = name.trim().length > 0 && daysOfWeek.length > 0;
 
@@ -36,7 +45,14 @@ export default function HabitFormModal({ initial, onClose, onSave, onDelete }: H
 
   function handleSave() {
     if (!canSave) return;
-    onSave({ name: name.trim(), emoji, color, daysOfWeek, time: time || undefined });
+    onSave({
+      name: name.trim(),
+      emoji,
+      color,
+      daysOfWeek,
+      time: time || undefined,
+      assignedTo: assignedTo || undefined,
+    });
   }
 
   return (
@@ -103,6 +119,26 @@ export default function HabitFormModal({ initial, onClose, onSave, onDelete }: H
           onChange={(e) => setTime(e.target.value)}
           className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
         />
+
+        {householdMembers.length > 0 && (
+          <>
+            <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+              Responsável (opcional)
+            </label>
+            <select
+              value={assignedTo}
+              onChange={(e) => setAssignedTo(e.target.value)}
+              className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+            >
+              <option value="">Qualquer um</option>
+              {householdMembers.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
 
         <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
           Repetir nos dias

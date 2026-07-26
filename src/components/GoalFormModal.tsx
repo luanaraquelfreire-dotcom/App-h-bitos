@@ -1,11 +1,12 @@
 import { Trash2, X } from "lucide-react";
 import { useState } from "react";
-import type { Goal, GoalType, Habit, HabitColor } from "../types";
+import type { Goal, GoalType, Habit, HabitColor, HouseholdMember } from "../types";
 import HabitFormModal from "./HabitFormModal";
 
 interface GoalFormModalProps {
   initial?: Goal;
   habits: Habit[];
+  householdMembers: HouseholdMember[];
   onClose: () => void;
   onSave: (data: {
     title: string;
@@ -21,12 +22,14 @@ interface GoalFormModalProps {
     color: HabitColor;
     daysOfWeek: number[];
     time?: string;
+    assignedTo?: string;
   }) => string;
 }
 
 export default function GoalFormModal({
   initial,
   habits,
+  householdMembers,
   onClose,
   onSave,
   onDelete,
@@ -184,6 +187,7 @@ export default function GoalFormModal({
 
       {showHabitCreator && (
         <HabitFormModal
+          householdMembers={householdMembers}
           onClose={() => setShowHabitCreator(false)}
           onSave={(data) => {
             const id = onCreateHabit(data);

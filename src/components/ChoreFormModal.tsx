@@ -1,25 +1,43 @@
 import { Trash2, X } from "lucide-react";
 import { useState } from "react";
-import type { Chore } from "../types";
+import type { Chore, HouseholdMember } from "../types";
 import { CHORE_EMOJIS, CHORE_INTERVAL_PRESETS } from "../utils/chores";
 
 interface ChoreFormModalProps {
   initial?: Chore;
+  householdMembers: HouseholdMember[];
   onClose: () => void;
-  onSave: (data: { name: string; emoji: string; intervalDays: number }) => void;
+  onSave: (data: {
+    name: string;
+    emoji: string;
+    intervalDays: number;
+    assignedTo?: string;
+  }) => void;
   onDelete?: () => void;
 }
 
-export default function ChoreFormModal({ initial, onClose, onSave, onDelete }: ChoreFormModalProps) {
+export default function ChoreFormModal({
+  initial,
+  householdMembers,
+  onClose,
+  onSave,
+  onDelete,
+}: ChoreFormModalProps) {
   const [name, setName] = useState(initial?.name ?? "");
   const [emoji, setEmoji] = useState(initial?.emoji ?? CHORE_EMOJIS[0]);
   const [intervalDays, setIntervalDays] = useState(initial?.intervalDays?.toString() ?? "7");
+  const [assignedTo, setAssignedTo] = useState(initial?.assignedTo ?? "");
 
   const canSave = name.trim().length > 0 && Number(intervalDays) > 0;
 
   function handleSave() {
     if (!canSave) return;
-    onSave({ name: name.trim(), emoji, intervalDays: Number(intervalDays) });
+    onSave({
+      name: name.trim(),
+      emoji,
+      intervalDays: Number(intervalDays),
+      assignedTo: assignedTo || undefined,
+    });
   }
 
   return (
@@ -91,6 +109,26 @@ export default function ChoreFormModal({ initial, onClose, onSave, onDelete }: C
           />
           <span className="text-sm font-semibold text-duo-gray-dark">dias</span>
         </div>
+
+        {householdMembers.length > 0 && (
+          <>
+            <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+              Responsável (opcional)
+            </label>
+            <select
+              value={assignedTo}
+              onChange={(e) => setAssignedTo(e.target.value)}
+              className="mb-6 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+            >
+              <option value="">Qualquer um</option>
+              {householdMembers.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
 
         <button
           onClick={handleSave}

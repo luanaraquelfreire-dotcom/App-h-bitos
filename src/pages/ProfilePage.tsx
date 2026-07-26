@@ -1,5 +1,8 @@
 import { Award, Flame, Gem, Trophy } from "lucide-react";
 import ProgressBar from "../components/ProgressBar";
+import WeeklySummaryCard from "../components/WeeklySummaryCard";
+import HouseholdMembersCard from "../components/HouseholdMembersCard";
+import BackupCard from "../components/BackupCard";
 import { useHabitStore } from "../store/useHabitStore";
 import {
   calcXp,
@@ -41,6 +44,8 @@ export default function ProfilePage() {
   return (
     <div className="px-4 py-4">
       <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Perfil</h1>
+
+      <WeeklySummaryCard />
 
       <div className="mb-5 flex flex-col items-center rounded-2xl border-2 border-duo-gray bg-white py-6">
         <span className="grid h-20 w-20 place-items-center rounded-full bg-duo-purple text-3xl font-extrabold text-white">
@@ -97,6 +102,14 @@ export default function ProfilePage() {
             <span className="mt-1 px-1 text-[11px] font-bold text-duo-text">{a.label}</span>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6">
+        <HouseholdMembersCard />
+      </div>
+
+      <div className="mt-6">
+        <BackupCard />
       </div>
     </div>
   );

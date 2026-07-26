@@ -15,6 +15,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
   const goals = useHabitStore((s) => s.goals);
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
+  const householdMembers = useHabitStore((s) => s.householdMembers);
   const addGoal = useHabitStore((s) => s.addGoal);
   const updateGoal = useHabitStore((s) => s.updateGoal);
   const removeGoal = useHabitStore((s) => s.removeGoal);
@@ -32,6 +33,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
     color: HabitColor;
     daysOfWeek: number[];
     time?: string;
+    assignedTo?: string;
   }): string {
     addHabit(data);
     const latest = useHabitStore.getState().habits;
@@ -132,6 +134,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
       {showAdd && (
         <GoalFormModal
           habits={activeHabits}
+          householdMembers={householdMembers}
           onClose={() => setShowAdd(false)}
           onSave={(data) => {
             addGoal(data);
@@ -145,6 +148,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
         <GoalFormModal
           initial={editing}
           habits={activeHabits}
+          householdMembers={householdMembers}
           onClose={() => setEditing(null)}
           onSave={(data) => {
             updateGoal(editing.id, data);
