@@ -1,5 +1,5 @@
 import { addDays, parseISO } from "date-fns";
-import type { CompletionMap, Habit } from "../types";
+import type { CompletionMap, Goal, Habit } from "../types";
 import { toDateKey } from "./date";
 
 export const XP_PER_COMPLETION = 10;
@@ -127,6 +127,15 @@ export function dayCompletionRatio(habits: Habit[], completions: CompletionMap, 
   if (scheduled.length === 0) return -1;
   const done = scheduled.filter((h) => completions[h.id]?.includes(toDateKey(date))).length;
   return done / scheduled.length;
+}
+
+export function goalProgress(goal: Goal, completions: CompletionMap): number {
+  if (goal.type !== "progress" || !goal.linkedHabitId) return 0;
+  return completions[goal.linkedHabitId]?.length ?? 0;
+}
+
+export function goalForHabit(goals: Goal[], habitId: string): Goal | undefined {
+  return goals.find((g) => g.type === "progress" && g.linkedHabitId === habitId);
 }
 
 export { habitsScheduledOn };

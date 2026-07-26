@@ -5,9 +5,12 @@ import { useHabitStore } from "../store/useHabitStore";
 import type { Habit } from "../types";
 import { COLOR_MAP } from "../utils/colors";
 import { DAY_LABELS } from "../utils/date";
+import { goalForHabit, goalProgress } from "../utils/gamification";
 
 export default function HabitsPage() {
   const habits = useHabitStore((s) => s.habits);
+  const goals = useHabitStore((s) => s.goals);
+  const completions = useHabitStore((s) => s.completions);
   const addHabit = useHabitStore((s) => s.addHabit);
   const updateHabit = useHabitStore((s) => s.updateHabit);
   const removeHabit = useHabitStore((s) => s.removeHabit);
@@ -34,6 +37,7 @@ export default function HabitsPage() {
                 ? "Todos os dias"
                 : h.daysOfWeek.map((d) => DAY_LABELS[d]).join(" ");
             const detailLabel = h.time ? `${h.time} · ${daysLabel}` : daysLabel;
+            const goal = goalForHabit(goals, h.id);
             return (
               <button
                 key={h.id}
@@ -46,6 +50,12 @@ export default function HabitsPage() {
                 <span className="flex-1">
                   <span className="block font-bold text-duo-text">{h.name}</span>
                   <span className="block text-xs font-semibold text-duo-gray-dark">{detailLabel}</span>
+                  {goal && (
+                    <span className="mt-1 inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
+                      🎯 {goal.title} · {goalProgress(goal, completions)}/{goal.targetCount}{" "}
+                      {goal.unitLabel}
+                    </span>
+                  )}
                 </span>
               </button>
             );

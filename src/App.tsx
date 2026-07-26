@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BottomNav, { type Tab } from "./components/BottomNav";
 import TopBar from "./components/TopBar";
+import GoalsPage from "./pages/GoalsPage";
 import HabitsPage from "./pages/HabitsPage";
 import MonthPage from "./pages/MonthPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -63,6 +64,7 @@ function App() {
         {tab === "week" && <WeekPage />}
         {tab === "month" && <MonthPage />}
         {tab === "habits" && <HabitsPage />}
+        {tab === "goals" && <GoalsPage />}
         {tab === "tasks" && <TasksPage />}
         {tab === "profile" && <ProfilePage />}
       </main>

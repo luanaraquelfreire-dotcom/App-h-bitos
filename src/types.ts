@@ -22,6 +22,21 @@ export interface ProcrastinatedTask {
   createdAt: string; // ISO date (yyyy-MM-dd)
 }
 
+export type GoalType = "single" | "progress";
+
+export interface Goal {
+  id: string;
+  title: string;
+  type: GoalType;
+  createdAt: string; // ISO date (yyyy-MM-dd)
+  /** usado apenas em metas do tipo "single" */
+  done: boolean;
+  /** usado apenas em metas do tipo "progress" */
+  targetCount?: number;
+  unitLabel?: string;
+  linkedHabitId?: string;
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
@@ -29,6 +44,7 @@ export interface HabitState {
   tasks: ProcrastinatedTask[];
   drawnTaskId: string | null;
   completedTasksCount: number;
+  goals: Goal[];
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -39,4 +55,8 @@ export interface HabitState {
   completeTask: (id: string) => void;
   drawTask: () => void;
   clearDrawnTask: () => void;
+  addGoal: (goal: Omit<Goal, "id" | "createdAt" | "done">) => void;
+  updateGoal: (id: string, updates: Partial<Omit<Goal, "id">>) => void;
+  removeGoal: (id: string) => void;
+  toggleGoalDone: (id: string) => void;
 }

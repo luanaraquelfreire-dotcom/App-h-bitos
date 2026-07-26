@@ -1,9 +1,11 @@
 import {
   addDays,
   addMonths,
+  differenceInCalendarDays,
   eachDayOfInterval,
   endOfMonth,
   endOfWeek,
+  endOfYear,
   format,
   isSameDay,
   isSameMonth,
@@ -86,4 +88,8 @@ export function formatWeekRange(days: Date[]): string {
     return `${format(first, "d")} - ${format(last, "d 'de' MMMM", { locale: ptBR })}`;
   }
   return `${format(first, "d MMM", { locale: ptBR })} - ${format(last, "d MMM", { locale: ptBR })}`;
+}
+
+export function daysUntilYearEnd(): number {
+  return Math.max(differenceInCalendarDays(endOfYear(new Date()), new Date()), 0);
 }

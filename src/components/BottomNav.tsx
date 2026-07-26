@@ -1,6 +1,6 @@
-import { CalendarDays, CalendarRange, Dices, ListChecks, Sun, User } from "lucide-react";
+import { CalendarDays, CalendarRange, Dices, ListChecks, Sun, Target, User } from "lucide-react";
 
-export type Tab = "today" | "week" | "month" | "habits" | "tasks" | "profile";
+export type Tab = "today" | "week" | "month" | "habits" | "goals" | "tasks" | "profile";
 
 interface BottomNavProps {
   active: Tab;
@@ -12,6 +12,7 @@ const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "week", label: "Semana", icon: CalendarDays },
   { id: "month", label: "Mês", icon: CalendarRange },
   { id: "habits", label: "Hábitos", icon: ListChecks },
+  { id: "goals", label: "Metas", icon: Target },
   { id: "tasks", label: "Procrastinação", icon: Dices },
   { id: "profile", label: "Perfil", icon: User },
 ];
@@ -25,11 +26,11 @@ export default function BottomNav({ active, onChange }: BottomNavProps) {
           <button
             key={id}
             onClick={() => onChange(id)}
-            className={`flex flex-1 flex-col items-center gap-0.5 px-0.5 py-2.5 text-center text-[10px] font-bold leading-tight transition-colors ${
+            className={`flex flex-1 flex-col items-center gap-0.5 px-0.5 py-2 text-center text-[9px] font-bold leading-tight transition-colors ${
               isActive ? "text-duo-blue-dark" : "text-duo-gray-dark"
             }`}
           >
-            <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
+            <Icon size={19} strokeWidth={isActive ? 2.5 : 2} />
             {label}
           </button>
         );

@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import HabitCard from "../components/HabitCard";
 import { useHabitStore } from "../store/useHabitStore";
-import { dayCompletionRatio } from "../utils/gamification";
+import { dayCompletionRatio, goalForHabit, goalProgress } from "../utils/gamification";
 import {
   DAY_LABELS,
   formatLong,
@@ -25,6 +25,7 @@ function ratioColorClass(ratio: number): string {
 export default function MonthPage() {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
+  const goals = useHabitStore((s) => s.goals);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
   const [reference, setReference] = useState(new Date());
   const [selected, setSelected] = useState(new Date());
@@ -104,14 +105,26 @@ export default function MonthPage() {
           <p className="text-sm text-duo-gray-dark">Nada programado para este dia.</p>
         ) : (
           <div className="space-y-2.5">
-            {selectedHabits.map((h) => (
-              <HabitCard
-                key={h.id}
-                habit={h}
-                done={completions[h.id]?.includes(selectedKey) ?? false}
-                onToggle={() => toggleCompletion(h.id, selectedKey)}
-              />
-            ))}
+            {selectedHabits.map((h) => {
+              const goal = goalForHabit(goals, h.id);
+              return (
+                <HabitCard
+                  key={h.id}
+                  habit={h}
+                  done={completions[h.id]?.includes(selectedKey) ?? false}
+                  onToggle={() => toggleCompletion(h.id, selectedKey)}
+                  goalBadge={
+                    goal
+                      ? {
+                          current: goalProgress(goal, completions),
+                          target: goal.targetCount ?? 0,
+                          unitLabel: goal.unitLabel,
+                        }
+                      : undefined
+                  }
+                />
+              );
+            })}
           </div>
         )}
       </div>

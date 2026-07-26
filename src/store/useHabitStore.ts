@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Habit, HabitState } from "../types";
+import type { Goal, Habit, HabitState } from "../types";
 import { todayKey } from "../utils/date";
 
 function generateId(): string {
@@ -16,6 +16,7 @@ export const useHabitStore = create<HabitState>()(
       tasks: [],
       drawnTaskId: null,
       completedTasksCount: 0,
+      goals: [],
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -40,6 +41,9 @@ export const useHabitStore = create<HabitState>()(
           return {
             habits: state.habits.filter((h) => h.id !== id),
             completions,
+            goals: state.goals.map((g) =>
+              g.linkedHabitId === id ? { ...g, linkedHabitId: undefined } : g,
+            ),
           };
         });
       },
@@ -93,6 +97,27 @@ export const useHabitStore = create<HabitState>()(
 
       clearDrawnTask: () => {
         set({ drawnTaskId: null });
+      },
+
+      addGoal: (goal) => {
+        const newGoal: Goal = { ...goal, id: generateId(), createdAt: todayKey(), done: false };
+        set((state) => ({ goals: [...state.goals, newGoal] }));
+      },
+
+      updateGoal: (id, updates) => {
+        set((state) => ({
+          goals: state.goals.map((g) => (g.id === id ? { ...g, ...updates } : g)),
+        }));
+      },
+
+      removeGoal: (id) => {
+        set((state) => ({ goals: state.goals.filter((g) => g.id !== id) }));
+      },
+
+      toggleGoalDone: (id) => {
+        set((state) => ({
+          goals: state.goals.map((g) => (g.id === id ? { ...g, done: !g.done } : g)),
+        }));
       },
     }),
     {
