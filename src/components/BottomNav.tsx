@@ -1,5 +1,4 @@
 import {
-  CalendarDays,
   CalendarRange,
   Dices,
   ListChecks,
@@ -9,15 +8,7 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 
-export type Tab =
-  | "today"
-  | "week"
-  | "month"
-  | "habits"
-  | "goals"
-  | "tasks"
-  | "food"
-  | "profile";
+export type Tab = "today" | "month" | "habits" | "goals" | "tasks" | "food" | "profile";
 
 interface BottomNavProps {
   active: Tab;
@@ -26,7 +17,6 @@ interface BottomNavProps {
 
 const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "today", label: "Hoje", icon: Sun },
-  { id: "week", label: "Semana", icon: CalendarDays },
   { id: "month", label: "Mês", icon: CalendarRange },
   { id: "habits", label: "Hábitos", icon: ListChecks },
   { id: "goals", label: "Metas", icon: Target },

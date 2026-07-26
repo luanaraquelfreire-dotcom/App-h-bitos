@@ -8,7 +8,6 @@ import MonthPage from "./pages/MonthPage";
 import ProfilePage from "./pages/ProfilePage";
 import TasksPage from "./pages/TasksPage";
 import TodayPage from "./pages/TodayPage";
-import WeekPage from "./pages/WeekPage";
 import { useHabitStore } from "./store/useHabitStore";
 import { calcXp, currentStreak } from "./utils/gamification";
 
@@ -62,7 +61,6 @@ function App() {
       <TopBar streak={streak} xp={xp} />
       <main className="flex-1 pb-6">
         {tab === "today" && <TodayPage />}
-        {tab === "week" && <WeekPage />}
         {tab === "month" && <MonthPage />}
         {tab === "habits" && <HabitsPage />}
         {tab === "goals" && <GoalsPage />}
