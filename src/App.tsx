@@ -8,6 +8,7 @@ import GoalsPage from "./pages/GoalsPage";
 import HabitsPage from "./pages/HabitsPage";
 import MonthPage from "./pages/MonthPage";
 import ProfilePage from "./pages/ProfilePage";
+import StudiesPage from "./pages/StudiesPage";
 import TasksPage from "./pages/TasksPage";
 import TodayPage from "./pages/TodayPage";
 import { useHabitStore } from "./store/useHabitStore";
@@ -69,6 +70,7 @@ function App() {
         {tab === "food" && <FoodPage />}
         {tab === "finance" && <FinancePage />}
         {tab === "chores" && <ChoresPage />}
+        {tab === "studies" && <StudiesPage />}
         {tab === "tasks" && <TasksPage />}
         {tab === "profile" && <ProfilePage />}
       </main>

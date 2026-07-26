@@ -89,6 +89,25 @@ export interface Chore {
   createdAt: string;
 }
 
+export type StudyType = "course" | "reading" | "language";
+export type StudyStatus = "in_progress" | "completed" | "paused";
+
+export interface StudyNote {
+  id: string;
+  text: string;
+  createdAt: string; // yyyy-MM-dd
+}
+
+export interface StudyItem {
+  id: string;
+  type: StudyType;
+  title: string;
+  emoji: string;
+  status: StudyStatus;
+  notes: StudyNote[];
+  createdAt: string;
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
@@ -104,6 +123,7 @@ export interface HabitState {
   shoppingChecked: Record<string, string[]>;
   transactions: Transaction[];
   chores: Chore[];
+  studyItems: StudyItem[];
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -133,4 +153,9 @@ export interface HabitState {
   updateChore: (id: string, updates: Partial<Omit<Chore, "id">>) => void;
   removeChore: (id: string) => void;
   markChoreDone: (id: string) => void;
+  addStudyItem: (item: Omit<StudyItem, "id" | "createdAt" | "notes">) => void;
+  updateStudyItem: (id: string, updates: Partial<Omit<StudyItem, "id" | "notes">>) => void;
+  removeStudyItem: (id: string) => void;
+  addStudyNote: (itemId: string, text: string) => void;
+  removeStudyNote: (itemId: string, noteId: string) => void;
 }

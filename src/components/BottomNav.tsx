@@ -1,6 +1,7 @@
 import {
   CalendarRange,
   Dices,
+  GraduationCap,
   Home,
   ListChecks,
   Sun,
@@ -19,6 +20,7 @@ export type Tab =
   | "food"
   | "finance"
   | "chores"
+  | "studies"
   | "profile";
 
 interface BottomNavProps {
@@ -34,6 +36,7 @@ const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "food", label: "Alimentação", icon: UtensilsCrossed },
   { id: "finance", label: "Finanças", icon: Wallet },
   { id: "chores", label: "Casa", icon: Home },
+  { id: "studies", label: "Estudos", icon: GraduationCap },
   { id: "tasks", label: "Procrastinação", icon: Dices },
   { id: "profile", label: "Perfil", icon: User },
 ];

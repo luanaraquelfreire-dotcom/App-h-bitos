@@ -1,6 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Chore, Goal, Habit, HabitState, MealPlanEntry, Recipe, Transaction } from "../types";
+import type {
+  Chore,
+  Goal,
+  Habit,
+  HabitState,
+  MealPlanEntry,
+  Recipe,
+  StudyItem,
+  Transaction,
+} from "../types";
 import { todayKey } from "../utils/date";
 import { generateId } from "../utils/id";
 
@@ -20,6 +29,7 @@ export const useHabitStore = create<HabitState>()(
       shoppingChecked: {},
       transactions: [],
       chores: [],
+      studyItems: [],
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -207,6 +217,44 @@ export const useHabitStore = create<HabitState>()(
       markChoreDone: (id) => {
         set((state) => ({
           chores: state.chores.map((c) => (c.id === id ? { ...c, lastDoneAt: todayKey() } : c)),
+        }));
+      },
+
+      addStudyItem: (item) => {
+        const newItem: StudyItem = { ...item, id: generateId(), createdAt: todayKey(), notes: [] };
+        set((state) => ({ studyItems: [...state.studyItems, newItem] }));
+      },
+
+      updateStudyItem: (id, updates) => {
+        set((state) => ({
+          studyItems: state.studyItems.map((i) => (i.id === id ? { ...i, ...updates } : i)),
+        }));
+      },
+
+      removeStudyItem: (id) => {
+        set((state) => ({ studyItems: state.studyItems.filter((i) => i.id !== id) }));
+      },
+
+      addStudyNote: (itemId, text) => {
+        const trimmed = text.trim();
+        if (!trimmed) return;
+        set((state) => ({
+          studyItems: state.studyItems.map((i) =>
+            i.id === itemId
+              ? {
+                  ...i,
+                  notes: [...i.notes, { id: generateId(), text: trimmed, createdAt: todayKey() }],
+                }
+              : i,
+          ),
+        }));
+      },
+
+      removeStudyNote: (itemId, noteId) => {
+        set((state) => ({
+          studyItems: state.studyItems.map((i) =>
+            i.id === itemId ? { ...i, notes: i.notes.filter((n) => n.id !== noteId) } : i,
+          ),
         }));
       },
     }),
