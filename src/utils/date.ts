@@ -34,6 +34,10 @@ export function todayKey(): string {
   return toDateKey(new Date());
 }
 
+export function monthKey(date: Date): string {
+  return format(date, "yyyy-MM");
+}
+
 export function weekDays(reference: Date): Date[] {
   const start = startOfWeek(reference, { weekStartsOn: 0 });
   const end = endOfWeek(reference, { weekStartsOn: 0 });

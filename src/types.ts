@@ -37,6 +37,34 @@ export interface Goal {
   linkedHabitId?: string;
 }
 
+export interface Ingredient {
+  id: string;
+  name: string;
+  quantity: number;
+  unit: string;
+}
+
+export interface Recipe {
+  id: string;
+  name: string;
+  emoji: string;
+  /** para quantas pessoas a lista de ingredientes abaixo rende */
+  servings: number;
+  ingredients: Ingredient[];
+  createdAt: string;
+}
+
+export type MealType = "cafe" | "almoco" | "janta" | "lanche";
+
+export interface MealPlanEntry {
+  id: string;
+  recipeId: string;
+  mealType: MealType;
+  /** 0 = domingo ... 6 = sábado */
+  daysOfWeek: number[];
+  createdAt: string;
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
@@ -45,6 +73,11 @@ export interface HabitState {
   drawnTaskId: string | null;
   completedTasksCount: number;
   goals: Goal[];
+  recipes: Recipe[];
+  mealPlans: MealPlanEntry[];
+  peopleCount: number;
+  /** "yyyy-MM" -> chaves de itens já marcados como comprados naquele mês */
+  shoppingChecked: Record<string, string[]>;
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -59,4 +92,12 @@ export interface HabitState {
   updateGoal: (id: string, updates: Partial<Omit<Goal, "id">>) => void;
   removeGoal: (id: string) => void;
   toggleGoalDone: (id: string) => void;
+  addRecipe: (recipe: Omit<Recipe, "id" | "createdAt">) => void;
+  updateRecipe: (id: string, updates: Partial<Omit<Recipe, "id">>) => void;
+  removeRecipe: (id: string) => void;
+  addMealPlan: (entry: Omit<MealPlanEntry, "id" | "createdAt">) => void;
+  updateMealPlan: (id: string, updates: Partial<Omit<MealPlanEntry, "id">>) => void;
+  removeMealPlan: (id: string) => void;
+  setPeopleCount: (count: number) => void;
+  toggleShoppingChecked: (monthKey: string, itemKey: string) => void;
 }

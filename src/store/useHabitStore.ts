@@ -1,11 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Goal, Habit, HabitState } from "../types";
+import type { Goal, Habit, HabitState, MealPlanEntry, Recipe } from "../types";
 import { todayKey } from "../utils/date";
-
-function generateId(): string {
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-}
+import { generateId } from "../utils/id";
 
 export const useHabitStore = create<HabitState>()(
   persist(
@@ -17,6 +14,10 @@ export const useHabitStore = create<HabitState>()(
       drawnTaskId: null,
       completedTasksCount: 0,
       goals: [],
+      recipes: [],
+      mealPlans: [],
+      peopleCount: 2,
+      shoppingChecked: {},
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -118,6 +119,53 @@ export const useHabitStore = create<HabitState>()(
         set((state) => ({
           goals: state.goals.map((g) => (g.id === id ? { ...g, done: !g.done } : g)),
         }));
+      },
+
+      addRecipe: (recipe) => {
+        const newRecipe: Recipe = { ...recipe, id: generateId(), createdAt: todayKey() };
+        set((state) => ({ recipes: [...state.recipes, newRecipe] }));
+      },
+
+      updateRecipe: (id, updates) => {
+        set((state) => ({
+          recipes: state.recipes.map((r) => (r.id === id ? { ...r, ...updates } : r)),
+        }));
+      },
+
+      removeRecipe: (id) => {
+        set((state) => ({
+          recipes: state.recipes.filter((r) => r.id !== id),
+          mealPlans: state.mealPlans.filter((p) => p.recipeId !== id),
+        }));
+      },
+
+      addMealPlan: (entry) => {
+        const newEntry: MealPlanEntry = { ...entry, id: generateId(), createdAt: todayKey() };
+        set((state) => ({ mealPlans: [...state.mealPlans, newEntry] }));
+      },
+
+      updateMealPlan: (id, updates) => {
+        set((state) => ({
+          mealPlans: state.mealPlans.map((p) => (p.id === id ? { ...p, ...updates } : p)),
+        }));
+      },
+
+      removeMealPlan: (id) => {
+        set((state) => ({ mealPlans: state.mealPlans.filter((p) => p.id !== id) }));
+      },
+
+      setPeopleCount: (count) => {
+        set({ peopleCount: Math.max(1, count) });
+      },
+
+      toggleShoppingChecked: (monthKey, itemKey) => {
+        set((state) => {
+          const existing = state.shoppingChecked[monthKey] ?? [];
+          const updated = existing.includes(itemKey)
+            ? existing.filter((k) => k !== itemKey)
+            : [...existing, itemKey];
+          return { shoppingChecked: { ...state.shoppingChecked, [monthKey]: updated } };
+        });
       },
     }),
     {
