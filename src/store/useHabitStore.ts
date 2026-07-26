@@ -221,7 +221,13 @@ export const useHabitStore = create<HabitState>()(
       },
 
       addStudyItem: (item) => {
-        const newItem: StudyItem = { ...item, id: generateId(), createdAt: todayKey(), notes: [] };
+        const newItem: StudyItem = {
+          ...item,
+          id: generateId(),
+          createdAt: todayKey(),
+          notes: [],
+          sessions: [],
+        };
         set((state) => ({ studyItems: [...state.studyItems, newItem] }));
       },
 
@@ -254,6 +260,30 @@ export const useHabitStore = create<HabitState>()(
         set((state) => ({
           studyItems: state.studyItems.map((i) =>
             i.id === itemId ? { ...i, notes: i.notes.filter((n) => n.id !== noteId) } : i,
+          ),
+        }));
+      },
+
+      addStudySession: (itemId, minutes) => {
+        if (minutes <= 0) return;
+        set((state) => ({
+          studyItems: state.studyItems.map((i) =>
+            i.id === itemId
+              ? {
+                  ...i,
+                  sessions: [...i.sessions, { id: generateId(), date: todayKey(), minutes }],
+                }
+              : i,
+          ),
+        }));
+      },
+
+      removeStudySession: (itemId, sessionId) => {
+        set((state) => ({
+          studyItems: state.studyItems.map((i) =>
+            i.id === itemId
+              ? { ...i, sessions: i.sessions.filter((s) => s.id !== sessionId) }
+              : i,
           ),
         }));
       },

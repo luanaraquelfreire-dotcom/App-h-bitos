@@ -98,6 +98,12 @@ export interface StudyNote {
   createdAt: string; // yyyy-MM-dd
 }
 
+export interface StudySession {
+  id: string;
+  date: string; // yyyy-MM-dd
+  minutes: number;
+}
+
 export interface StudyItem {
   id: string;
   type: StudyType;
@@ -105,6 +111,10 @@ export interface StudyItem {
   emoji: string;
   status: StudyStatus;
   notes: StudyNote[];
+  sessions: StudySession[];
+  /** meta semanal opcional */
+  targetDaysPerWeek?: number;
+  targetHoursPerWeek?: number;
   createdAt: string;
 }
 
@@ -153,9 +163,14 @@ export interface HabitState {
   updateChore: (id: string, updates: Partial<Omit<Chore, "id">>) => void;
   removeChore: (id: string) => void;
   markChoreDone: (id: string) => void;
-  addStudyItem: (item: Omit<StudyItem, "id" | "createdAt" | "notes">) => void;
-  updateStudyItem: (id: string, updates: Partial<Omit<StudyItem, "id" | "notes">>) => void;
+  addStudyItem: (item: Omit<StudyItem, "id" | "createdAt" | "notes" | "sessions">) => void;
+  updateStudyItem: (
+    id: string,
+    updates: Partial<Omit<StudyItem, "id" | "notes" | "sessions">>,
+  ) => void;
   removeStudyItem: (id: string) => void;
   addStudyNote: (itemId: string, text: string) => void;
   removeStudyNote: (itemId: string, noteId: string) => void;
+  addStudySession: (itemId: string, minutes: number) => void;
+  removeStudySession: (itemId: string, sessionId: string) => void;
 }

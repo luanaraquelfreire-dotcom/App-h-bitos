@@ -6,7 +6,14 @@ import { STUDY_EMOJIS, STUDY_STATUS_LABELS, STUDY_TYPE_LABELS } from "../utils/s
 interface StudyItemFormModalProps {
   initial?: StudyItem;
   onClose: () => void;
-  onSave: (data: { title: string; type: StudyType; emoji: string; status: StudyStatus }) => void;
+  onSave: (data: {
+    title: string;
+    type: StudyType;
+    emoji: string;
+    status: StudyStatus;
+    targetDaysPerWeek?: number;
+    targetHoursPerWeek?: number;
+  }) => void;
   onDelete?: () => void;
 }
 
@@ -23,12 +30,21 @@ export default function StudyItemFormModal({
   const [type, setType] = useState<StudyType>(initial?.type ?? "course");
   const [emoji, setEmoji] = useState(initial?.emoji ?? STUDY_EMOJIS[0]);
   const [status, setStatus] = useState<StudyStatus>(initial?.status ?? "in_progress");
+  const [targetDays, setTargetDays] = useState(initial?.targetDaysPerWeek?.toString() ?? "");
+  const [targetHours, setTargetHours] = useState(initial?.targetHoursPerWeek?.toString() ?? "");
 
   const canSave = title.trim().length > 0;
 
   function handleSave() {
     if (!canSave) return;
-    onSave({ title: title.trim(), type, emoji, status });
+    onSave({
+      title: title.trim(),
+      type,
+      emoji,
+      status,
+      targetDaysPerWeek: targetDays ? Number(targetDays) : undefined,
+      targetHoursPerWeek: targetHours ? Number(targetHours) : undefined,
+    });
   }
 
   return (
@@ -106,6 +122,43 @@ export default function StudyItemFormModal({
               {STUDY_STATUS_LABELS[s]}
             </button>
           ))}
+        </div>
+
+        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          Meta semanal (opcional)
+        </label>
+        <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
+          Ex: estudar inglês 3 dias por semana, totalizando 5 horas.
+        </p>
+        <div className="mb-6 flex gap-2">
+          <div className="flex-1">
+            <input
+              type="number"
+              min={0}
+              max={7}
+              value={targetDays}
+              onChange={(e) => setTargetDays(e.target.value)}
+              placeholder="0"
+              className="w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+            />
+            <span className="mt-1 block text-center text-[11px] font-bold text-duo-gray-dark">
+              dias / semana
+            </span>
+          </div>
+          <div className="flex-1">
+            <input
+              type="number"
+              min={0}
+              step="0.5"
+              value={targetHours}
+              onChange={(e) => setTargetHours(e.target.value)}
+              placeholder="0"
+              className="w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+            />
+            <span className="mt-1 block text-center text-[11px] font-bold text-duo-gray-dark">
+              horas / semana
+            </span>
+          </div>
         </div>
 
         <button

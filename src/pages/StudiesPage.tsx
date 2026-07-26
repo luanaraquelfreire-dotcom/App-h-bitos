@@ -6,13 +6,16 @@ import {
   Pencil,
   Plus,
   Send,
+  Timer,
   X,
 } from "lucide-react";
 import { useState } from "react";
+import PomodoroModal from "../components/PomodoroModal";
+import ProgressBar from "../components/ProgressBar";
 import StudyItemFormModal from "../components/StudyItemFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import type { StudyItem, StudyType } from "../types";
-import { STUDY_STATUS_LABELS, STUDY_TYPE_LABELS } from "../utils/study";
+import { STUDY_STATUS_LABELS, STUDY_TYPE_LABELS, weeklyStudyProgress } from "../utils/study";
 
 type Filter = "all" | StudyType;
 
@@ -40,22 +43,34 @@ export default function StudiesPage() {
   const removeStudyItem = useHabitStore((s) => s.removeStudyItem);
   const addStudyNote = useHabitStore((s) => s.addStudyNote);
   const removeStudyNote = useHabitStore((s) => s.removeStudyNote);
+  const addStudySession = useHabitStore((s) => s.addStudySession);
 
   const [filter, setFilter] = useState<Filter>("all");
   const [showAdd, setShowAdd] = useState(false);
   const [editing, setEditing] = useState<StudyItem | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [noteText, setNoteText] = useState("");
+  const [showTimer, setShowTimer] = useState(false);
+  const [manualMinutes, setManualMinutes] = useState("");
 
   const selected = studyItems.find((i) => i.id === selectedId) ?? null;
 
   if (selected) {
     const sortedNotes = [...selected.notes].reverse();
+    const progress = weeklyStudyProgress(selected, new Date());
+    const hasGoal = Boolean(selected.targetDaysPerWeek || selected.targetHoursPerWeek);
 
     function handleAddNote() {
       if (!noteText.trim() || !selected) return;
       addStudyNote(selected.id, noteText);
       setNoteText("");
+    }
+
+    function handleLogManual() {
+      const minutes = Number(manualMinutes);
+      if (!selected || !minutes || minutes <= 0) return;
+      addStudySession(selected.id, minutes);
+      setManualMinutes("");
     }
 
     return (
@@ -90,6 +105,78 @@ export default function StudiesPage() {
           >
             <Pencil size={18} />
           </button>
+        </div>
+
+        <div className="mb-5 rounded-2xl border-2 border-duo-gray bg-white p-4">
+          <p className="mb-2 text-xs font-extrabold uppercase text-duo-gray-dark">
+            Meta desta semana
+          </p>
+          {hasGoal ? (
+            <div className="space-y-3">
+              {Boolean(selected.targetHoursPerWeek) && (
+                <div>
+                  <div className="mb-1 flex items-center justify-between text-xs font-bold text-duo-gray-dark">
+                    <span>
+                      {progress.hoursStudied.toFixed(1)}h de {selected.targetHoursPerWeek}h
+                    </span>
+                    <span>
+                      {Math.round(
+                        Math.min(progress.hoursStudied / (selected.targetHoursPerWeek ?? 1), 1) *
+                          100,
+                      )}
+                      %
+                    </span>
+                  </div>
+                  <ProgressBar
+                    value={progress.hoursStudied / (selected.targetHoursPerWeek ?? 1)}
+                    colorClass="bg-duo-blue"
+                  />
+                </div>
+              )}
+              {Boolean(selected.targetDaysPerWeek) && (
+                <div>
+                  <div className="mb-1 flex items-center justify-between text-xs font-bold text-duo-gray-dark">
+                    <span>
+                      {progress.daysStudied} de {selected.targetDaysPerWeek} dias
+                    </span>
+                  </div>
+                  <ProgressBar
+                    value={progress.daysStudied / (selected.targetDaysPerWeek ?? 1)}
+                    colorClass="bg-duo-green"
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-duo-gray-dark">
+              Defina uma meta semanal ao editar este item (dias e/ou horas por semana).
+            </p>
+          )}
+
+          <div className="mt-4 flex items-center gap-2">
+            <button
+              onClick={() => setShowTimer(true)}
+              className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-xl border-duo-purple-dark bg-duo-purple py-2.5 text-sm font-extrabold uppercase tracking-wide text-white"
+            >
+              <Timer size={16} />
+              Cronômetro
+            </button>
+            <input
+              type="number"
+              min={1}
+              value={manualMinutes}
+              onChange={(e) => setManualMinutes(e.target.value)}
+              placeholder="min"
+              className="w-16 rounded-xl border-2 border-duo-gray bg-white px-2 py-2.5 text-center text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
+            />
+            <button
+              onClick={handleLogManual}
+              disabled={!manualMinutes}
+              className="duo-btn rounded-xl border-duo-blue-dark bg-duo-blue px-3 py-2.5 text-sm font-extrabold uppercase tracking-wide text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
+            >
+              Registrar
+            </button>
+          </div>
         </div>
 
         <div className="mb-5 flex gap-2">
@@ -154,6 +241,15 @@ export default function StudiesPage() {
             }}
           />
         )}
+
+        {showTimer && (
+          <PomodoroModal
+            title={selected.title}
+            emoji={selected.emoji}
+            onClose={() => setShowTimer(false)}
+            onComplete={(minutes) => addStudySession(selected.id, minutes)}
+          />
+        )}
       </div>
     );
   }
@@ -192,6 +288,8 @@ export default function StudiesPage() {
         <div className="mb-5 space-y-2.5">
           {filteredItems.map((item) => {
             const TypeIcon = TYPE_ICONS[item.type];
+            const hasGoal = Boolean(item.targetDaysPerWeek || item.targetHoursPerWeek);
+            const progress = hasGoal ? weeklyStudyProgress(item, new Date()) : null;
             return (
               <button
                 key={item.id}
@@ -208,6 +306,19 @@ export default function StudiesPage() {
                     {STUDY_TYPE_LABELS[item.type]} · {STUDY_STATUS_LABELS[item.status]} ·{" "}
                     {item.notes.length} anotaç{item.notes.length !== 1 ? "ões" : "ão"}
                   </span>
+                  {progress && (
+                    <span className="mt-1 inline-block rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
+                      🎯{" "}
+                      {item.targetHoursPerWeek
+                        ? `${progress.hoursStudied.toFixed(1)}/${item.targetHoursPerWeek}h`
+                        : ""}
+                      {item.targetHoursPerWeek && item.targetDaysPerWeek ? " · " : ""}
+                      {item.targetDaysPerWeek
+                        ? `${progress.daysStudied}/${item.targetDaysPerWeek}d`
+                        : ""}{" "}
+                      essa semana
+                    </span>
+                  )}
                 </span>
               </button>
             );

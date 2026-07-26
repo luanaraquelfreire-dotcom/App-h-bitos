@@ -5,7 +5,7 @@ interface PomodoroModalProps {
   title: string;
   emoji?: string;
   onClose: () => void;
-  onComplete?: () => void;
+  onComplete?: (minutesSpent: number) => void;
 }
 
 const PRESETS_MIN = [5, 15, 25, 45];
@@ -103,7 +103,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
               {onComplete && (
                 <button
                   onClick={() => {
-                    onComplete();
+                    onComplete(durationMin);
                     onClose();
                   }}
                   className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green py-3 font-extrabold uppercase tracking-wide text-white"
