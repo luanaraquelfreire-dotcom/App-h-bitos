@@ -68,8 +68,23 @@ export const useHabitStore = create<HabitState>()(
 
       toggleCompletion: (habitId, date) => {
         const state = get();
+        const habit = state.habits.find((h) => h.id === habitId);
+        const times = habit?.times ?? [];
         const existing = state.completions[habitId] ?? [];
         const alreadyDone = existing.includes(date);
+
+        if (times.length > 0) {
+          // hábito com múltiplos horários: alterna o dia inteiro (todos os horários juntos)
+          const withoutDay = existing.filter(
+            (k) => k !== date && !times.some((t) => k === `${date}::${t}`),
+          );
+          const updated = alreadyDone
+            ? withoutDay
+            : [...withoutDay, date, ...times.map((t) => `${date}::${t}`)];
+          set({ completions: { ...state.completions, [habitId]: updated } });
+          return;
+        }
+
         const updated = alreadyDone
           ? existing.filter((d) => d !== date)
           : [...existing, date];
@@ -80,6 +95,28 @@ export const useHabitStore = create<HabitState>()(
 
       isCompleted: (habitId, date) => {
         return get().completions[habitId]?.includes(date) ?? false;
+      },
+
+      toggleHabitTime: (habitId, date, time) => {
+        const state = get();
+        const habit = state.habits.find((h) => h.id === habitId);
+        const allTimes = habit?.times ?? [];
+        const slotKey = `${date}::${time}`;
+        const existing = state.completions[habitId] ?? [];
+        const hasSlot = existing.includes(slotKey);
+        let updated = hasSlot ? existing.filter((k) => k !== slotKey) : [...existing, slotKey];
+
+        const allDone = allTimes.length > 0 && allTimes.every((t) => updated.includes(`${date}::${t}`));
+        const hasDayEntry = updated.includes(date);
+        if (allDone && !hasDayEntry) {
+          updated = [...updated, date];
+        } else if (!allDone && hasDayEntry) {
+          updated = updated.filter((k) => k !== date);
+        }
+
+        set({
+          completions: { ...state.completions, [habitId]: updated },
+        });
       },
 
       addTask: (text) => {

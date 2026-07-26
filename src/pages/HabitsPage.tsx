@@ -73,7 +73,12 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
               h.daysOfWeek.length === 7
                 ? "Todos os dias"
                 : h.daysOfWeek.map((d) => DAY_LABELS[d]).join(" ");
-            const detailLabel = h.time ? `${h.time} · ${daysLabel}` : daysLabel;
+            const detailLabel =
+              h.times && h.times.length > 0
+                ? `${h.times.length}x ao dia · ${daysLabel}`
+                : h.time
+                  ? `${h.time} · ${daysLabel}`
+                  : daysLabel;
             const goal = goalForHabit(goals, h.id);
             const assignee = memberName(householdMembers, h.assignedTo);
             return (

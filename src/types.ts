@@ -11,6 +11,8 @@ export interface Habit {
   archived: boolean;
   /** horário programado, formato "HH:mm" (opcional) */
   time?: string;
+  /** vários horários no mesmo dia (opcional, ex: beber água). Quando presente, tem prioridade sobre `time`. */
+  times?: string[];
   /** id de HouseholdMember responsável (opcional) */
   assignedTo?: string;
 }
@@ -158,6 +160,8 @@ export interface HabitState {
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
   toggleCompletion: (habitId: string, date: string) => void;
+  /** alterna um horário específico (para hábitos com múltiplos horários no dia) */
+  toggleHabitTime: (habitId: string, date: string, time: string) => void;
   isCompleted: (habitId: string, date: string) => boolean;
   addTask: (text: string) => void;
   removeTask: (id: string) => void;

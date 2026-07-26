@@ -33,6 +33,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
   const goals = useHabitStore((s) => s.goals);
   const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
+  const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const [reference, setReference] = useState(new Date());
   const [selected, setSelected] = useState(new Date());
 
@@ -111,26 +112,40 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
           <p className="text-sm text-duo-gray-dark">Nada programado para este dia.</p>
         ) : (
           <div className="space-y-2.5">
-            {selectedHabits.map((h) => {
+            {selectedHabits.flatMap((h) => {
               const goal = goalForHabit(goals, h.id);
-              return (
+              const goalBadge = goal
+                ? {
+                    current: goalProgress(goal, completions),
+                    target: goal.targetCount ?? 0,
+                    unitLabel: goal.unitLabel,
+                  }
+                : undefined;
+              const assigneeName = memberName(householdMembers, h.assignedTo);
+
+              if (h.times && h.times.length > 0) {
+                return h.times.map((t) => (
+                  <HabitCard
+                    key={`${h.id}-${t}`}
+                    habit={{ ...h, time: t }}
+                    done={completions[h.id]?.includes(`${selectedKey}::${t}`) ?? false}
+                    onToggle={() => toggleHabitTime(h.id, selectedKey, t)}
+                    goalBadge={goalBadge}
+                    assigneeName={assigneeName}
+                  />
+                ));
+              }
+
+              return [
                 <HabitCard
                   key={h.id}
                   habit={h}
                   done={completions[h.id]?.includes(selectedKey) ?? false}
                   onToggle={() => toggleCompletion(h.id, selectedKey)}
-                  goalBadge={
-                    goal
-                      ? {
-                          current: goalProgress(goal, completions),
-                          target: goal.targetCount ?? 0,
-                          unitLabel: goal.unitLabel,
-                        }
-                      : undefined
-                  }
-                  assigneeName={memberName(householdMembers, h.assignedTo)}
-                />
-              );
+                  goalBadge={goalBadge}
+                  assigneeName={assigneeName}
+                />,
+              ];
             })}
           </div>
         )}

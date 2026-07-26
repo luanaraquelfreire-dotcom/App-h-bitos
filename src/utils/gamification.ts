@@ -3,17 +3,38 @@ import type { CompletionMap, Goal, Habit } from "../types";
 import { toDateKey } from "./date";
 
 export const XP_PER_COMPLETION = 10;
+export const XP_PER_TIME_SLOT = 4;
 export const XP_PER_PROCRASTINATED_TASK = 20;
 
-export function totalCompletions(completions: CompletionMap): number {
-  return Object.values(completions).reduce((sum, dates) => sum + dates.length, 0);
+/** Entradas de conclusão "de horário" (hábitos com múltiplos horários) usam a chave "data::horário". */
+function isTimeSlotEntry(entry: string): boolean {
+  return entry.includes("::");
 }
 
-export function calcXp(completions: CompletionMap, completedTasksCount = 0): number {
-  return (
-    totalCompletions(completions) * XP_PER_COMPLETION +
-    completedTasksCount * XP_PER_PROCRASTINATED_TASK
+export function totalCompletions(completions: CompletionMap): number {
+  return Object.values(completions).reduce(
+    (sum, entries) => sum + entries.filter((e) => !isTimeSlotEntry(e)).length,
+    0,
   );
+}
+
+export function calcXp(habits: Habit[], completions: CompletionMap, completedTasksCount = 0): number {
+  const multiTimeIds = new Set(
+    habits.filter((h) => h.times && h.times.length > 0).map((h) => h.id),
+  );
+
+  let habitsXp = 0;
+  for (const [habitId, entries] of Object.entries(completions)) {
+    if (multiTimeIds.has(habitId)) {
+      for (const entry of entries) {
+        habitsXp += isTimeSlotEntry(entry) ? XP_PER_TIME_SLOT : XP_PER_COMPLETION;
+      }
+    } else {
+      habitsXp += entries.length * XP_PER_COMPLETION;
+    }
+  }
+
+  return habitsXp + completedTasksCount * XP_PER_PROCRASTINATED_TASK;
 }
 
 /** Nível cresce progressivamente: cada nível exige mais XP que o anterior. */
@@ -131,7 +152,8 @@ export function dayCompletionRatio(habits: Habit[], completions: CompletionMap, 
 
 export function goalProgress(goal: Goal, completions: CompletionMap): number {
   if (goal.type !== "progress" || !goal.linkedHabitId) return 0;
-  return completions[goal.linkedHabitId]?.length ?? 0;
+  const entries = completions[goal.linkedHabitId] ?? [];
+  return entries.filter((e) => !isTimeSlotEntry(e)).length;
 }
 
 export function goalForHabit(goals: Goal[], habitId: string): Goal | undefined {

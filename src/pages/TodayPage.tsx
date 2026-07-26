@@ -18,6 +18,7 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const goals = useHabitStore((s) => s.goals);
   const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
+  const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const addHabit = useHabitStore((s) => s.addHabit);
   const [showAdd, setShowAdd] = useState(false);
 
@@ -69,26 +70,40 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
       )}
 
       <div className="space-y-2.5">
-        {todayHabits.map((h) => {
+        {todayHabits.flatMap((h) => {
           const goal = goalForHabit(goals, h.id);
-          return (
+          const goalBadge = goal
+            ? {
+                current: goalProgress(goal, completions),
+                target: goal.targetCount ?? 0,
+                unitLabel: goal.unitLabel,
+              }
+            : undefined;
+          const assigneeName = memberName(householdMembers, h.assignedTo);
+
+          if (h.times && h.times.length > 0) {
+            return h.times.map((t) => (
+              <HabitCard
+                key={`${h.id}-${t}`}
+                habit={{ ...h, time: t }}
+                done={completions[h.id]?.includes(`${key}::${t}`) ?? false}
+                onToggle={() => toggleHabitTime(h.id, key, t)}
+                goalBadge={goalBadge}
+                assigneeName={assigneeName}
+              />
+            ));
+          }
+
+          return [
             <HabitCard
               key={h.id}
               habit={h}
               done={completions[h.id]?.includes(key) ?? false}
               onToggle={() => toggleCompletion(h.id, key)}
-              goalBadge={
-                goal
-                  ? {
-                      current: goalProgress(goal, completions),
-                      target: goal.targetCount ?? 0,
-                      unitLabel: goal.unitLabel,
-                    }
-                  : undefined
-              }
-              assigneeName={memberName(householdMembers, h.assignedTo)}
-            />
-          );
+              goalBadge={goalBadge}
+              assigneeName={assigneeName}
+            />,
+          ];
         })}
       </div>
 

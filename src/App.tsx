@@ -11,6 +11,13 @@ import { useHabitStore } from "./store/useHabitStore";
 import { calcXp, currentStreak } from "./utils/gamification";
 
 const ROUTINE_SEED_FLAG = "habitos-app-routine-seeded-v1";
+const MULTI_TIME_SEED_FLAG = "habitos-app-multitime-seeded-v1";
+
+/** Horários padrão sugeridos para hábitos que se repetem várias vezes ao dia. */
+const MULTI_TIME_DEFAULTS: Record<string, string[]> = {
+  "beber água (protocolo)": ["08:00", "11:00", "14:00", "17:00", "20:00"],
+  "pausa de 5 min a cada hora": ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00", "17:00"],
+};
 
 const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
 const WEEKDAYS = [1, 2, 3, 4, 5];
@@ -37,6 +44,7 @@ function App() {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const addHabit = useHabitStore((s) => s.addHabit);
+  const updateHabit = useHabitStore((s) => s.updateHabit);
 
   useEffect(() => {
     if (!localStorage.getItem(ROUTINE_SEED_FLAG)) {
@@ -51,8 +59,22 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!localStorage.getItem(MULTI_TIME_SEED_FLAG)) {
+      localStorage.setItem(MULTI_TIME_SEED_FLAG, "1");
+      const currentHabits = useHabitStore.getState().habits;
+      currentHabits.forEach((h) => {
+        const defaults = MULTI_TIME_DEFAULTS[h.name.trim().toLowerCase()];
+        if (defaults && (!h.times || h.times.length === 0)) {
+          updateHabit(h.id, { times: defaults, time: undefined });
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
-  const xp = calcXp(completions, completedTasksCount);
+  const xp = calcXp(habits, completions, completedTasksCount);
   const streak = currentStreak(habits, completions);
 
   return (

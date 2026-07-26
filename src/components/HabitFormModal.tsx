@@ -14,6 +14,7 @@ interface HabitFormModalProps {
     color: HabitColor;
     daysOfWeek: number[];
     time?: string;
+    times?: string[];
     assignedTo?: string;
   }) => void;
   onDelete?: () => void;
@@ -32,7 +33,13 @@ export default function HabitFormModal({
   const [emoji, setEmoji] = useState(initial?.emoji ?? HABIT_EMOJIS[0]);
   const [color, setColor] = useState<HabitColor>(initial?.color ?? "green");
   const [daysOfWeek, setDaysOfWeek] = useState<number[]>(initial?.daysOfWeek ?? ALL_DAYS);
-  const [time, setTime] = useState(initial?.time ?? "");
+  const [times, setTimes] = useState<string[]>(
+    initial?.times && initial.times.length > 0
+      ? initial.times
+      : initial?.time
+        ? [initial.time]
+        : [""],
+  );
   const [assignedTo, setAssignedTo] = useState(initial?.assignedTo ?? "");
 
   const canSave = name.trim().length > 0 && daysOfWeek.length > 0;
@@ -43,14 +50,28 @@ export default function HabitFormModal({
     );
   }
 
+  function updateTimeAt(index: number, value: string) {
+    setTimes((prev) => prev.map((t, i) => (i === index ? value : t)));
+  }
+
+  function addTimeSlot() {
+    setTimes((prev) => [...prev, ""]);
+  }
+
+  function removeTimeSlot(index: number) {
+    setTimes((prev) => prev.filter((_, i) => i !== index));
+  }
+
   function handleSave() {
     if (!canSave) return;
+    const filledTimes = times.map((t) => t.trim()).filter(Boolean);
     onSave({
       name: name.trim(),
       emoji,
       color,
       daysOfWeek,
-      time: time || undefined,
+      time: filledTimes.length === 1 ? filledTimes[0] : undefined,
+      times: filledTimes.length > 1 ? filledTimes : undefined,
       assignedTo: assignedTo || undefined,
     });
   }
@@ -111,14 +132,38 @@ export default function HabitFormModal({
         </div>
 
         <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
-          Horário (opcional)
+          Horários (opcional)
         </label>
-        <input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
-        />
+        <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
+          Adicione mais de um horário se o hábito se repete ao longo do dia (ex: beber água).
+        </p>
+        <div className="mb-2 space-y-2">
+          {times.map((t, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <input
+                type="time"
+                value={t}
+                onChange={(e) => updateTimeAt(i, e.target.value)}
+                className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+              />
+              {times.length > 1 && (
+                <button
+                  onClick={() => removeTimeSlot(i)}
+                  aria-label="Remover horário"
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={addTimeSlot}
+          className="mb-4 text-sm font-extrabold text-duo-blue-dark"
+        >
+          + Adicionar horário
+        </button>
 
         {householdMembers.length > 0 && (
           <>

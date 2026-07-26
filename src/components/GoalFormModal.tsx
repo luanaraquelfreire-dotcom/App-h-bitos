@@ -24,6 +24,7 @@ interface GoalFormModalProps {
     color: HabitColor;
     daysOfWeek: number[];
     time?: string;
+    times?: string[];
     assignedTo?: string;
   }) => string;
 }

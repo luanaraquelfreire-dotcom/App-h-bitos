@@ -33,6 +33,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
     color: HabitColor;
     daysOfWeek: number[];
     time?: string;
+    times?: string[];
     assignedTo?: string;
   }): string {
     addHabit(data);

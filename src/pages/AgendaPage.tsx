@@ -97,6 +97,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
+  const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const chores = useHabitStore((s) => s.chores);
   const markChoreDone = useHabitStore((s) => s.markChoreDone);
   const goals = useHabitStore((s) => s.goals);
@@ -114,16 +115,33 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
   const scheduledGoals = goals.filter((g) => g.type === "single" && g.scheduledDate === dateKey);
   const scheduledStudy = studyItemsScheduledOn(studyItems, selected);
 
+  const habitItems: AgendaItem[] = scheduledHabits.flatMap((h) => {
+    if (h.times && h.times.length > 0) {
+      return h.times.map((t) => ({
+        id: `habit-${h.id}-${t}`,
+        name: h.name,
+        emoji: h.emoji,
+        time: t,
+        done: completions[h.id]?.includes(`${dateKey}::${t}`) ?? false,
+        colors: COLOR_MAP[h.color],
+        onToggle: () => toggleHabitTime(h.id, dateKey, t),
+      }));
+    }
+    return [
+      {
+        id: `habit-${h.id}`,
+        name: h.name,
+        emoji: h.emoji,
+        time: h.time,
+        done: completions[h.id]?.includes(dateKey) ?? false,
+        colors: COLOR_MAP[h.color],
+        onToggle: () => toggleCompletion(h.id, dateKey),
+      },
+    ];
+  });
+
   const allItems: AgendaItem[] = [
-    ...scheduledHabits.map((h) => ({
-      id: `habit-${h.id}`,
-      name: h.name,
-      emoji: h.emoji,
-      time: h.time,
-      done: completions[h.id]?.includes(dateKey) ?? false,
-      colors: COLOR_MAP[h.color],
-      onToggle: () => toggleCompletion(h.id, dateKey),
-    })),
+    ...habitItems,
     ...dueChores.map((c) => ({
       id: `chore-${c.id}`,
       name: c.name,

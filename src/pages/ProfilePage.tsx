@@ -24,7 +24,7 @@ export default function ProfilePage() {
   const completions = useHabitStore((s) => s.completions);
   const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
 
-  const xp = calcXp(completions, completedTasksCount);
+  const xp = calcXp(habits, completions, completedTasksCount);
   const { level, xpIntoLevel, xpForNextLevel } = levelFromXp(xp);
   const streak = currentStreak(habits, completions);
   const best = longestStreak(habits, completions);
