@@ -12,6 +12,7 @@ interface ChoreFormModalProps {
     emoji: string;
     intervalDays: number;
     assignedTo?: string;
+    time?: string;
   }) => void;
   onDelete?: () => void;
 }
@@ -27,6 +28,7 @@ export default function ChoreFormModal({
   const [emoji, setEmoji] = useState(initial?.emoji ?? CHORE_EMOJIS[0]);
   const [intervalDays, setIntervalDays] = useState(initial?.intervalDays?.toString() ?? "7");
   const [assignedTo, setAssignedTo] = useState(initial?.assignedTo ?? "");
+  const [time, setTime] = useState(initial?.time ?? "");
 
   const canSave = name.trim().length > 0 && Number(intervalDays) > 0;
 
@@ -37,6 +39,7 @@ export default function ChoreFormModal({
       emoji,
       intervalDays: Number(intervalDays),
       assignedTo: assignedTo || undefined,
+      time: time || undefined,
     });
   }
 
@@ -109,6 +112,19 @@ export default function ChoreFormModal({
           />
           <span className="text-sm font-semibold text-duo-gray-dark">dias</span>
         </div>
+
+        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          Horário (opcional)
+        </label>
+        <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
+          Define um horário pra essa tarefa aparecer na agenda do dia, quando estiver vencida.
+        </p>
+        <input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          className="mb-6 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+        />
 
         {householdMembers.length > 0 && (
           <>

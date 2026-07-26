@@ -9,15 +9,24 @@ export interface ChoreStatus {
   urgency: ChoreUrgency;
 }
 
-export function choreStatus(chore: Chore): ChoreStatus {
+export function choreStatusOn(chore: Chore, reference: Date): ChoreStatus {
   if (!chore.lastDoneAt) {
     return { daysSinceLastDone: null, daysUntilDue: 0, urgency: "never" };
   }
-  const daysSinceLastDone = differenceInCalendarDays(new Date(), parseISO(chore.lastDoneAt));
+  const daysSinceLastDone = differenceInCalendarDays(reference, parseISO(chore.lastDoneAt));
   const daysUntilDue = chore.intervalDays - daysSinceLastDone;
   const urgency: ChoreUrgency =
     daysUntilDue < 0 ? "overdue" : daysUntilDue === 0 ? "dueToday" : "upcoming";
   return { daysSinceLastDone, daysUntilDue, urgency };
+}
+
+export function choreStatus(chore: Chore): ChoreStatus {
+  return choreStatusOn(chore, new Date());
+}
+
+/** Se a tarefa está vencida ou a vencer hoje, tomando como referência a data informada. */
+export function isChoreDueOn(chore: Chore, reference: Date): boolean {
+  return choreStatusOn(chore, reference).urgency !== "upcoming";
 }
 
 const URGENCY_ORDER: Record<ChoreUrgency, number> = {

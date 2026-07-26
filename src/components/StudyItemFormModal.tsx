@@ -1,6 +1,7 @@
 import { Trash2, X } from "lucide-react";
 import { useState } from "react";
 import type { StudyItem, StudyStatus, StudyType } from "../types";
+import { DAY_LABELS } from "../utils/date";
 import { STUDY_EMOJIS, STUDY_STATUS_LABELS, STUDY_TYPE_LABELS } from "../utils/study";
 
 interface StudyItemFormModalProps {
@@ -13,6 +14,8 @@ interface StudyItemFormModalProps {
     status: StudyStatus;
     targetDaysPerWeek?: number;
     targetHoursPerWeek?: number;
+    daysOfWeek?: number[];
+    time?: string;
   }) => void;
   onDelete?: () => void;
 }
@@ -32,8 +35,16 @@ export default function StudyItemFormModal({
   const [status, setStatus] = useState<StudyStatus>(initial?.status ?? "in_progress");
   const [targetDays, setTargetDays] = useState(initial?.targetDaysPerWeek?.toString() ?? "");
   const [targetHours, setTargetHours] = useState(initial?.targetHoursPerWeek?.toString() ?? "");
+  const [daysOfWeek, setDaysOfWeek] = useState<number[]>(initial?.daysOfWeek ?? []);
+  const [time, setTime] = useState(initial?.time ?? "");
 
   const canSave = title.trim().length > 0;
+
+  function toggleDay(day: number) {
+    setDaysOfWeek((prev) =>
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day].sort(),
+    );
+  }
 
   function handleSave() {
     if (!canSave) return;
@@ -44,6 +55,8 @@ export default function StudyItemFormModal({
       status,
       targetDaysPerWeek: targetDays ? Number(targetDays) : undefined,
       targetHoursPerWeek: targetHours ? Number(targetHours) : undefined,
+      daysOfWeek: daysOfWeek.length > 0 ? daysOfWeek : undefined,
+      time: time || undefined,
     });
   }
 
@@ -160,6 +173,34 @@ export default function StudyItemFormModal({
             </span>
           </div>
         </div>
+
+        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          Agendar na semana (opcional)
+        </label>
+        <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
+          Escolha os dias e um horário pra esse item aparecer na agenda do dia.
+        </p>
+        <div className="mb-3 flex gap-1.5">
+          {DAY_LABELS.map((label, i) => (
+            <button
+              key={i}
+              onClick={() => toggleDay(i)}
+              className={`grid h-10 w-10 place-items-center rounded-full border-2 text-sm font-extrabold ${
+                daysOfWeek.includes(i)
+                  ? "border-duo-blue-dark bg-duo-blue text-white"
+                  : "border-duo-gray bg-white text-duo-gray-dark"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          className="mb-6 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+        />
 
         <button
           onClick={handleSave}

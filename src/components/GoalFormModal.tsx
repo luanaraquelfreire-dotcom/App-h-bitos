@@ -14,6 +14,8 @@ interface GoalFormModalProps {
     targetCount?: number;
     unitLabel?: string;
     linkedHabitId?: string;
+    scheduledDate?: string;
+    time?: string;
   }) => void;
   onDelete?: () => void;
   onCreateHabit: (data: {
@@ -41,6 +43,8 @@ export default function GoalFormModal({
   const [unitLabel, setUnitLabel] = useState(initial?.unitLabel ?? "vezes");
   const [linkedHabitId, setLinkedHabitId] = useState(initial?.linkedHabitId ?? "");
   const [showHabitCreator, setShowHabitCreator] = useState(false);
+  const [scheduledDate, setScheduledDate] = useState(initial?.scheduledDate ?? "");
+  const [time, setTime] = useState(initial?.time ?? "");
 
   const canSave =
     title.trim().length > 0 &&
@@ -54,6 +58,8 @@ export default function GoalFormModal({
       targetCount: type === "progress" ? Number(targetCount) : undefined,
       unitLabel: type === "progress" ? unitLabel.trim() || "vezes" : undefined,
       linkedHabitId: type === "progress" ? linkedHabitId : undefined,
+      scheduledDate: type === "single" ? scheduledDate || undefined : undefined,
+      time: type === "single" ? time || undefined : undefined,
     });
   }
 
@@ -111,10 +117,30 @@ export default function GoalFormModal({
           </div>
 
           {type === "single" ? (
-            <p className="mb-4 text-xs font-semibold text-duo-gray-dark">
-              Uma meta pontual: você marca como concluída quando resolver, sem hábito
-              vinculado.
-            </p>
+            <>
+              <p className="mb-4 text-xs font-semibold text-duo-gray-dark">
+                Uma meta pontual: você marca como concluída quando resolver, sem hábito
+                vinculado.
+              </p>
+
+              <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+                Agendar no calendário (opcional)
+              </label>
+              <div className="mb-6 flex gap-2">
+                <input
+                  type="date"
+                  value={scheduledDate}
+                  onChange={(e) => setScheduledDate(e.target.value)}
+                  className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                />
+                <input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="w-32 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                />
+              </div>
+            </>
           ) : (
             <>
               <p className="mb-3 text-xs font-semibold text-duo-gray-dark">

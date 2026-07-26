@@ -31,3 +31,14 @@ export function weeklyStudyProgress(item: StudyItem, reference: Date): WeeklyStu
   const minutesStudied = sessionsThisWeek.reduce((sum, s) => sum + s.minutes, 0);
   return { daysStudied, hoursStudied: minutesStudied / 60 };
 }
+
+/** Itens de estudo agendados (dia da semana) para a data informada. */
+export function studyItemsScheduledOn(items: StudyItem[], date: Date): StudyItem[] {
+  const weekday = date.getDay();
+  return items.filter((i) => i.daysOfWeek?.includes(weekday));
+}
+
+/** Se já houve alguma sessão de estudo registrada nesse item na data informada. */
+export function studyDoneOn(item: StudyItem, dateKey: string): boolean {
+  return item.sessions.some((s) => s.date === dateKey);
+}

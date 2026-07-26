@@ -38,6 +38,10 @@ export interface Goal {
   createdAt: string; // ISO date (yyyy-MM-dd)
   /** usado apenas em metas do tipo "single" */
   done: boolean;
+  /** usado apenas em metas do tipo "single": data escolhida para fazer, yyyy-MM-dd (opcional) */
+  scheduledDate?: string;
+  /** usado apenas em metas do tipo "single", junto de scheduledDate */
+  time?: string;
   /** usado apenas em metas do tipo "progress" */
   targetCount?: number;
   unitLabel?: string;
@@ -96,6 +100,8 @@ export interface Chore {
   createdAt: string;
   /** id de HouseholdMember responsável (opcional) */
   assignedTo?: string;
+  /** horário programado, formato "HH:mm" (opcional), para aparecer na agenda do dia */
+  time?: string;
 }
 
 export type StudyType = "course" | "reading" | "language";
@@ -125,6 +131,10 @@ export interface StudyItem {
   targetDaysPerWeek?: number;
   targetHoursPerWeek?: number;
   createdAt: string;
+  /** dias da semana para aparecer na agenda do dia (0 = domingo ... 6 = sábado), opcional */
+  daysOfWeek?: number[];
+  /** horário programado, formato "HH:mm" (opcional), junto de daysOfWeek */
+  time?: string;
 }
 
 export interface HabitState {

@@ -1,6 +1,6 @@
 import type { HabitColor } from "../types";
 
-interface ColorSet {
+export interface ColorSet {
   bg: string;
   bgSoft: string;
   border: string;
