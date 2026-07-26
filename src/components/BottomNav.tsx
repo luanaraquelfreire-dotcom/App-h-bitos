@@ -12,7 +12,7 @@ const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "week", label: "Semana", icon: CalendarDays },
   { id: "month", label: "Mês", icon: CalendarRange },
   { id: "habits", label: "Hábitos", icon: ListChecks },
-  { id: "tasks", label: "Sorteio", icon: Dices },
+  { id: "tasks", label: "Procrastinação", icon: Dices },
   { id: "profile", label: "Perfil", icon: User },
 ];
 
@@ -25,7 +25,7 @@ export default function BottomNav({ active, onChange }: BottomNavProps) {
           <button
             key={id}
             onClick={() => onChange(id)}
-            className={`flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[11px] font-bold transition-colors ${
+            className={`flex flex-1 flex-col items-center gap-0.5 px-0.5 py-2.5 text-center text-[10px] font-bold leading-tight transition-colors ${
               isActive ? "text-duo-blue-dark" : "text-duo-gray-dark"
             }`}
           >

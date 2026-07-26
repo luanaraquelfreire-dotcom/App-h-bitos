@@ -43,7 +43,7 @@ export default function TasksPage() {
 
   return (
     <div className="px-4 py-4">
-      <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Sorteio de tarefas</h1>
+      <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Procrastinação</h1>
       <p className="mb-1 text-sm font-semibold text-duo-gray-dark">
         Cadastre o que você anda procrastinando e deixe o sorteio escolher por você.
       </p>
