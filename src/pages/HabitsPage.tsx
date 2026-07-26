@@ -33,6 +33,7 @@ export default function HabitsPage() {
               h.daysOfWeek.length === 7
                 ? "Todos os dias"
                 : h.daysOfWeek.map((d) => DAY_LABELS[d]).join(" ");
+            const detailLabel = h.time ? `${h.time} · ${daysLabel}` : daysLabel;
             return (
               <button
                 key={h.id}
@@ -44,7 +45,7 @@ export default function HabitsPage() {
                 </span>
                 <span className="flex-1">
                   <span className="block font-bold text-duo-text">{h.name}</span>
-                  <span className="block text-xs font-semibold text-duo-gray-dark">{daysLabel}</span>
+                  <span className="block text-xs font-semibold text-duo-gray-dark">{detailLabel}</span>
                 </span>
               </button>
             );

@@ -21,8 +21,13 @@ export default function HabitCard({ habit, done, onToggle }: HabitCardProps) {
       <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-xl ${colors.bgSoft}`}>
         {habit.emoji}
       </span>
-      <span className={`flex-1 font-bold ${done ? "text-duo-gray-dark line-through" : "text-duo-text"}`}>
-        {habit.name}
+      <span className="flex-1">
+        <span className={`block font-bold ${done ? "text-duo-gray-dark line-through" : "text-duo-text"}`}>
+          {habit.name}
+        </span>
+        {habit.time && (
+          <span className="block text-xs font-semibold text-duo-gray-dark">{habit.time}</span>
+        )}
       </span>
       <span
         className={`duo-btn grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 ${

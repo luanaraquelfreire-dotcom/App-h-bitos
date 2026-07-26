@@ -17,7 +17,9 @@ export default function TodayPage() {
   const key = todayKey();
   const weekday = today.getDay();
 
-  const todayHabits = habits.filter((h) => !h.archived && h.daysOfWeek.includes(weekday));
+  const todayHabits = habits
+    .filter((h) => !h.archived && h.daysOfWeek.includes(weekday))
+    .sort((a, b) => (a.time ?? "99:99").localeCompare(b.time ?? "99:99"));
   const doneCount = todayHabits.filter((h) => completions[h.id]?.includes(key)).length;
   const allDone = todayHabits.length > 0 && doneCount === todayHabits.length;
   const ratio = todayHabits.length > 0 ? doneCount / todayHabits.length : 0;

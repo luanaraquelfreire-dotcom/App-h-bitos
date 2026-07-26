@@ -9,6 +9,8 @@ export interface Habit {
   daysOfWeek: number[];
   createdAt: string; // ISO date (yyyy-MM-dd)
   archived: boolean;
+  /** horário programado, formato "HH:mm" (opcional) */
+  time?: string;
 }
 
 /** habitId -> array de datas (yyyy-MM-dd) em que o hábito foi concluído */

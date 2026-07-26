@@ -9,13 +9,26 @@ import WeekPage from "./pages/WeekPage";
 import { useHabitStore } from "./store/useHabitStore";
 import { calcXp, currentStreak } from "./utils/gamification";
 
-const SEED_FLAG = "habitos-app-seeded";
+const ROUTINE_SEED_FLAG = "habitos-app-routine-seeded-v1";
 
-const SEED_HABITS = [
-  { name: "Beber água", emoji: "💧", color: "blue" as const, daysOfWeek: [0, 1, 2, 3, 4, 5, 6] },
-  { name: "Exercitar-se", emoji: "🏃", color: "green" as const, daysOfWeek: [1, 3, 5] },
-  { name: "Ler 10 páginas", emoji: "📚", color: "purple" as const, daysOfWeek: [0, 1, 2, 3, 4, 5, 6] },
-  { name: "Meditar", emoji: "🧘", color: "yellow" as const, daysOfWeek: [1, 2, 3, 4, 5] },
+const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
+const WEEKDAYS = [1, 2, 3, 4, 5];
+
+/** Rotina extraída de "Rotina em construção": sono, água, alimentação, casa e leitura. */
+const ROUTINE_HABITS = [
+  { name: "Acordar com luz natural", emoji: "☀️", color: "yellow" as const, daysOfWeek: ALL_DAYS, time: "07:00" },
+  { name: "Movimento leve", emoji: "🏃", color: "green" as const, daysOfWeek: [1, 3, 5], time: "07:10" },
+  { name: "Café da manhã sentada, sem tela", emoji: "🍎", color: "yellow" as const, daysOfWeek: ALL_DAYS, time: "07:30" },
+  { name: "Beber água (protocolo)", emoji: "💧", color: "blue" as const, daysOfWeek: ALL_DAYS },
+  { name: "Pausa de 5 min a cada hora", emoji: "🚶", color: "blue" as const, daysOfWeek: WEEKDAYS },
+  { name: "Organizar a casa (20 min)", emoji: "🧹", color: "purple" as const, daysOfWeek: ALL_DAYS },
+  { name: "Lista de tarefas pendentes", emoji: "📝", color: "purple" as const, daysOfWeek: ALL_DAYS, time: "22:15" },
+  { name: "Banho e cuidados pessoais", emoji: "🚿", color: "blue" as const, daysOfWeek: ALL_DAYS, time: "22:30" },
+  { name: "Celular fora do quarto", emoji: "📵", color: "red" as const, daysOfWeek: ALL_DAYS, time: "23:00" },
+  { name: "Leitura (15 min)", emoji: "📚", color: "purple" as const, daysOfWeek: ALL_DAYS, time: "23:00" },
+  { name: "Deitar", emoji: "😴", color: "green" as const, daysOfWeek: ALL_DAYS, time: "23:15" },
+  { name: "Preparo de refeições da semana", emoji: "🍲", color: "green" as const, daysOfWeek: [0] },
+  { name: "Reset de quarta (arroz e proteína)", emoji: "🍳", color: "yellow" as const, daysOfWeek: [3] },
 ];
 
 function App() {
@@ -25,11 +38,14 @@ function App() {
   const addHabit = useHabitStore((s) => s.addHabit);
 
   useEffect(() => {
-    if (!localStorage.getItem(SEED_FLAG)) {
-      localStorage.setItem(SEED_FLAG, "1");
-      if (habits.length === 0) {
-        SEED_HABITS.forEach((h) => addHabit(h));
-      }
+    if (!localStorage.getItem(ROUTINE_SEED_FLAG)) {
+      localStorage.setItem(ROUTINE_SEED_FLAG, "1");
+      const existingNames = new Set(habits.map((h) => h.name.trim().toLowerCase()));
+      ROUTINE_HABITS.forEach((h) => {
+        if (!existingNames.has(h.name.toLowerCase())) {
+          addHabit(h);
+        }
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

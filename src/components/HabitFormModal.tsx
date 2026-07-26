@@ -7,7 +7,13 @@ import { DAY_LABELS } from "../utils/date";
 interface HabitFormModalProps {
   initial?: Habit;
   onClose: () => void;
-  onSave: (data: { name: string; emoji: string; color: HabitColor; daysOfWeek: number[] }) => void;
+  onSave: (data: {
+    name: string;
+    emoji: string;
+    color: HabitColor;
+    daysOfWeek: number[];
+    time?: string;
+  }) => void;
   onDelete?: () => void;
 }
 
@@ -18,6 +24,7 @@ export default function HabitFormModal({ initial, onClose, onSave, onDelete }: H
   const [emoji, setEmoji] = useState(initial?.emoji ?? HABIT_EMOJIS[0]);
   const [color, setColor] = useState<HabitColor>(initial?.color ?? "green");
   const [daysOfWeek, setDaysOfWeek] = useState<number[]>(initial?.daysOfWeek ?? ALL_DAYS);
+  const [time, setTime] = useState(initial?.time ?? "");
 
   const canSave = name.trim().length > 0 && daysOfWeek.length > 0;
 
@@ -29,7 +36,7 @@ export default function HabitFormModal({ initial, onClose, onSave, onDelete }: H
 
   function handleSave() {
     if (!canSave) return;
-    onSave({ name: name.trim(), emoji, color, daysOfWeek });
+    onSave({ name: name.trim(), emoji, color, daysOfWeek, time: time || undefined });
   }
 
   return (
@@ -86,6 +93,16 @@ export default function HabitFormModal({ initial, onClose, onSave, onDelete }: H
             />
           ))}
         </div>
+
+        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          Horário (opcional)
+        </label>
+        <input
+          type="time"
+          value={time}
+          onChange={(e) => setTime(e.target.value)}
+          className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+        />
 
         <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
           Repetir nos dias

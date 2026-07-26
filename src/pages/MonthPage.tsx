@@ -34,9 +34,9 @@ export default function MonthPage() {
 
   const selectedKey = toDateKey(selected);
   const selectedWeekday = selected.getDay();
-  const selectedHabits = activeHabits.filter(
-    (h) => h.daysOfWeek.includes(selectedWeekday) && h.createdAt <= selectedKey,
-  );
+  const selectedHabits = activeHabits
+    .filter((h) => h.daysOfWeek.includes(selectedWeekday) && h.createdAt <= selectedKey)
+    .sort((a, b) => (a.time ?? "99:99").localeCompare(b.time ?? "99:99"));
 
   return (
     <div className="px-4 py-4">
