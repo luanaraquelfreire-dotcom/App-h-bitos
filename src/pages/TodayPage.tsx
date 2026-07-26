@@ -8,7 +8,11 @@ import { formatLong, todayKey } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
 import { memberName } from "../utils/household";
 
-export default function TodayPage() {
+interface TodayPageProps {
+  embedded?: boolean;
+}
+
+export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const goals = useHabitStore((s) => s.goals);
@@ -29,9 +33,11 @@ export default function TodayPage() {
   const ratio = todayHabits.length > 0 ? doneCount / todayHabits.length : 0;
 
   return (
-    <div className="px-4 py-4">
-      <p className="mb-1 text-sm font-bold capitalize text-duo-gray-dark">{formatLong(today)}</p>
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meta de hoje</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      <p className={`text-sm font-bold capitalize text-duo-gray-dark ${embedded ? "mb-4" : "mb-1"}`}>
+        {formatLong(today)}
+      </p>
+      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meta de hoje</h1>}
 
       {todayHabits.length > 0 && (
         <div className="mb-5">

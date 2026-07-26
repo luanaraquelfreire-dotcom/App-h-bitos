@@ -7,7 +7,6 @@ import FoodPage from "./pages/FoodPage";
 import ProfilePage from "./pages/ProfilePage";
 import RoutinePage from "./pages/RoutinePage";
 import TasksPage from "./pages/TasksPage";
-import TodayPage from "./pages/TodayPage";
 import { useHabitStore } from "./store/useHabitStore";
 import { calcXp, currentStreak } from "./utils/gamification";
 
@@ -34,7 +33,7 @@ const ROUTINE_HABITS = [
 ];
 
 function App() {
-  const [tab, setTab] = useState<Tab>("today");
+  const [tab, setTab] = useState<Tab>("calendar");
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const addHabit = useHabitStore((s) => s.addHabit);
@@ -60,7 +59,6 @@ function App() {
     <div className="mx-auto flex min-h-screen max-w-md flex-col bg-[#fbfbfb]">
       <TopBar streak={streak} xp={xp} />
       <main className="flex-1 pb-6">
-        {tab === "today" && <TodayPage />}
         {tab === "calendar" && <CalendarPage />}
         {tab === "habits" && <RoutinePage />}
         {tab === "food" && <FoodPage />}

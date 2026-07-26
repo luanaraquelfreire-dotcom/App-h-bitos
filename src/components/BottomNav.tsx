@@ -2,21 +2,19 @@ import {
   CalendarClock,
   Dices,
   ListChecks,
-  Sun,
   User,
   UtensilsCrossed,
   Wallet,
 } from "lucide-react";
 
-export type Tab = "today" | "calendar" | "habits" | "tasks" | "food" | "finance" | "profile";
+export type Tab = "calendar" | "habits" | "tasks" | "food" | "finance" | "profile";
 
 interface BottomNavProps {
   active: Tab;
   onChange: (tab: Tab) => void;
 }
 
-const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
-  { id: "today", label: "Hoje", icon: Sun },
+const ITEMS: { id: Tab; label: string; icon: typeof CalendarClock }[] = [
   { id: "calendar", label: "Calendário", icon: CalendarClock },
   { id: "habits", label: "Hábitos", icon: ListChecks },
   { id: "food", label: "Alimentação", icon: UtensilsCrossed },
