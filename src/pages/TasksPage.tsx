@@ -1,4 +1,4 @@
-import { Check, Dices, PartyPopper, Plus, Shuffle, X } from "lucide-react";
+import { Check, Dices, Eye, EyeOff, PartyPopper, Plus, Shuffle, X } from "lucide-react";
 import { useState } from "react";
 import { useHabitStore } from "../store/useHabitStore";
 
@@ -17,6 +17,7 @@ export default function TasksPage() {
   const [newTaskText, setNewTaskText] = useState("");
   const [spinning, setSpinning] = useState(false);
   const [spinText, setSpinText] = useState("");
+  const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
 
   const drawnTask = tasks.find((t) => t.id === drawnTaskId) ?? null;
 
@@ -24,6 +25,15 @@ export default function TasksPage() {
     if (!newTaskText.trim()) return;
     addTask(newTaskText);
     setNewTaskText("");
+  }
+
+  function toggleReveal(id: string) {
+    setRevealedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
   function handleDraw() {
@@ -115,24 +125,46 @@ export default function TasksPage() {
         </div>
       ) : (
         <>
+          <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
+            As tarefas ficam ocultas. Toque em cada uma para revelar o que é.
+          </p>
           <div className="mb-5 space-y-2.5">
-            {tasks.map((t) => (
-              <div
-                key={t.id}
-                className={`duo-card flex items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 ${
-                  t.id === drawnTaskId ? "ring-2 ring-duo-purple" : ""
-                }`}
-              >
-                <span className="flex-1 font-bold text-duo-text">{t.text}</span>
-                <button
-                  onClick={() => removeTask(t.id)}
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-                  aria-label="Remover tarefa"
+            {tasks.map((t) => {
+              const isRevealed = revealedIds.has(t.id);
+              return (
+                <div
+                  key={t.id}
+                  className={`duo-card flex items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 ${
+                    t.id === drawnTaskId ? "ring-2 ring-duo-purple" : ""
+                  }`}
                 >
-                  <X size={18} />
-                </button>
-              </div>
-            ))}
+                  <button
+                    onClick={() => toggleReveal(t.id)}
+                    className="flex flex-1 items-center gap-2 text-left"
+                  >
+                    {isRevealed ? (
+                      <Eye size={16} className="shrink-0 text-duo-gray-dark" />
+                    ) : (
+                      <EyeOff size={16} className="shrink-0 text-duo-gray-dark" />
+                    )}
+                    <span
+                      className={`font-bold ${
+                        isRevealed ? "text-duo-text" : "italic text-duo-gray-dark"
+                      }`}
+                    >
+                      {isRevealed ? t.text : "Tarefa oculta · toque para ver"}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => removeTask(t.id)}
+                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
+                    aria-label="Remover tarefa"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           <button
