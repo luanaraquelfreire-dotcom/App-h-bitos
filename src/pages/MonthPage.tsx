@@ -48,7 +48,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Mês</h1>}
+      {!embedded && <h1 className="mb-4 text-2xl font-semibold text-duo-text">Mês</h1>}
 
       <div className="mb-4 flex items-center justify-between">
         <button
@@ -57,7 +57,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
         >
           <ChevronLeft size={20} />
         </button>
-        <span className="font-extrabold text-duo-text">{formatMonthYear(reference)}</span>
+        <span className="font-semibold text-duo-text">{formatMonthYear(reference)}</span>
         <button
           onClick={() => setReference((r) => nextMonth(r))}
           className="grid h-9 w-9 place-items-center rounded-full bg-duo-gray/60 text-duo-text"
@@ -66,7 +66,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
         </button>
       </div>
 
-      <div className="mb-1 grid grid-cols-7 text-center text-xs font-bold text-duo-gray-dark">
+      <div className="mb-1 grid grid-cols-7 text-center text-xs font-medium text-duo-gray-dark">
         {DAY_LABELS.map((l, i) => (
           <div key={i}>{l}</div>
         ))}
@@ -81,7 +81,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
             <button
               key={i}
               onClick={() => setSelected(d)}
-              className={`relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm font-bold ${
+              className={`relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm font-medium ${
                 inMonth ? "text-duo-text" : "text-duo-gray-dark/50"
               } ${isSelected ? "ring-2 ring-duo-blue" : ""} ${isToday(d) ? "bg-duo-blue/10" : ""}`}
             >
@@ -105,7 +105,7 @@ export default function MonthPage({ embedded }: MonthPageProps = {}) {
       </div>
 
       <div className="mt-6">
-        <h2 className="mb-2 text-sm font-extrabold capitalize text-duo-text">
+        <h2 className="mb-2 text-sm font-semibold capitalize text-duo-text">
           {formatLong(selected)}
         </h2>
         {selectedHabits.length === 0 ? (

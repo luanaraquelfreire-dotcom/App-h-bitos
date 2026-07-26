@@ -58,21 +58,21 @@ export default function TasksPage() {
 
   return (
     <div className="px-4 py-4">
-      <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Procrastinação</h1>
+      <h1 className="mb-1 text-2xl font-semibold text-duo-text">Procrastinação</h1>
       <p className="mb-1 text-sm font-semibold text-duo-gray-dark">
         Cadastre o que você anda procrastinando e deixe o sorteio escolher por você.
       </p>
-      <p className="mb-4 flex items-center gap-1.5 text-xs font-bold text-duo-purple-dark">
+      <p className="mb-4 flex items-center gap-1.5 text-xs font-medium text-duo-purple-dark">
         <PartyPopper size={14} />
         Tarefas concluídas pelo sorteio valem XP em dobro.
       </p>
 
       {(spinning || drawnTask) && (
         <div className="mb-5 rounded-2xl border-2 border-duo-purple-dark bg-duo-purple/10 px-4 py-5 text-center">
-          <p className="mb-1 text-xs font-extrabold uppercase tracking-wide text-duo-purple-dark">
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-duo-purple-dark">
             {spinning ? "Sorteando..." : "Sua missão agora"}
           </p>
-          <p className="mb-4 text-lg font-extrabold text-duo-text">
+          <p className="mb-4 text-lg font-semibold text-duo-text">
             {spinning ? spinText : drawnTask?.text}
           </p>
 
@@ -81,14 +81,14 @@ export default function TasksPage() {
               <div className="flex flex-col gap-2 sm:flex-row">
                 <button
                   onClick={() => completeTask(drawnTask.id)}
-                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green py-3 font-extrabold uppercase tracking-wide text-white"
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green-dark py-3 font-semibold uppercase tracking-wide text-white"
                 >
                   <Check size={18} strokeWidth={3} />
                   Concluí!
                 </button>
                 <button
                   onClick={() => setShowTimer(true)}
-                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-yellow-dark bg-duo-yellow py-3 font-extrabold uppercase tracking-wide text-white"
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-yellow-dark bg-duo-yellow-dark py-3 font-semibold uppercase tracking-wide text-white"
                 >
                   <Timer size={18} />
                   Cronômetro
@@ -97,14 +97,14 @@ export default function TasksPage() {
               <div className="mt-2 flex flex-col gap-2 sm:flex-row">
                 <button
                   onClick={handleDraw}
-                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3 font-extrabold uppercase tracking-wide text-white"
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3 font-semibold uppercase tracking-wide text-white"
                 >
                   <Shuffle size={18} />
                   Sortear outra
                 </button>
                 <button
                   onClick={clearDrawnTask}
-                  className="rounded-2xl px-3 py-3 text-sm font-extrabold uppercase tracking-wide text-duo-gray-dark"
+                  className="rounded-2xl px-3 py-3 text-sm font-semibold uppercase tracking-wide text-duo-gray-dark"
                 >
                   Depois
                 </button>
@@ -129,12 +129,12 @@ export default function TasksPage() {
           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
           placeholder="Ex: Organizar o guarda-roupa"
           maxLength={80}
-          className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+          className="flex-1 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
         />
         <button
           onClick={handleAdd}
           disabled={!newTaskText.trim()}
-          className="duo-btn grid h-[52px] w-[52px] shrink-0 place-items-center rounded-xl border-duo-blue-dark bg-duo-blue text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
+          className="duo-btn grid h-[52px] w-[52px] shrink-0 place-items-center rounded-xl border-duo-blue-dark bg-duo-blue-dark text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
         >
           <Plus size={22} strokeWidth={3} />
         </button>
@@ -156,7 +156,7 @@ export default function TasksPage() {
               return (
                 <div
                   key={t.id}
-                  className={`duo-card flex items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 ${
+                  className={`duo-card flex items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 ${
                     t.id === drawnTaskId ? "ring-2 ring-duo-purple" : ""
                   }`}
                 >
@@ -170,7 +170,7 @@ export default function TasksPage() {
                       <EyeOff size={16} className="shrink-0 text-duo-gray-dark" />
                     )}
                     <span
-                      className={`font-bold ${
+                      className={`font-medium ${
                         isRevealed ? "text-duo-text" : "italic text-duo-gray-dark"
                       }`}
                     >
@@ -205,7 +205,7 @@ export default function TasksPage() {
           <button
             onClick={handleDraw}
             disabled={spinning}
-            className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-purple-dark bg-duo-purple py-3.5 font-extrabold uppercase tracking-wide text-white disabled:opacity-70"
+            className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-purple-dark bg-duo-purple-dark py-3.5 font-semibold uppercase tracking-wide text-white disabled:opacity-70"
           >
             <Dices size={20} />
             Sortear tarefa

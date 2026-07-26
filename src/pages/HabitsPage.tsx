@@ -31,13 +31,13 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meus hábitos</h1>}
+      {!embedded && <h1 className="mb-4 text-2xl font-semibold text-duo-text">Meus hábitos</h1>}
 
       {householdMembers.length > 0 && (
         <div className="mb-4 flex gap-1.5 overflow-x-auto">
           <button
             onClick={() => setPersonFilter("all")}
-            className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+            className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-semibold ${
               personFilter === "all"
                 ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
                 : "border-duo-gray text-duo-gray-dark"
@@ -49,7 +49,7 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
             <button
               key={m.id}
               onClick={() => setPersonFilter(m.id)}
-              className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+              className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-semibold ${
                 personFilter === m.id
                   ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
                   : "border-duo-gray text-duo-gray-dark"
@@ -86,23 +86,23 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
               <button
                 key={h.id}
                 onClick={() => setEditing(h)}
-                className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+                className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
               >
                 <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-xl ${colors.bgSoft}`}>
                   {h.emoji}
                 </span>
                 <span className="flex-1">
-                  <span className="block font-bold text-duo-text">{h.name}</span>
+                  <span className="block font-medium text-duo-text">{h.name}</span>
                   <span className="block text-xs font-semibold text-duo-gray-dark">{detailLabel}</span>
                   <span className="mt-1 flex flex-wrap gap-1">
                     {goal && (
-                      <span className="inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
+                      <span className="inline-block truncate rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-semibold text-duo-yellow-dark">
                         🎯 {goal.title} · {goalProgress(goal, completions)}/{goal.targetCount}{" "}
                         {goal.unitLabel}
                       </span>
                     )}
                     {assignee && (
-                      <span className="inline-block rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-extrabold text-duo-blue-dark">
+                      <span className="inline-block rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-semibold text-duo-blue-dark">
                         {assignee}
                       </span>
                     )}
@@ -116,7 +116,7 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="duo-btn mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+        className="duo-btn mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
       >
         <Plus size={20} strokeWidth={3} />
         Novo hábito

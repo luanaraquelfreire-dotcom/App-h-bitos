@@ -82,7 +82,7 @@ export default function HabitFormModal({
   return (
     <ModalShell title={initial ? "Editar hábito" : "Novo hábito"} onClose={onClose}>
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
           Nome do hábito
         </label>
         <input
@@ -90,10 +90,10 @@ export default function HabitFormModal({
           onChange={(e) => setName(e.target.value)}
           placeholder="Ex: Beber água"
           maxLength={40}
-          className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+          className="mb-4 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
         />
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">Ícone</label>
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">Ícone</label>
         <div className="mb-4 grid grid-cols-8 gap-2">
           {HABIT_EMOJIS.map((e) => (
             <button
@@ -108,7 +108,7 @@ export default function HabitFormModal({
           ))}
         </div>
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">Cor</label>
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">Cor</label>
         <div className="mb-4 flex gap-3">
           {HABIT_COLORS.map((c) => (
             <button
@@ -122,7 +122,7 @@ export default function HabitFormModal({
           ))}
         </div>
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
           Horários (opcional)
         </label>
         <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
@@ -135,7 +135,7 @@ export default function HabitFormModal({
                 type="time"
                 value={t}
                 onChange={(e) => updateTimeAt(i, e.target.value)}
-                className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                className="flex-1 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
               />
               {times.length > 1 && (
                 <button
@@ -151,20 +151,20 @@ export default function HabitFormModal({
         </div>
         <button
           onClick={addTimeSlot}
-          className="mb-4 text-sm font-extrabold text-duo-blue-dark"
+          className="mb-4 text-sm font-semibold text-duo-blue-dark"
         >
           + Adicionar horário
         </button>
 
         {householdMembers.length > 0 && (
           <>
-            <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+            <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
               Responsável (opcional)
             </label>
             <select
               value={assignedTo}
               onChange={(e) => setAssignedTo(e.target.value)}
-              className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+              className="mb-4 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
             >
               <option value="">Qualquer um</option>
               {householdMembers.map((m) => (
@@ -176,7 +176,7 @@ export default function HabitFormModal({
           </>
         )}
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
           Repetir nos dias
         </label>
         <div className="mb-6 flex gap-1.5">
@@ -184,10 +184,10 @@ export default function HabitFormModal({
             <button
               key={i}
               onClick={() => toggleDay(i)}
-              className={`grid h-10 w-10 place-items-center rounded-full border-2 text-sm font-extrabold ${
+              className={`grid h-10 w-10 place-items-center rounded-full border-2 text-sm font-semibold ${
                 daysOfWeek.includes(i)
-                  ? "border-duo-green-dark bg-duo-green text-white"
-                  : "border-duo-gray bg-white text-duo-gray-dark"
+                  ? "border-duo-green-dark bg-duo-green-dark text-white"
+                  : "border-duo-gray/60 bg-white/55 backdrop-blur-xl text-duo-gray-dark"
               }`}
             >
               {label}
@@ -198,7 +198,7 @@ export default function HabitFormModal({
         <button
           onClick={handleSave}
           disabled={!canSave}
-          className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green py-3.5 text-center font-extrabold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
+          className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green-dark py-3.5 text-center font-semibold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
         >
           {initial ? "Salvar alterações" : "Criar hábito"}
         </button>
@@ -206,7 +206,7 @@ export default function HabitFormModal({
         {initial && onDelete && (
           <button
             onClick={() => setConfirmingDelete(true)}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-semibold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir hábito

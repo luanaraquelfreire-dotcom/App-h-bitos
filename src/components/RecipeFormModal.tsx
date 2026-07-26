@@ -71,7 +71,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
 
   return (
     <ModalShell title={initial ? "Editar receita" : "Nova receita"} onClose={onClose}>
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
           Nome da receita
         </label>
         <input
@@ -79,10 +79,10 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
           onChange={(e) => setName(e.target.value)}
           placeholder="Ex: Frango grelado com legumes"
           maxLength={60}
-          className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+          className="mb-4 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
         />
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">Ícone</label>
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">Ícone</label>
         <div className="mb-4 grid grid-cols-8 gap-2">
           {RECIPE_EMOJIS.map((e) => (
             <button
@@ -97,7 +97,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
           ))}
         </div>
 
-        <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+        <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
           Rende quantas porções
         </label>
         <input
@@ -105,10 +105,10 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
           min={1}
           value={servings}
           onChange={(e) => setServings(e.target.value)}
-          className="mb-4 w-24 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+          className="mb-4 w-24 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
         />
 
-        <label className="mb-2 block text-xs font-bold uppercase text-duo-gray-dark">
+        <label className="mb-2 block text-xs font-medium uppercase text-duo-gray-dark">
           Ingredientes
         </label>
         <div className="mb-3 space-y-2">
@@ -118,7 +118,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
                 value={row.name}
                 onChange={(e) => updateRow(row.id, { name: e.target.value })}
                 placeholder="Ingrediente"
-                className="min-w-0 flex-1 rounded-lg border-2 border-duo-gray bg-white px-2.5 py-2 text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
+                className="min-w-0 flex-1 rounded-lg border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-2.5 py-2 text-sm font-medium text-duo-text outline-none focus:border-duo-blue"
               />
               <input
                 type="number"
@@ -127,12 +127,12 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
                 value={row.quantity}
                 onChange={(e) => updateRow(row.id, { quantity: e.target.value })}
                 placeholder="Qtd"
-                className="w-16 rounded-lg border-2 border-duo-gray bg-white px-2 py-2 text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
+                className="w-16 rounded-lg border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-2 py-2 text-sm font-medium text-duo-text outline-none focus:border-duo-blue"
               />
               <select
                 value={row.unit}
                 onChange={(e) => updateRow(row.id, { unit: e.target.value })}
-                className="w-24 rounded-lg border-2 border-duo-gray bg-white px-1 py-2 text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
+                className="w-24 rounded-lg border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-1 py-2 text-sm font-medium text-duo-text outline-none focus:border-duo-blue"
               >
                 {UNIT_OPTIONS.map((u) => (
                   <option key={u} value={u}>
@@ -153,7 +153,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
 
         <button
           onClick={addRow}
-          className="mb-5 flex items-center gap-1.5 text-sm font-extrabold text-duo-blue-dark"
+          className="mb-5 flex items-center gap-1.5 text-sm font-semibold text-duo-blue-dark"
         >
           <Plus size={16} />
           Adicionar ingrediente
@@ -162,7 +162,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
         <button
           onClick={handleSave}
           disabled={!canSave}
-          className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green py-3.5 text-center font-extrabold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
+          className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green-dark py-3.5 text-center font-semibold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
         >
           {initial ? "Salvar alterações" : "Criar receita"}
         </button>
@@ -170,7 +170,7 @@ export default function RecipeFormModal({ initial, onClose, onSave, onDelete }: 
         {initial && onDelete && (
           <button
             onClick={() => setConfirmingDelete(true)}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-semibold uppercase tracking-wide text-duo-red-dark"
           >
             <Trash2 size={18} />
             Excluir receita

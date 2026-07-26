@@ -2,21 +2,21 @@
 
 @theme {
   --font-sans:
-    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -apple-system, system-ui, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
-  --color-duo-green: #58cc02;
-  --color-duo-green-dark: #46a302;
-  --color-duo-blue: #1cb0f6;
-  --color-duo-blue-dark: #0090c9;
-  --color-duo-red: #ff4b4b;
-  --color-duo-red-dark: #d93030;
-  --color-duo-yellow: #ffc800;
-  --color-duo-yellow-dark: #e0ab00;
-  --color-duo-purple: #ce82ff;
-  --color-duo-purple-dark: #a568d1;
-  --color-duo-gray: #e5e5e5;
-  --color-duo-gray-dark: #afafaf;
-  --color-duo-text: #3c3c3c;
+  --color-duo-green: #a8e6c1;
+  --color-duo-green-dark: #238059;
+  --color-duo-blue: #a9d9f5;
+  --color-duo-blue-dark: #1f7fa8;
+  --color-duo-red: #f7b8b8;
+  --color-duo-red-dark: #cf3f34;
+  --color-duo-yellow: #fbe7a8;
+  --color-duo-yellow-dark: #a3690f;
+  --color-duo-purple: #ddc6f5;
+  --color-duo-purple-dark: #7d4bd6;
+  --color-duo-gray: #ece9f4;
+  --color-duo-gray-dark: #726c88;
+  --color-duo-text: #4a4756;
 }
 
 @layer base {
@@ -28,9 +28,13 @@
 
   body {
     margin: 0;
-    background-color: #fbfbfb;
+    background-color: #f3f1fa;
+    background-image: linear-gradient(160deg, #fdf3ee 0%, #f3f1fa 45%, #ecf5f2 100%);
+    background-attachment: fixed;
     color: var(--color-duo-text);
     font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
   }
@@ -42,18 +46,25 @@
 
 @layer utilities {
   .duo-btn {
-    border-bottom-width: 4px;
+    border-bottom-width: 2px;
     transition:
       transform 0.05s ease,
       filter 0.15s ease;
   }
   .duo-btn:active {
-    transform: translateY(2px);
-    border-bottom-width: 2px;
+    transform: translateY(1px);
+    border-bottom-width: 1px;
   }
   .duo-card {
-    border-width: 2px;
-    border-bottom-width: 4px;
+    border-width: 1px;
+    box-shadow: 0 4px 20px -6px rgba(120, 110, 160, 0.18);
+  }
+  .glass {
+    background-color: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 30px -8px rgba(120, 110, 160, 0.22);
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;

@@ -38,7 +38,7 @@ export default function FinancePage() {
 
   return (
     <div className="px-4 py-4">
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Finanças</h1>
+      <h1 className="mb-4 text-2xl font-semibold text-duo-text">Finanças</h1>
 
       <div className="mb-4 flex items-center justify-between">
         <button
@@ -47,7 +47,7 @@ export default function FinancePage() {
         >
           <ChevronLeft size={20} />
         </button>
-        <span className="font-extrabold text-duo-text">{formatMonthYear(reference)}</span>
+        <span className="font-semibold text-duo-text">{formatMonthYear(reference)}</span>
         <button
           onClick={() => setReference((r) => nextMonth(r))}
           className="grid h-9 w-9 place-items-center rounded-full bg-duo-gray/60 text-duo-text"
@@ -57,40 +57,40 @@ export default function FinancePage() {
       </div>
 
       <div className="mb-4 grid grid-cols-3 gap-2.5">
-        <div className="flex flex-col items-center rounded-2xl border-2 border-duo-gray bg-white py-4">
+        <div className="flex flex-col items-center rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl py-4">
           <TrendingUp className="text-duo-green-dark" size={22} />
-          <span className="mt-1 text-sm font-extrabold text-duo-green-dark">
+          <span className="mt-1 text-sm font-semibold text-duo-green-dark">
             {formatCurrency(summary.income)}
           </span>
-          <span className="text-[11px] font-bold text-duo-gray-dark">Entradas</span>
+          <span className="text-[11px] font-medium text-duo-gray-dark">Entradas</span>
         </div>
-        <div className="flex flex-col items-center rounded-2xl border-2 border-duo-gray bg-white py-4">
+        <div className="flex flex-col items-center rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl py-4">
           <TrendingDown className="text-duo-red-dark" size={22} />
-          <span className="mt-1 text-sm font-extrabold text-duo-red-dark">
+          <span className="mt-1 text-sm font-semibold text-duo-red-dark">
             {formatCurrency(summary.expense)}
           </span>
-          <span className="text-[11px] font-bold text-duo-gray-dark">Saídas</span>
+          <span className="text-[11px] font-medium text-duo-gray-dark">Saídas</span>
         </div>
-        <div className="flex flex-col items-center rounded-2xl border-2 border-duo-gray bg-white py-4">
+        <div className="flex flex-col items-center rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl py-4">
           <Wallet className={summary.balance >= 0 ? "text-duo-blue-dark" : "text-duo-red-dark"} size={22} />
           <span
-            className={`mt-1 text-sm font-extrabold ${
+            className={`mt-1 text-sm font-semibold ${
               summary.balance >= 0 ? "text-duo-blue-dark" : "text-duo-red-dark"
             }`}
           >
             {formatCurrency(summary.balance)}
           </span>
-          <span className="text-[11px] font-bold text-duo-gray-dark">Saldo</span>
+          <span className="text-[11px] font-medium text-duo-gray-dark">Saldo</span>
         </div>
       </div>
 
       {expenseTotal > 0 && (
-        <div className="mb-5 rounded-2xl border-2 border-duo-gray bg-white p-4">
-          <div className="mb-1.5 flex items-center justify-between text-xs font-bold text-duo-gray-dark">
+        <div className="mb-5 rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl p-4">
+          <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-duo-gray-dark">
             <span>Fixas: {formatCurrency(summary.fixedExpense)}</span>
             <span>Variáveis: {formatCurrency(summary.variableExpense)}</span>
           </div>
-          <ProgressBar value={fixedRatio} colorClass="bg-duo-blue" />
+          <ProgressBar value={fixedRatio} colorClass="bg-duo-blue-dark" />
         </div>
       )}
 
@@ -107,7 +107,7 @@ export default function FinancePage() {
             <button
               key={t.id}
               onClick={() => setEditing(t)}
-              className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+              className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
             >
               {t.type === "income" ? (
                 <TrendingUp className="shrink-0 text-duo-green-dark" size={22} />
@@ -115,14 +115,14 @@ export default function FinancePage() {
                 <TrendingDown className="shrink-0 text-duo-red-dark" size={22} />
               )}
               <span className="flex-1">
-                <span className="block font-bold text-duo-text">{t.description}</span>
+                <span className="block font-medium text-duo-text">{t.description}</span>
                 <span className="block text-xs font-semibold text-duo-gray-dark">
                   {t.category === "fixed" ? "Fixa" : "Variável"} ·{" "}
                   {new Date(`${t.date}T00:00:00`).toLocaleDateString("pt-BR")}
                 </span>
               </span>
               <span
-                className={`shrink-0 font-extrabold ${
+                className={`shrink-0 font-semibold ${
                   t.type === "income" ? "text-duo-green-dark" : "text-duo-red-dark"
                 }`}
               >
@@ -135,7 +135,7 @@ export default function FinancePage() {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
       >
         <Plus size={20} strokeWidth={3} />
         Nova transação

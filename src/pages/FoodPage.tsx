@@ -55,7 +55,7 @@ export default function FoodPage() {
 
   return (
     <div className="px-4 py-4">
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Alimentação</h1>
+      <h1 className="mb-4 text-2xl font-semibold text-duo-text">Alimentação</h1>
 
       <SegmentedControl options={SUB_TABS} value={subView} onChange={setSubView} className="mb-5" />
 
@@ -72,13 +72,13 @@ export default function FoodPage() {
                 <button
                   key={r.id}
                   onClick={() => setEditingRecipe(r)}
-                  className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+                  className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
                 >
                   <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-yellow/15 text-xl">
                     {r.emoji}
                   </span>
                   <span className="flex-1">
-                    <span className="block font-bold text-duo-text">{r.name}</span>
+                    <span className="block font-medium text-duo-text">{r.name}</span>
                     <span className="block text-xs font-semibold text-duo-gray-dark">
                       {r.servings} porções · {r.ingredients.length} ingredientes
                     </span>
@@ -90,7 +90,7 @@ export default function FoodPage() {
 
           <button
             onClick={() => setShowRecipeAdd(true)}
-            className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+            className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
           >
             <Plus size={20} strokeWidth={3} />
             Nova receita
@@ -100,8 +100,8 @@ export default function FoodPage() {
 
       {subView === "plan" && (
         <>
-          <div className="mb-4 flex items-center justify-between rounded-2xl border-2 border-duo-gray bg-white px-4 py-3">
-            <span className="text-sm font-bold text-duo-text">Pessoas na casa</span>
+          <div className="mb-4 flex items-center justify-between rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3">
+            <span className="text-sm font-medium text-duo-text">Pessoas na casa</span>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setPeopleCount(peopleCount - 1)}
@@ -109,7 +109,7 @@ export default function FoodPage() {
               >
                 <Minus size={16} />
               </button>
-              <span className="w-4 text-center font-extrabold text-duo-text">{peopleCount}</span>
+              <span className="w-4 text-center font-semibold text-duo-text">{peopleCount}</span>
               <button
                 onClick={() => setPeopleCount(peopleCount + 1)}
                 className="grid h-8 w-8 place-items-center rounded-full border-2 border-duo-gray text-duo-gray-dark"
@@ -136,13 +136,13 @@ export default function FoodPage() {
                   <button
                     key={p.id}
                     onClick={() => setEditingPlan(p)}
-                    className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+                    className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
                   >
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-yellow/15 text-xl">
                       {recipe?.emoji ?? "🍽️"}
                     </span>
                     <span className="flex-1">
-                      <span className="block font-bold text-duo-text">
+                      <span className="block font-medium text-duo-text">
                         {recipe?.name ?? "Receita removida"}
                       </span>
                       <span className="block text-xs font-semibold text-duo-gray-dark">
@@ -157,7 +157,7 @@ export default function FoodPage() {
 
           <button
             onClick={() => setShowPlanAdd(true)}
-            className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+            className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
           >
             <Plus size={20} strokeWidth={3} />
             Planejar refeição
@@ -174,7 +174,7 @@ export default function FoodPage() {
             >
               <ChevronLeft size={20} />
             </button>
-            <span className="font-extrabold text-duo-text">{formatMonthYear(reference)}</span>
+            <span className="font-semibold text-duo-text">{formatMonthYear(reference)}</span>
             <button
               onClick={() => setReference((r) => nextMonth(r))}
               className="grid h-9 w-9 place-items-center rounded-full bg-duo-gray/60 text-duo-text"
@@ -201,25 +201,25 @@ export default function FoodPage() {
                     <button
                       key={item.key}
                       onClick={() => toggleShoppingChecked(currentMonthKey, item.key)}
-                      className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+                      className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
                     >
                       <span
                         className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border-2 ${
                           done
-                            ? "border-duo-green-dark bg-duo-green text-white"
-                            : "border-duo-gray bg-white text-duo-gray"
+                            ? "border-duo-green-dark bg-duo-green-dark text-white"
+                            : "border-duo-gray/60 bg-white/55 backdrop-blur-xl text-duo-gray"
                         }`}
                       >
                         <Check size={16} strokeWidth={3} />
                       </span>
                       <span
-                        className={`flex-1 font-bold ${
+                        className={`flex-1 font-medium ${
                           done ? "text-duo-gray-dark line-through" : "text-duo-text"
                         }`}
                       >
                         {item.name}
                       </span>
-                      <span className="shrink-0 text-sm font-extrabold text-duo-purple-dark">
+                      <span className="shrink-0 text-sm font-semibold text-duo-purple-dark">
                         {formatQuantity(item.quantity)} {item.unit}
                       </span>
                     </button>

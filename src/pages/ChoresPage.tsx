@@ -48,7 +48,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
       {!embedded && (
-        <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Tarefas de casa</h1>
+        <h1 className="mb-1 text-2xl font-semibold text-duo-text">Tarefas de casa</h1>
       )}
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Cadastre os afazeres domésticos e a recorrência de cada um.
@@ -58,7 +58,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
         <div className="mb-4 flex gap-1.5 overflow-x-auto">
           <button
             onClick={() => setPersonFilter("all")}
-            className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+            className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-semibold ${
               personFilter === "all"
                 ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
                 : "border-duo-gray text-duo-gray-dark"
@@ -70,7 +70,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
             <button
               key={m.id}
               onClick={() => setPersonFilter(m.id)}
-              className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-extrabold ${
+              className={`shrink-0 rounded-full border-2 px-3 py-1.5 text-xs font-semibold ${
                 personFilter === m.id
                   ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
                   : "border-duo-gray text-duo-gray-dark"
@@ -95,7 +95,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
             return (
               <div
                 key={c.id}
-                className="duo-card flex items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3"
+                className="duo-card flex items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3"
               >
                 <button
                   onClick={() => setEditing(c)}
@@ -105,18 +105,18 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
                     {c.emoji}
                   </span>
                   <span className="flex-1">
-                    <span className="block font-bold text-duo-text">{c.name}</span>
+                    <span className="block font-medium text-duo-text">{c.name}</span>
                     <span className="block text-xs font-semibold text-duo-gray-dark">
                       A cada {c.intervalDays} dia{c.intervalDays !== 1 ? "s" : ""}
                     </span>
                     <span className="mt-1 flex flex-wrap gap-1">
                       <span
-                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-extrabold ${badgeClass}`}
+                        className={`inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold ${badgeClass}`}
                       >
                         {statusLabel(c)}
                       </span>
                       {assignee && (
-                        <span className="inline-block rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-extrabold text-duo-blue-dark">
+                        <span className="inline-block rounded-full bg-duo-blue/15 px-2 py-0.5 text-[10px] font-semibold text-duo-blue-dark">
                           {assignee}
                         </span>
                       )}
@@ -125,7 +125,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
                 </button>
                 <button
                   onClick={() => markChoreDone(c.id)}
-                  className="duo-btn grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-duo-green-dark bg-duo-green text-white"
+                  className="duo-btn grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-duo-green-dark bg-duo-green-dark text-white"
                   aria-label="Marcar como feita"
                 >
                   <Check size={20} strokeWidth={3} />
@@ -138,7 +138,7 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
       >
         <Plus size={20} strokeWidth={3} />
         Nova tarefa

@@ -70,7 +70,7 @@ export default function GoalFormModal({
   return (
     <>
       <ModalShell title={initial ? "Editar meta" : "Nova meta do ano"} onClose={onClose}>
-          <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
             Título da meta
           </label>
           <input
@@ -78,16 +78,16 @@ export default function GoalFormModal({
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Ex: Renovar minha CNH"
             maxLength={60}
-            className="mb-4 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+            className="mb-4 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
           />
 
-          <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
             Tipo de meta
           </label>
           <div className="mb-4 flex gap-2">
             <button
               onClick={() => setType("single")}
-              className={`flex-1 rounded-xl border-2 px-3 py-2.5 text-sm font-extrabold ${
+              className={`flex-1 rounded-xl border-2 px-3 py-2.5 text-sm font-semibold ${
                 type === "single"
                   ? "border-duo-blue-dark bg-duo-blue/10 text-duo-blue-dark"
                   : "border-duo-gray text-duo-gray-dark"
@@ -97,7 +97,7 @@ export default function GoalFormModal({
             </button>
             <button
               onClick={() => setType("progress")}
-              className={`flex-1 rounded-xl border-2 px-3 py-2.5 text-sm font-extrabold ${
+              className={`flex-1 rounded-xl border-2 px-3 py-2.5 text-sm font-semibold ${
                 type === "progress"
                   ? "border-duo-purple-dark bg-duo-purple/10 text-duo-purple-dark"
                   : "border-duo-gray text-duo-gray-dark"
@@ -114,7 +114,7 @@ export default function GoalFormModal({
                 vinculado.
               </p>
 
-              <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+              <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
                 Agendar no calendário (opcional)
               </label>
               <div className="mb-6 flex gap-2">
@@ -122,13 +122,13 @@ export default function GoalFormModal({
                   type="date"
                   value={scheduledDate}
                   onChange={(e) => setScheduledDate(e.target.value)}
-                  className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                  className="flex-1 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
                 />
                 <input
                   type="time"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                  className="w-32 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                  className="w-32 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
                 />
               </div>
             </>
@@ -139,7 +139,7 @@ export default function GoalFormModal({
                 conclusão dele soma um ponto aqui.
               </p>
 
-              <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+              <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
                 Quantas vezes até o fim do ano
               </label>
               <div className="mb-4 flex gap-2">
@@ -148,23 +148,23 @@ export default function GoalFormModal({
                   min={1}
                   value={targetCount}
                   onChange={(e) => setTargetCount(e.target.value)}
-                  className="w-24 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                  className="w-24 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
                 />
                 <input
                   value={unitLabel}
                   onChange={(e) => setUnitLabel(e.target.value)}
                   placeholder="unidade (dias, vezes...)"
-                  className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                  className="flex-1 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
                 />
               </div>
 
-              <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+              <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
                 Hábito vinculado
               </label>
               <select
                 value={linkedHabitId}
                 onChange={(e) => setLinkedHabitId(e.target.value)}
-                className="mb-2 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+                className="mb-2 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
               >
                 <option value="">Selecione um hábito</option>
                 {habits.map((h) => (
@@ -175,7 +175,7 @@ export default function GoalFormModal({
               </select>
               <button
                 onClick={() => setShowHabitCreator(true)}
-                className="mb-4 text-sm font-extrabold text-duo-blue-dark"
+                className="mb-4 text-sm font-semibold text-duo-blue-dark"
               >
                 + Criar novo hábito para esta meta
               </button>
@@ -185,7 +185,7 @@ export default function GoalFormModal({
           <button
             onClick={handleSave}
             disabled={!canSave}
-            className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green py-3.5 text-center font-extrabold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
+            className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green-dark py-3.5 text-center font-semibold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
           >
             {initial ? "Salvar alterações" : "Criar meta"}
           </button>
@@ -193,7 +193,7 @@ export default function GoalFormModal({
           {initial && onDelete && (
             <button
               onClick={() => setConfirmingDelete(true)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-semibold uppercase tracking-wide text-duo-red-dark"
             >
               <Trash2 size={18} />
               Excluir meta

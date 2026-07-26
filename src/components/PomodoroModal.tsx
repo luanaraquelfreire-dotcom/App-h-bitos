@@ -77,7 +77,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-4xl font-extrabold tabular-nums text-duo-text">
+            <span className="text-4xl font-semibold tabular-nums text-duo-text">
               {formatTime(remaining)}
             </span>
           </div>
@@ -85,7 +85,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
 
         {finished ? (
           <div className="mb-4 text-center">
-            <p className="mb-3 font-extrabold text-duo-green-dark">Tempo esgotado! 🎉</p>
+            <p className="mb-3 font-semibold text-duo-green-dark">Tempo esgotado! 🎉</p>
             <div className="flex flex-col gap-2 sm:flex-row">
               {onComplete && (
                 <button
@@ -93,7 +93,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
                     onComplete(durationMin);
                     onClose();
                   }}
-                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green py-3 font-extrabold uppercase tracking-wide text-white"
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green-dark py-3 font-semibold uppercase tracking-wide text-white"
                 >
                   <Check size={18} strokeWidth={3} />
                   Concluir
@@ -101,7 +101,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
               )}
               <button
                 onClick={reset}
-                className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3 font-extrabold uppercase tracking-wide text-white"
+                className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3 font-semibold uppercase tracking-wide text-white"
               >
                 <RotateCcw size={18} />
                 Repetir
@@ -116,7 +116,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
                   key={min}
                   onClick={() => selectPreset(min)}
                   disabled={running}
-                  className={`rounded-full border-2 px-3 py-1.5 text-sm font-extrabold disabled:opacity-40 ${
+                  className={`rounded-full border-2 px-3 py-1.5 text-sm font-semibold disabled:opacity-40 ${
                     durationMin === min
                       ? "border-duo-purple-dark bg-duo-purple/15 text-duo-purple-dark"
                       : "border-duo-gray text-duo-gray-dark"
@@ -137,7 +137,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
               </button>
               <button
                 onClick={() => setRunning((r) => !r)}
-                className="duo-btn grid h-16 w-16 place-items-center rounded-full border-duo-purple-dark bg-duo-purple text-white"
+                className="duo-btn grid h-16 w-16 place-items-center rounded-full border-duo-purple-dark bg-duo-purple-dark text-white"
                 aria-label={running ? "Pausar" : "Iniciar"}
               >
                 {running ? <Pause size={26} fill="currentColor" /> : <Play size={26} fill="currentColor" />}

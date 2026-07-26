@@ -83,7 +83,7 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
       <div className={embedded ? "" : "px-4 py-4"}>
         <button
           onClick={() => setSelectedId(null)}
-          className="mb-4 flex items-center gap-1 text-sm font-extrabold text-duo-gray-dark"
+          className="mb-4 flex items-center gap-1 text-sm font-semibold text-duo-gray-dark"
         >
           <ChevronLeft size={18} />
           Voltar
@@ -94,12 +94,12 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
             {selected.emoji}
           </span>
           <div className="flex-1">
-            <h1 className="text-xl font-extrabold text-duo-text">{selected.title}</h1>
+            <h1 className="text-xl font-semibold text-duo-text">{selected.title}</h1>
             <div className="mt-1 flex flex-wrap gap-1.5">
-              <span className="rounded-full bg-duo-gray/50 px-2 py-0.5 text-[10px] font-extrabold text-duo-gray-dark">
+              <span className="rounded-full bg-duo-gray/50 px-2 py-0.5 text-[10px] font-semibold text-duo-gray-dark">
                 {STUDY_TYPE_LABELS[selected.type]}
               </span>
-              <span className="rounded-full bg-duo-green/15 px-2 py-0.5 text-[10px] font-extrabold text-duo-green-dark">
+              <span className="rounded-full bg-duo-green/15 px-2 py-0.5 text-[10px] font-semibold text-duo-green-dark">
                 {STUDY_STATUS_LABELS[selected.status]}
               </span>
             </div>
@@ -113,15 +113,15 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
           </button>
         </div>
 
-        <div className="mb-5 rounded-2xl border-2 border-duo-gray bg-white p-4">
-          <p className="mb-2 text-xs font-extrabold uppercase text-duo-gray-dark">
+        <div className="mb-5 rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl p-4">
+          <p className="mb-2 text-xs font-semibold uppercase text-duo-gray-dark">
             Meta desta semana
           </p>
           {hasGoal ? (
             <div className="space-y-3">
               {Boolean(selected.targetHoursPerWeek) && (
                 <div>
-                  <div className="mb-1 flex items-center justify-between text-xs font-bold text-duo-gray-dark">
+                  <div className="mb-1 flex items-center justify-between text-xs font-medium text-duo-gray-dark">
                     <span>
                       {progress.hoursStudied.toFixed(1)}h de {selected.targetHoursPerWeek}h
                     </span>
@@ -135,20 +135,20 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
                   </div>
                   <ProgressBar
                     value={progress.hoursStudied / (selected.targetHoursPerWeek ?? 1)}
-                    colorClass="bg-duo-blue"
+                    colorClass="bg-duo-blue-dark"
                   />
                 </div>
               )}
               {Boolean(selected.targetDaysPerWeek) && (
                 <div>
-                  <div className="mb-1 flex items-center justify-between text-xs font-bold text-duo-gray-dark">
+                  <div className="mb-1 flex items-center justify-between text-xs font-medium text-duo-gray-dark">
                     <span>
                       {progress.daysStudied} de {selected.targetDaysPerWeek} dias
                     </span>
                   </div>
                   <ProgressBar
                     value={progress.daysStudied / (selected.targetDaysPerWeek ?? 1)}
-                    colorClass="bg-duo-green"
+                    colorClass="bg-duo-green-dark"
                   />
                 </div>
               )}
@@ -162,7 +162,7 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
           <div className="mt-4 flex items-center gap-2">
             <button
               onClick={() => setShowTimer(true)}
-              className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-xl border-duo-purple-dark bg-duo-purple py-2.5 text-sm font-extrabold uppercase tracking-wide text-white"
+              className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-xl border-duo-purple-dark bg-duo-purple-dark py-2.5 text-sm font-semibold uppercase tracking-wide text-white"
             >
               <Timer size={16} />
               Cronômetro
@@ -173,12 +173,12 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
               value={manualMinutes}
               onChange={(e) => setManualMinutes(e.target.value)}
               placeholder="min"
-              className="w-16 rounded-xl border-2 border-duo-gray bg-white px-2 py-2.5 text-center text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
+              className="w-16 rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-2 py-2.5 text-center text-sm font-medium text-duo-text outline-none focus:border-duo-blue"
             />
             <button
               onClick={handleLogManual}
               disabled={!manualMinutes}
-              className="duo-btn rounded-xl border-duo-blue-dark bg-duo-blue px-3 py-2.5 text-sm font-extrabold uppercase tracking-wide text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
+              className="duo-btn rounded-xl border-duo-blue-dark bg-duo-blue-dark px-3 py-2.5 text-sm font-semibold uppercase tracking-wide text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
             >
               Registrar
             </button>
@@ -191,13 +191,13 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
             onChange={(e) => setNoteText(e.target.value)}
             placeholder="Escreva uma anotação..."
             rows={3}
-            className="flex-1 resize-none rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-semibold text-duo-text outline-none focus:border-duo-blue"
+            className="flex-1 resize-none rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-semibold text-duo-text outline-none focus:border-duo-blue"
           />
           <button
             onClick={handleAddNote}
             disabled={!noteText.trim()}
             aria-label="Adicionar anotação"
-            className="duo-btn grid h-12 w-12 shrink-0 place-items-center self-end rounded-xl border-duo-blue-dark bg-duo-blue text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
+            className="duo-btn grid h-12 w-12 shrink-0 place-items-center self-end rounded-xl border-duo-blue-dark bg-duo-blue-dark text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
           >
             <Send size={18} />
           </button>
@@ -212,11 +212,11 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
             {sortedNotes.map((note) => (
               <div
                 key={note.id}
-                className="duo-card flex items-start gap-2 rounded-2xl border-duo-gray bg-white px-4 py-3"
+                className="duo-card flex items-start gap-2 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3"
               >
                 <div className="flex-1">
                   <p className="whitespace-pre-wrap font-semibold text-duo-text">{note.text}</p>
-                  <p className="mt-1 text-xs font-bold text-duo-gray-dark">
+                  <p className="mt-1 text-xs font-medium text-duo-gray-dark">
                     {formatNoteDate(note.createdAt)}
                   </p>
                 </div>
@@ -264,7 +264,7 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      {!embedded && <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Estudos</h1>}
+      {!embedded && <h1 className="mb-1 text-2xl font-semibold text-duo-text">Estudos</h1>}
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Seus cursos, leituras e idiomas, com um caderno de anotações para cada um.
       </p>
@@ -286,20 +286,20 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
               <button
                 key={item.id}
                 onClick={() => setSelectedId(item.id)}
-                className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+                className="duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
               >
                 <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-blue/15 text-xl">
                   {item.emoji}
                 </span>
                 <span className="flex-1">
-                  <span className="block font-bold text-duo-text">{item.title}</span>
+                  <span className="block font-medium text-duo-text">{item.title}</span>
                   <span className="flex items-center gap-1 text-xs font-semibold text-duo-gray-dark">
                     <TypeIcon size={12} />
                     {STUDY_TYPE_LABELS[item.type]} · {STUDY_STATUS_LABELS[item.status]} ·{" "}
                     {item.notes.length} anotaç{item.notes.length !== 1 ? "ões" : "ão"}
                   </span>
                   {progress && (
-                    <span className="mt-1 inline-block rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-extrabold text-duo-yellow-dark">
+                    <span className="mt-1 inline-block rounded-full bg-duo-yellow/20 px-2 py-0.5 text-[10px] font-semibold text-duo-yellow-dark">
                       🎯{" "}
                       {item.targetHoursPerWeek
                         ? `${progress.hoursStudied.toFixed(1)}/${item.targetHoursPerWeek}h`
@@ -320,7 +320,7 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
       >
         <Plus size={20} strokeWidth={3} />
         Novo item de estudo

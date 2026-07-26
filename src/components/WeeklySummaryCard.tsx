@@ -25,8 +25,8 @@ export default function WeeklySummaryCard() {
   }
 
   return (
-    <div className="mb-5 rounded-2xl border-2 border-duo-gray bg-white p-4">
-      <p className="mb-1 text-xs font-extrabold uppercase text-duo-gray-dark">
+    <div className="mb-5 rounded-2xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl p-4">
+      <p className="mb-1 text-xs font-semibold uppercase text-duo-gray-dark">
         Resumo da semana
       </p>
       <p className="mb-3 text-xs font-semibold capitalize text-duo-gray-dark">
@@ -36,23 +36,23 @@ export default function WeeklySummaryCard() {
       <div className="mb-3 grid grid-cols-2 gap-2.5">
         <div className="flex items-center gap-2 rounded-xl bg-duo-green/10 px-3 py-2.5">
           <ListChecks size={18} className="shrink-0 text-duo-green-dark" />
-          <span className="text-sm font-extrabold text-duo-green-dark">
+          <span className="text-sm font-semibold text-duo-green-dark">
             {summary.habitsDone}/{summary.habitsScheduled}
-            <span className="block text-[10px] font-bold text-duo-gray-dark">hábitos</span>
+            <span className="block text-[10px] font-medium text-duo-gray-dark">hábitos</span>
           </span>
         </div>
         <div className="flex items-center gap-2 rounded-xl bg-duo-purple/10 px-3 py-2.5">
           <BookOpen size={18} className="shrink-0 text-duo-purple-dark" />
-          <span className="text-sm font-extrabold text-duo-purple-dark">
+          <span className="text-sm font-semibold text-duo-purple-dark">
             {summary.studyHours.toFixed(1)}h
-            <span className="block text-[10px] font-bold text-duo-gray-dark">estudadas</span>
+            <span className="block text-[10px] font-medium text-duo-gray-dark">estudadas</span>
           </span>
         </div>
         <div className="flex items-center gap-2 rounded-xl bg-duo-yellow/15 px-3 py-2.5">
           <Home size={18} className="shrink-0 text-duo-yellow-dark" />
-          <span className="text-sm font-extrabold text-duo-yellow-dark">
+          <span className="text-sm font-semibold text-duo-yellow-dark">
             {summary.choresDone}
-            <span className="block text-[10px] font-bold text-duo-gray-dark">tarefas de casa</span>
+            <span className="block text-[10px] font-medium text-duo-gray-dark">tarefas de casa</span>
           </span>
         </div>
         <div
@@ -62,10 +62,10 @@ export default function WeeklySummaryCard() {
         >
           <Wallet size={18} className={`shrink-0 ${summary.balance >= 0 ? "text-duo-blue-dark" : "text-duo-red-dark"}`} />
           <span
-            className={`text-sm font-extrabold ${summary.balance >= 0 ? "text-duo-blue-dark" : "text-duo-red-dark"}`}
+            className={`text-sm font-semibold ${summary.balance >= 0 ? "text-duo-blue-dark" : "text-duo-red-dark"}`}
           >
             {formatCurrency(summary.balance)}
-            <span className="block text-[10px] font-bold text-duo-gray-dark">saldo</span>
+            <span className="block text-[10px] font-medium text-duo-gray-dark">saldo</span>
           </span>
         </div>
       </div>

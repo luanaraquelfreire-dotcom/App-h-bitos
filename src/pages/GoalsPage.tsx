@@ -46,7 +46,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      {!embedded && <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Metas do ano</h1>}
+      {!embedded && <h1 className="mb-1 text-2xl font-semibold text-duo-text">Metas do ano</h1>}
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Faltam {daysLeft} dias para o fim do ano.
       </p>
@@ -63,21 +63,21 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
               return (
                 <div
                   key={g.id}
-                  className="duo-card flex items-center gap-3 rounded-2xl border-duo-gray bg-white px-4 py-3"
+                  className="duo-card flex items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3"
                 >
                   <button
                     onClick={() => toggleGoalDone(g.id)}
                     className={`duo-btn grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 ${
                       g.done
-                        ? "border-duo-green-dark bg-duo-green text-white"
-                        : "border-duo-gray bg-white text-duo-gray"
+                        ? "border-duo-green-dark bg-duo-green-dark text-white"
+                        : "border-duo-gray/60 bg-white/55 backdrop-blur-xl text-duo-gray"
                     }`}
                   >
                     <Check size={20} strokeWidth={3} />
                   </button>
                   <button
                     onClick={() => setEditing(g)}
-                    className={`flex-1 text-left font-bold ${
+                    className={`flex-1 text-left font-medium ${
                       g.done ? "text-duo-gray-dark line-through" : "text-duo-text"
                     }`}
                   >
@@ -99,15 +99,15 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
               <button
                 key={g.id}
                 onClick={() => setEditing(g)}
-                className="duo-card block w-full rounded-2xl border-duo-gray bg-white px-4 py-3 text-left"
+                className="duo-card block w-full rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left"
               >
                 <div className="mb-2 flex items-center justify-between gap-2">
-                  <span className="font-bold text-duo-text">{g.title}</span>
-                  <span className="shrink-0 text-xs font-extrabold text-duo-purple-dark">
+                  <span className="font-medium text-duo-text">{g.title}</span>
+                  <span className="shrink-0 text-xs font-semibold text-duo-purple-dark">
                     {current}/{target} {g.unitLabel}
                   </span>
                 </div>
-                <ProgressBar value={ratio} colorClass="bg-duo-purple" />
+                <ProgressBar value={ratio} colorClass="bg-duo-purple-dark" />
                 <div className="mt-2 flex items-center justify-between text-xs font-semibold text-duo-gray-dark">
                   <span>{habit ? `${habit.emoji} ${habit.name}` : "Sem hábito vinculado"}</span>
                   {remaining === 0 ? (
@@ -124,7 +124,7 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-yellow-dark bg-duo-yellow py-3.5 font-extrabold uppercase tracking-wide text-white"
+        className="duo-btn flex w-full items-center justify-center gap-2 rounded-2xl border-duo-yellow-dark bg-duo-yellow-dark py-3.5 font-semibold uppercase tracking-wide text-white"
       >
         <Target size={20} />
         Nova meta

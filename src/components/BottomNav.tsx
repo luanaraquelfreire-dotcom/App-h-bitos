@@ -25,14 +25,14 @@ const ITEMS: { id: Tab; label: string; icon: typeof CalendarClock }[] = [
 
 export default function BottomNav({ active, onChange }: BottomNavProps) {
   return (
-    <nav className="no-scrollbar sticky bottom-0 z-20 flex overflow-x-auto border-t-2 border-duo-gray bg-white pb-[env(safe-area-inset-bottom)]">
+    <nav className="no-scrollbar sticky bottom-0 z-20 flex overflow-x-auto border-t-2 border-duo-gray/60 bg-white/55 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
       {ITEMS.map(({ id, label, icon: Icon }) => {
         const isActive = active === id;
         return (
           <button
             key={id}
             onClick={() => onChange(id)}
-            className={`flex w-[68px] shrink-0 flex-col items-center gap-0.5 px-1 py-2 text-center text-[10px] font-bold leading-tight transition-colors ${
+            className={`flex w-[68px] shrink-0 flex-col items-center gap-0.5 px-1 py-2 text-center text-[10px] font-medium leading-tight transition-colors ${
               isActive ? "text-duo-blue-dark" : "text-duo-gray-dark"
             }`}
           >

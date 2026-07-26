@@ -36,14 +36,14 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      <p className={`text-sm font-bold capitalize text-duo-gray-dark ${embedded ? "mb-4" : "mb-1"}`}>
+      <p className={`text-sm font-medium capitalize text-duo-gray-dark ${embedded ? "mb-4" : "mb-1"}`}>
         {formatLong(today)}
       </p>
-      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meta de hoje</h1>}
+      {!embedded && <h1 className="mb-4 text-2xl font-semibold text-duo-text">Meta de hoje</h1>}
 
       {todayHabits.length > 0 && (
         <div className="mb-5">
-          <div className="mb-1.5 flex items-center justify-between text-sm font-bold text-duo-gray-dark">
+          <div className="mb-1.5 flex items-center justify-between text-sm font-medium text-duo-gray-dark">
             <span>
               {doneCount} de {todayHabits.length} concluídos
             </span>
@@ -57,7 +57,7 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
         <div className="mb-5 flex items-center gap-3 rounded-2xl border-2 border-duo-green-dark bg-duo-green/10 px-4 py-3 text-duo-green-dark">
           <PartyPopper size={26} />
           <div>
-            <p className="font-extrabold">Mandou bem!</p>
+            <p className="font-semibold">Mandou bem!</p>
             <p className="text-sm font-semibold">Você concluiu todos os hábitos de hoje.</p>
           </div>
         </div>
@@ -110,7 +110,7 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
 
       <button
         onClick={() => setShowAdd(true)}
-        className="duo-btn mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3.5 font-extrabold uppercase tracking-wide text-white"
+        className="duo-btn mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
       >
         <Plus size={20} strokeWidth={3} />
         Novo hábito

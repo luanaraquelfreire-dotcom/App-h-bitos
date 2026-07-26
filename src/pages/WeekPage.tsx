@@ -42,7 +42,7 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Semana</h1>}
+      {!embedded && <h1 className="mb-4 text-2xl font-semibold text-duo-text">Semana</h1>}
 
       <div className="mb-4 flex items-center justify-between">
         <button
@@ -51,7 +51,7 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
         >
           <ChevronLeft size={20} />
         </button>
-        <span className="font-extrabold capitalize text-duo-text">{formatWeekRange(week)}</span>
+        <span className="font-semibold capitalize text-duo-text">{formatWeekRange(week)}</span>
         <button
           onClick={() => setReference((r) => nextWeek(r))}
           className="grid h-9 w-9 place-items-center rounded-full bg-duo-gray/60 text-duo-text"
@@ -62,13 +62,13 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
 
       {weekScheduled > 0 && (
         <div className="mb-5">
-          <div className="mb-1.5 flex items-center justify-between text-sm font-bold text-duo-gray-dark">
+          <div className="mb-1.5 flex items-center justify-between text-sm font-medium text-duo-gray-dark">
             <span>
               {weekDone} de {weekScheduled} concluídos
             </span>
             <span>{Math.round((weekDone / weekScheduled) * 100)}%</span>
           </div>
-          <ProgressBar value={weekDone / weekScheduled} colorClass="bg-duo-blue" />
+          <ProgressBar value={weekDone / weekScheduled} colorClass="bg-duo-blue-dark" />
         </div>
       )}
 
@@ -82,11 +82,11 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
           <table className="w-full min-w-[520px] border-separate border-spacing-y-2">
             <thead>
               <tr>
-                <th className="w-32 text-left text-xs font-bold uppercase text-duo-gray-dark">
+                <th className="w-32 text-left text-xs font-medium uppercase text-duo-gray-dark">
                   Hábito
                 </th>
                 {week.map((d, i) => (
-                  <th key={i} className="w-10 text-center text-xs font-bold text-duo-gray-dark">
+                  <th key={i} className="w-10 text-center text-xs font-medium text-duo-gray-dark">
                     <div>{DAY_LABELS[d.getDay()]}</div>
                     <div className={isToday(d) ? "text-duo-blue-dark" : ""}>{d.getDate()}</div>
                   </th>
@@ -99,7 +99,7 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
                 const hasGoal = Boolean(goalForHabit(goals, h.id));
                 return (
                   <tr key={h.id} className="rounded-xl bg-white">
-                    <td className="rounded-l-xl py-2 pl-3 text-sm font-bold text-duo-text">
+                    <td className="rounded-l-xl py-2 pl-3 text-sm font-medium text-duo-text">
                       <span className="mr-1.5">{h.emoji}</span>
                       {h.name}
                       {hasGoal && <span className="ml-1">🎯</span>}
@@ -118,8 +118,8 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
                               onClick={() => toggleCompletion(h.id, dateKey)}
                               className={`mx-auto grid h-7 w-7 place-items-center rounded-full border-2 ${
                                 done
-                                  ? `${colors.bg} ${colors.border} text-white`
-                                  : "border-duo-gray bg-white text-transparent"
+                                  ? `${colors.bgStrong} ${colors.border} text-white`
+                                  : "border-duo-gray/60 bg-white/55 backdrop-blur-xl text-transparent"
                               }`}
                             >
                               <Check size={14} strokeWidth={3} />

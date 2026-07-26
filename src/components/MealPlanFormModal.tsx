@@ -53,12 +53,12 @@ export default function MealPlanFormModal({
   return (
     <>
       <ModalShell title={initial ? "Editar planejamento" : "Planejar refeição"} onClose={onClose}>
-          <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">Receita</label>
+          <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">Receita</label>
           {recipes.length > 0 && (
             <select
               value={recipeId}
               onChange={(e) => setRecipeId(e.target.value)}
-              className="mb-2 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 font-bold text-duo-text outline-none focus:border-duo-blue"
+              className="mb-2 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 font-medium text-duo-text outline-none focus:border-duo-blue"
             >
               {recipes.map((r) => (
                 <option key={r.id} value={r.id}>
@@ -69,12 +69,12 @@ export default function MealPlanFormModal({
           )}
           <button
             onClick={() => setShowRecipeCreator(true)}
-            className="mb-4 text-sm font-extrabold text-duo-blue-dark"
+            className="mb-4 text-sm font-semibold text-duo-blue-dark"
           >
             + Criar nova receita
           </button>
 
-          <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
             Tipo de refeição
           </label>
           <div className="mb-4 grid grid-cols-4 gap-1.5">
@@ -82,7 +82,7 @@ export default function MealPlanFormModal({
               <button
                 key={mt}
                 onClick={() => setMealType(mt)}
-                className={`rounded-xl border-2 px-1 py-2 text-xs font-extrabold ${
+                className={`rounded-xl border-2 px-1 py-2 text-xs font-semibold ${
                   mealType === mt
                     ? "border-duo-green-dark bg-duo-green/10 text-duo-green-dark"
                     : "border-duo-gray text-duo-gray-dark"
@@ -93,7 +93,7 @@ export default function MealPlanFormModal({
             ))}
           </div>
 
-          <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
+          <label className="mb-1 block text-xs font-medium uppercase text-duo-gray-dark">
             Repetir nos dias
           </label>
           <div className="mb-6 flex gap-1.5">
@@ -101,10 +101,10 @@ export default function MealPlanFormModal({
               <button
                 key={i}
                 onClick={() => toggleDay(i)}
-                className={`grid h-10 w-10 place-items-center rounded-full border-2 text-sm font-extrabold ${
+                className={`grid h-10 w-10 place-items-center rounded-full border-2 text-sm font-semibold ${
                   daysOfWeek.includes(i)
-                    ? "border-duo-green-dark bg-duo-green text-white"
-                    : "border-duo-gray bg-white text-duo-gray-dark"
+                    ? "border-duo-green-dark bg-duo-green-dark text-white"
+                    : "border-duo-gray/60 bg-white/55 backdrop-blur-xl text-duo-gray-dark"
                 }`}
               >
                 {label}
@@ -115,7 +115,7 @@ export default function MealPlanFormModal({
           <button
             onClick={handleSave}
             disabled={!canSave}
-            className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green py-3.5 text-center font-extrabold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
+            className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green-dark py-3.5 text-center font-semibold uppercase tracking-wide text-white disabled:cursor-not-allowed disabled:border-duo-gray-dark disabled:bg-duo-gray disabled:text-duo-gray-dark"
           >
             {initial ? "Salvar alterações" : "Adicionar ao planejamento"}
           </button>
@@ -123,7 +123,7 @@ export default function MealPlanFormModal({
           {initial && onDelete && (
             <button
               onClick={() => setConfirmingDelete(true)}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-extrabold uppercase tracking-wide text-duo-red-dark"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl py-3 font-semibold uppercase tracking-wide text-duo-red-dark"
             >
               <Trash2 size={18} />
               Remover do planejamento

@@ -6,7 +6,7 @@ interface ProgressBarProps {
 
 export default function ProgressBar({
   value,
-  colorClass = "bg-duo-green",
+  colorClass = "bg-duo-green-dark",
   heightClass = "h-3",
 }: ProgressBarProps) {
   const pct = Math.max(0, Math.min(1, value)) * 100;

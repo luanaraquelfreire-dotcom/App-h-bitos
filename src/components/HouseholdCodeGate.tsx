@@ -45,9 +45,9 @@ export default function HouseholdCodeGate({ children }: HouseholdCodeGateProps) 
 
     return (
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center bg-[#fbfbfb] px-6">
-        <div className="w-full rounded-3xl border-2 border-duo-gray bg-white p-6 text-center">
+        <div className="w-full rounded-3xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl p-6 text-center">
           <div className="mb-3 text-4xl">🔗</div>
-          <h1 className="mb-2 text-xl font-extrabold text-duo-text">Código da família</h1>
+          <h1 className="mb-2 text-xl font-semibold text-duo-text">Código da família</h1>
           <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
             Combine uma palavra com seu parceiro(a) e digite a mesma nos dois celulares.
             Quem digitar primeiro cria os dados compartilhados; o segundo entra
@@ -60,12 +60,12 @@ export default function HouseholdCodeGate({ children }: HouseholdCodeGateProps) 
               placeholder="Ex: casal2026"
               maxLength={40}
               autoFocus
-              className="mb-2 w-full rounded-xl border-2 border-duo-gray bg-white px-4 py-3 text-center font-bold text-duo-text outline-none focus:border-duo-blue"
+              className="mb-2 w-full rounded-xl border border-white/60 bg-white/55 shadow-[0_8px_30px_-8px_rgba(120,110,160,0.28)] backdrop-blur-xl px-4 py-3 text-center font-medium text-duo-text outline-none focus:border-duo-blue"
             />
-            {error && <p className="mb-2 text-xs font-bold text-duo-red-dark">{error}</p>}
+            {error && <p className="mb-2 text-xs font-medium text-duo-red-dark">{error}</p>}
             <button
               type="submit"
-              className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green py-3.5 font-extrabold uppercase tracking-wide text-white"
+              className="duo-btn w-full rounded-2xl border-duo-green-dark bg-duo-green-dark py-3.5 font-semibold uppercase tracking-wide text-white"
             >
               Continuar
             </button>

@@ -19,7 +19,7 @@ export default function RoutinePage() {
 
   return (
     <div className="px-4 py-4">
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Hábitos</h1>
+      <h1 className="mb-4 text-2xl font-semibold text-duo-text">Hábitos</h1>
 
       <SegmentedControl options={VIEWS} value={view} onChange={setView} />
 

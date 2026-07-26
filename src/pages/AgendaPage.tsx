@@ -181,7 +181,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
-      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Agenda</h1>}
+      {!embedded && <h1 className="mb-4 text-2xl font-semibold text-duo-text">Agenda</h1>}
 
       <div className="mb-2 flex items-center justify-between">
         <button
@@ -191,13 +191,13 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
           <ChevronLeft size={20} />
         </button>
         <div className="text-center">
-          <span className="block font-extrabold capitalize text-duo-text">
+          <span className="block font-semibold capitalize text-duo-text">
             {formatLong(selected)}
           </span>
           {!viewingToday && (
             <button
               onClick={() => setSelected(new Date())}
-              className="text-xs font-extrabold text-duo-blue-dark"
+              className="text-xs font-semibold text-duo-blue-dark"
             >
               Ir para hoje
             </button>
@@ -217,7 +217,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
             <button
               key={it.id}
               onClick={it.onToggle}
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-extrabold ${it.colors.bgSoft} ${it.colors.text} ${
+              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${it.colors.bgSoft} ${it.colors.text} ${
                 it.done ? "opacity-50 line-through" : ""
               }`}
             >
@@ -235,7 +235,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
               className="absolute left-0 right-0 border-t border-duo-gray"
               style={{ top: hour * HOUR_HEIGHT }}
             >
-              <span className="-mt-2 ml-0 inline-block w-12 pr-2 text-right text-[11px] font-bold text-duo-gray-dark">
+              <span className="-mt-2 ml-0 inline-block w-12 pr-2 text-right text-[11px] font-medium text-duo-gray-dark">
                 {hour.toString().padStart(2, "0")}:00
               </span>
             </div>
@@ -246,8 +246,8 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
               className="absolute left-12 right-0 z-10 flex items-center"
               style={{ top: nowTop }}
             >
-              <span className="-ml-1 h-2 w-2 shrink-0 rounded-full bg-duo-red" />
-              <span className="h-[2px] flex-1 bg-duo-red" />
+              <span className="-ml-1 h-2 w-2 shrink-0 rounded-full bg-duo-red-dark" />
+              <span className="h-[2px] flex-1 bg-duo-red-dark" />
             </div>
           )}
 
@@ -270,12 +270,12 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
               >
                 <span className="shrink-0 text-sm">{it.emoji}</span>
                 <span
-                  className={`truncate text-[11px] font-extrabold ${it.colors.text} ${
+                  className={`truncate text-[11px] font-semibold ${it.colors.text} ${
                     it.done ? "line-through" : ""
                   }`}
                 >
                   {it.name}
-                  <span className="ml-1 font-bold text-duo-gray-dark">{it.time}</span>
+                  <span className="ml-1 font-medium text-duo-gray-dark">{it.time}</span>
                 </span>
                 {it.done && (
                   <Check size={12} className={`ml-auto shrink-0 ${it.colors.text}`} strokeWidth={3} />
