@@ -3,6 +3,7 @@ import ProgressBar from "../components/ProgressBar";
 import WeeklySummaryCard from "../components/WeeklySummaryCard";
 import HouseholdMembersCard from "../components/HouseholdMembersCard";
 import BackupCard from "../components/BackupCard";
+import SyncStatusCard from "../components/SyncStatusCard";
 import { useHabitStore } from "../store/useHabitStore";
 import {
   calcXp,
@@ -105,6 +106,7 @@ export default function ProfilePage() {
       </div>
 
       <div className="mt-6">
+        <SyncStatusCard />
         <HouseholdMembersCard />
       </div>
 
