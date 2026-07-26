@@ -3,13 +3,17 @@ import type { CompletionMap, Habit } from "../types";
 import { toDateKey } from "./date";
 
 export const XP_PER_COMPLETION = 10;
+export const XP_PER_PROCRASTINATED_TASK = 20;
 
 export function totalCompletions(completions: CompletionMap): number {
   return Object.values(completions).reduce((sum, dates) => sum + dates.length, 0);
 }
 
-export function calcXp(completions: CompletionMap): number {
-  return totalCompletions(completions) * XP_PER_COMPLETION;
+export function calcXp(completions: CompletionMap, completedTasksCount = 0): number {
+  return (
+    totalCompletions(completions) * XP_PER_COMPLETION +
+    completedTasksCount * XP_PER_PROCRASTINATED_TASK
+  );
 }
 
 /** Nível cresce progressivamente: cada nível exige mais XP que o anterior. */

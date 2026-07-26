@@ -16,13 +16,27 @@ export interface Habit {
 /** habitId -> array de datas (yyyy-MM-dd) em que o hábito foi concluído */
 export type CompletionMap = Record<string, string[]>;
 
+export interface ProcrastinatedTask {
+  id: string;
+  text: string;
+  createdAt: string; // ISO date (yyyy-MM-dd)
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
   xp: number;
+  tasks: ProcrastinatedTask[];
+  drawnTaskId: string | null;
+  completedTasksCount: number;
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
   toggleCompletion: (habitId: string, date: string) => void;
   isCompleted: (habitId: string, date: string) => boolean;
+  addTask: (text: string) => void;
+  removeTask: (id: string) => void;
+  completeTask: (id: string) => void;
+  drawTask: () => void;
+  clearDrawnTask: () => void;
 }

@@ -13,6 +13,9 @@ export const useHabitStore = create<HabitState>()(
       habits: [],
       completions: {},
       xp: 0,
+      tasks: [],
+      drawnTaskId: null,
+      completedTasksCount: 0,
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -55,6 +58,41 @@ export const useHabitStore = create<HabitState>()(
 
       isCompleted: (habitId, date) => {
         return get().completions[habitId]?.includes(date) ?? false;
+      },
+
+      addTask: (text) => {
+        const trimmed = text.trim();
+        if (!trimmed) return;
+        const newTask = { id: generateId(), text: trimmed, createdAt: todayKey() };
+        set((state) => ({ tasks: [...state.tasks, newTask] }));
+      },
+
+      removeTask: (id) => {
+        set((state) => ({
+          tasks: state.tasks.filter((t) => t.id !== id),
+          drawnTaskId: state.drawnTaskId === id ? null : state.drawnTaskId,
+        }));
+      },
+
+      completeTask: (id) => {
+        set((state) => ({
+          tasks: state.tasks.filter((t) => t.id !== id),
+          drawnTaskId: state.drawnTaskId === id ? null : state.drawnTaskId,
+          completedTasksCount: state.completedTasksCount + 1,
+        }));
+      },
+
+      drawTask: () => {
+        const { tasks, drawnTaskId } = get();
+        if (tasks.length === 0) return;
+        const candidates =
+          tasks.length > 1 ? tasks.filter((t) => t.id !== drawnTaskId) : tasks;
+        const pick = candidates[Math.floor(Math.random() * candidates.length)];
+        set({ drawnTaskId: pick.id });
+      },
+
+      clearDrawnTask: () => {
+        set({ drawnTaskId: null });
       },
     }),
     {

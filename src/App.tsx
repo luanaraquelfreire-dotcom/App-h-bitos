@@ -4,6 +4,7 @@ import TopBar from "./components/TopBar";
 import HabitsPage from "./pages/HabitsPage";
 import MonthPage from "./pages/MonthPage";
 import ProfilePage from "./pages/ProfilePage";
+import TasksPage from "./pages/TasksPage";
 import TodayPage from "./pages/TodayPage";
 import WeekPage from "./pages/WeekPage";
 import { useHabitStore } from "./store/useHabitStore";
@@ -50,7 +51,8 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const xp = calcXp(completions);
+  const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
+  const xp = calcXp(completions, completedTasksCount);
   const streak = currentStreak(habits, completions);
 
   return (
@@ -61,6 +63,7 @@ function App() {
         {tab === "week" && <WeekPage />}
         {tab === "month" && <MonthPage />}
         {tab === "habits" && <HabitsPage />}
+        {tab === "tasks" && <TasksPage />}
         {tab === "profile" && <ProfilePage />}
       </main>
       <BottomNav active={tab} onChange={setTab} />

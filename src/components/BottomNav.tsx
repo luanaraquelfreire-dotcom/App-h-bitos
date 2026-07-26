@@ -1,6 +1,6 @@
-import { CalendarDays, CalendarRange, ListChecks, Sun, User } from "lucide-react";
+import { CalendarDays, CalendarRange, Dices, ListChecks, Sun, User } from "lucide-react";
 
-export type Tab = "today" | "week" | "month" | "habits" | "profile";
+export type Tab = "today" | "week" | "month" | "habits" | "tasks" | "profile";
 
 interface BottomNavProps {
   active: Tab;
@@ -12,6 +12,7 @@ const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "week", label: "Semana", icon: CalendarDays },
   { id: "month", label: "Mês", icon: CalendarRange },
   { id: "habits", label: "Hábitos", icon: ListChecks },
+  { id: "tasks", label: "Sorteio", icon: Dices },
   { id: "profile", label: "Perfil", icon: User },
 ];
 

@@ -19,8 +19,9 @@ interface Achievement {
 export default function ProfilePage() {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
+  const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
 
-  const xp = calcXp(completions);
+  const xp = calcXp(completions, completedTasksCount);
   const { level, xpIntoLevel, xpForNextLevel } = levelFromXp(xp);
   const streak = currentStreak(habits, completions);
   const best = longestStreak(habits, completions);
@@ -34,6 +35,7 @@ export default function ProfilePage() {
     { id: "streak30", label: "1 mês de disciplina", emoji: "🏆", achieved: best >= 30 },
     { id: "completions25", label: "25 hábitos concluídos", emoji: "🎯", achieved: total >= 25 },
     { id: "completions100", label: "100 hábitos concluídos", emoji: "💎", achieved: total >= 100 },
+    { id: "tasks5", label: "5 procrastinações vencidas", emoji: "🎲", achieved: completedTasksCount >= 5 },
   ];
 
   return (
@@ -74,7 +76,9 @@ export default function ProfilePage() {
       <div className="mb-5 rounded-2xl border-2 border-duo-gray bg-white p-4">
         <p className="text-sm font-bold text-duo-gray-dark">
           {activeHabits.length} hábito{activeHabits.length !== 1 ? "s" : ""} ativo
-          {activeHabits.length !== 1 ? "s" : ""} · {total} conclus{total !== 1 ? "ões" : "ão"} no total
+          {activeHabits.length !== 1 ? "s" : ""} · {total} conclus{total !== 1 ? "ões" : "ão"} no total ·{" "}
+          {completedTasksCount} tarefa{completedTasksCount !== 1 ? "s" : ""} vencida
+          {completedTasksCount !== 1 ? "s" : ""} no sorteio
         </p>
       </div>
 
