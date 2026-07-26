@@ -1,6 +1,55 @@
-import { Plus, Trash2, Users } from "lucide-react";
-import { useState } from "react";
+import { Check, Plus, Trash2, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useHabitStore } from "../store/useHabitStore";
+import type { HouseholdMember } from "../types";
+
+interface MemberRowProps {
+  member: HouseholdMember;
+  onRename: (id: string, name: string) => void;
+  onRemove: (id: string) => void;
+}
+
+function MemberRow({ member, onRename, onRemove }: MemberRowProps) {
+  const [value, setValue] = useState(member.name);
+
+  useEffect(() => {
+    setValue(member.name);
+  }, [member.name]);
+
+  const trimmed = value.trim();
+  const dirty = trimmed.length > 0 && trimmed !== member.name;
+
+  function handleSave() {
+    if (!dirty) return;
+    onRename(member.id, trimmed);
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSave()}
+        className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-3 py-2 text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
+      />
+      <button
+        onClick={handleSave}
+        disabled={!dirty}
+        aria-label="Salvar nome"
+        className="duo-btn grid h-9 w-9 shrink-0 place-items-center rounded-xl border-duo-green-dark bg-duo-green text-white disabled:border-duo-gray-dark disabled:bg-duo-gray"
+      >
+        <Check size={16} strokeWidth={3} />
+      </button>
+      <button
+        onClick={() => onRemove(member.id)}
+        className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
+        aria-label="Remover pessoa"
+      >
+        <Trash2 size={16} />
+      </button>
+    </div>
+  );
+}
 
 export default function HouseholdMembersCard() {
   const householdMembers = useHabitStore((s) => s.householdMembers);
@@ -26,20 +75,12 @@ export default function HouseholdMembersCard() {
 
       <div className="mb-3 space-y-2">
         {householdMembers.map((m) => (
-          <div key={m.id} className="flex items-center gap-2">
-            <input
-              value={m.name}
-              onChange={(e) => renameHouseholdMember(m.id, e.target.value)}
-              className="flex-1 rounded-xl border-2 border-duo-gray bg-white px-3 py-2 text-sm font-bold text-duo-text outline-none focus:border-duo-blue"
-            />
-            <button
-              onClick={() => removeHouseholdMember(m.id)}
-              className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-              aria-label="Remover pessoa"
-            >
-              <Trash2 size={16} />
-            </button>
-          </div>
+          <MemberRow
+            key={m.id}
+            member={m}
+            onRename={renameHouseholdMember}
+            onRemove={removeHouseholdMember}
+          />
         ))}
       </div>
 
