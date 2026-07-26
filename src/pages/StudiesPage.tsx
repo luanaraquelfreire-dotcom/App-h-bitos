@@ -10,8 +10,10 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import PomodoroModal from "../components/PomodoroModal";
 import ProgressBar from "../components/ProgressBar";
+import SegmentedControl from "../components/SegmentedControl";
 import StudyItemFormModal from "../components/StudyItemFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import type { StudyItem, StudyType } from "../types";
@@ -267,27 +269,13 @@ export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
         Seus cursos, leituras e idiomas, com um caderno de anotações para cada um.
       </p>
 
-      <div className="mb-4 flex gap-1 overflow-x-auto rounded-2xl bg-duo-gray/40 p-1">
-        {FILTERS.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id)}
-            className={`flex-1 whitespace-nowrap rounded-xl px-2 py-2 text-xs font-extrabold ${
-              filter === f.id ? "bg-white text-duo-blue-dark shadow" : "text-duo-gray-dark"
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
+      <SegmentedControl options={FILTERS} value={filter} onChange={setFilter} />
 
       {filteredItems.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Nada por aqui ainda</p>
-          <p className="text-sm text-duo-gray-dark">
-            Adicione um curso, leitura ou idioma para começar seu caderno de anotações.
-          </p>
-        </div>
+        <EmptyState
+          title="Nada por aqui ainda"
+          description="Adicione um curso, leitura ou idioma para começar seu caderno de anotações."
+        />
       ) : (
         <div className="mb-5 space-y-2.5">
           {filteredItems.map((item) => {

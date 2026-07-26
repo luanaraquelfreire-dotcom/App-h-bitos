@@ -1,6 +1,8 @@
 import { ChevronLeft, ChevronRight, Plus, TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import ProgressBar from "../components/ProgressBar";
+import SegmentedControl from "../components/SegmentedControl";
 import TransactionFormModal from "../components/TransactionFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import type { Transaction, TransactionType } from "../types";
@@ -92,27 +94,13 @@ export default function FinancePage() {
         </div>
       )}
 
-      <div className="mb-4 flex gap-1 rounded-2xl bg-duo-gray/40 p-1">
-        {FILTERS.map((f) => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id)}
-            className={`flex-1 rounded-xl py-2 text-xs font-extrabold ${
-              filter === f.id ? "bg-white text-duo-blue-dark shadow" : "text-duo-gray-dark"
-            }`}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
+      <SegmentedControl options={FILTERS} value={filter} onChange={setFilter} />
 
       {monthTransactions.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Nada registrado neste mês</p>
-          <p className="text-sm text-duo-gray-dark">
-            Registre tudo o que entrou e o que saiu para acompanhar seu saldo.
-          </p>
-        </div>
+        <EmptyState
+          title="Nada registrado neste mês"
+          description="Registre tudo o que entrou e o que saiu para acompanhar seu saldo."
+        />
       ) : (
         <div className="mb-5 space-y-2.5">
           {monthTransactions.map((t) => (

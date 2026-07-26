@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import HabitFormModal from "../components/HabitFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import type { Habit } from "../types";
@@ -61,10 +62,10 @@ export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
       )}
 
       {activeHabits.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Você ainda não tem hábitos</p>
-          <p className="text-sm text-duo-gray-dark">Toque no botão abaixo para criar o primeiro.</p>
-        </div>
+        <EmptyState
+          title="Você ainda não tem hábitos"
+          description="Toque no botão abaixo para criar o primeiro."
+        />
       ) : (
         <div className="space-y-2.5">
           {activeHabits.map((h) => {

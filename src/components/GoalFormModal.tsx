@@ -1,7 +1,8 @@
-import { Trash2, X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Goal, GoalType, Habit, HabitColor, HouseholdMember } from "../types";
 import HabitFormModal from "./HabitFormModal";
+import ModalShell from "./ModalShell";
 
 interface GoalFormModalProps {
   initial?: Goal;
@@ -66,20 +67,7 @@ export default function GoalFormModal({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-        <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-5 sm:rounded-3xl">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-extrabold text-duo-text">
-              {initial ? "Editar meta" : "Nova meta do ano"}
-            </h2>
-            <button
-              onClick={onClose}
-              className="grid h-8 w-8 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-            >
-              <X size={20} />
-            </button>
-          </div>
-
+      <ModalShell title={initial ? "Editar meta" : "Nova meta do ano"} onClose={onClose}>
           <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
             Título da meta
           </label>
@@ -209,8 +197,7 @@ export default function GoalFormModal({
               Excluir meta
             </button>
           )}
-        </div>
-      </div>
+      </ModalShell>
 
       {showHabitCreator && (
         <HabitFormModal

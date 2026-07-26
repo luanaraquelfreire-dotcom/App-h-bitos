@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SegmentedControl from "../components/SegmentedControl";
 import AgendaPage from "./AgendaPage";
 import MonthPage from "./MonthPage";
 import TodayPage from "./TodayPage";
@@ -20,19 +21,7 @@ export default function CalendarPage() {
     <div className="px-4 py-4">
       <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Calendário</h1>
 
-      <div className="mb-4 flex gap-1 rounded-2xl bg-duo-gray/40 p-1">
-        {VIEWS.map((v) => (
-          <button
-            key={v.id}
-            onClick={() => setView(v.id)}
-            className={`flex-1 rounded-xl py-2 text-xs font-extrabold ${
-              view === v.id ? "bg-white text-duo-blue-dark shadow" : "text-duo-gray-dark"
-            }`}
-          >
-            {v.label}
-          </button>
-        ))}
-      </div>
+      <SegmentedControl options={VIEWS} value={view} onChange={setView} />
 
       {view === "today" && <TodayPage embedded />}
       {view === "day" && <AgendaPage embedded />}

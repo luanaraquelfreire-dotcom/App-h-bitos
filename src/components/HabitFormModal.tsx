@@ -3,6 +3,7 @@ import { Trash2, X } from "lucide-react";
 import type { Habit, HabitColor, HouseholdMember } from "../types";
 import { COLOR_MAP, HABIT_COLORS, HABIT_EMOJIS } from "../utils/colors";
 import { DAY_LABELS } from "../utils/date";
+import ModalShell from "./ModalShell";
 
 interface HabitFormModalProps {
   initial?: Habit;
@@ -77,19 +78,7 @@ export default function HabitFormModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-5 sm:rounded-3xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-extrabold text-duo-text">
-            {initial ? "Editar hábito" : "Novo hábito"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-          >
-            <X size={20} />
-          </button>
-        </div>
+    <ModalShell title={initial ? "Editar hábito" : "Novo hábito"} onClose={onClose}>
 
         <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
           Nome do hábito
@@ -221,7 +210,6 @@ export default function HabitFormModal({
             Excluir hábito
           </button>
         )}
-      </div>
-    </div>
+    </ModalShell>
   );
 }

@@ -1,6 +1,7 @@
 import { Check, Plus } from "lucide-react";
 import { useState } from "react";
 import ChoreFormModal from "../components/ChoreFormModal";
+import EmptyState from "../components/EmptyState";
 import { useHabitStore } from "../store/useHabitStore";
 import type { Chore } from "../types";
 import { choreStatus, sortChoresByUrgency, type ChoreUrgency } from "../utils/chores";
@@ -82,12 +83,10 @@ export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
       )}
 
       {sortedChores.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Nenhuma tarefa cadastrada</p>
-          <p className="text-sm text-duo-gray-dark">
-            Ex: trocar toalhas a cada 7 dias, limpar geladeira a cada 30 dias.
-          </p>
-        </div>
+        <EmptyState
+          title="Nenhuma tarefa cadastrada"
+          description="Ex: trocar toalhas a cada 7 dias, limpar geladeira a cada 30 dias."
+        />
       ) : (
         <div className="mb-5 space-y-2.5">
           {sortedChores.map((c) => {

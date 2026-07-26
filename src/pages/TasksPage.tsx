@@ -1,5 +1,6 @@
 import { Check, Dices, Eye, EyeOff, PartyPopper, Plus, Shuffle, Timer, X } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import PomodoroModal from "../components/PomodoroModal";
 import { useHabitStore } from "../store/useHabitStore";
 
@@ -138,12 +139,10 @@ export default function TasksPage() {
       </div>
 
       {tasks.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Nenhuma tarefa cadastrada</p>
-          <p className="text-sm text-duo-gray-dark">
-            Adicione aquilo que você vem enrolando para fazer e sorteie uma para começar.
-          </p>
-        </div>
+        <EmptyState
+          title="Nenhuma tarefa cadastrada"
+          description="Adicione aquilo que você vem enrolando para fazer e sorteie uma para começar."
+        />
       ) : (
         <>
           <p className="mb-2 text-xs font-semibold text-duo-gray-dark">

@@ -1,7 +1,9 @@
 import { Check, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import MealPlanFormModal from "../components/MealPlanFormModal";
 import RecipeFormModal from "../components/RecipeFormModal";
+import SegmentedControl from "../components/SegmentedControl";
 import { useHabitStore } from "../store/useHabitStore";
 import type { Ingredient, MealPlanEntry, Recipe } from "../types";
 import { DAY_LABELS, formatMonthYear, monthKey, nextMonth, prevMonth } from "../utils/date";
@@ -55,29 +57,15 @@ export default function FoodPage() {
     <div className="px-4 py-4">
       <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Alimentação</h1>
 
-      <div className="mb-5 flex gap-1 rounded-2xl bg-duo-gray/40 p-1">
-        {SUB_TABS.map((t) => (
-          <button
-            key={t.id}
-            onClick={() => setSubView(t.id)}
-            className={`flex-1 rounded-xl py-2 text-xs font-extrabold ${
-              subView === t.id ? "bg-white text-duo-blue-dark shadow" : "text-duo-gray-dark"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
+      <SegmentedControl options={SUB_TABS} value={subView} onChange={setSubView} className="mb-5" />
 
       {subView === "recipes" && (
         <>
           {recipes.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-              <p className="mb-1 font-extrabold text-duo-text">Nenhuma receita cadastrada</p>
-              <p className="text-sm text-duo-gray-dark">
-                Cadastre suas receitas com os ingredientes para poder planejar as refeições.
-              </p>
-            </div>
+            <EmptyState
+              title="Nenhuma receita cadastrada"
+              description="Cadastre suas receitas com os ingredientes para poder planejar as refeições."
+            />
           ) : (
             <div className="mb-5 space-y-2.5">
               {recipes.map((r) => (
@@ -132,12 +120,10 @@ export default function FoodPage() {
           </div>
 
           {mealPlans.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-              <p className="mb-1 font-extrabold text-duo-text">Nenhuma refeição planejada</p>
-              <p className="text-sm text-duo-gray-dark">
-                Escolha uma receita e os dias da semana em que ela se repete.
-              </p>
-            </div>
+            <EmptyState
+              title="Nenhuma refeição planejada"
+              description="Escolha uma receita e os dias da semana em que ela se repete."
+            />
           ) : (
             <div className="mb-5 space-y-2.5">
               {mealPlans.map((p) => {
@@ -198,12 +184,10 @@ export default function FoodPage() {
           </div>
 
           {shoppingList.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-              <p className="mb-1 font-extrabold text-duo-text">Nada para comprar ainda</p>
-              <p className="text-sm text-duo-gray-dark">
-                Planeje refeições na aba "Planejamento" para gerar a lista deste mês.
-              </p>
-            </div>
+            <EmptyState
+              title="Nada para comprar ainda"
+              description='Planeje refeições na aba "Planejamento" para gerar a lista deste mês.'
+            />
           ) : (
             <>
               <p className="mb-3 text-xs font-semibold text-duo-gray-dark">

@@ -19,7 +19,6 @@ export const useHabitStore = create<HabitState>()(
     (set, get) => ({
       habits: [],
       completions: {},
-      xp: 0,
       tasks: [],
       drawnTaskId: null,
       completedTasksCount: 0,
@@ -91,10 +90,6 @@ export const useHabitStore = create<HabitState>()(
         set({
           completions: { ...state.completions, [habitId]: updated },
         });
-      },
-
-      isCompleted: (habitId, date) => {
-        return get().completions[habitId]?.includes(date) ?? false;
       },
 
       toggleHabitTime: (habitId, date, time) => {

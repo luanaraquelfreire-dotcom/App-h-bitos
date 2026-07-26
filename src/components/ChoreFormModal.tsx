@@ -1,7 +1,8 @@
-import { Trash2, X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Chore, HouseholdMember } from "../types";
 import { CHORE_EMOJIS, CHORE_INTERVAL_PRESETS } from "../utils/chores";
+import ModalShell from "./ModalShell";
 
 interface ChoreFormModalProps {
   initial?: Chore;
@@ -44,20 +45,7 @@ export default function ChoreFormModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-5 sm:rounded-3xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-extrabold text-duo-text">
-            {initial ? "Editar tarefa" : "Nova tarefa de casa"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
+    <ModalShell title={initial ? "Editar tarefa" : "Nova tarefa de casa"} onClose={onClose}>
         <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
           Nome da tarefa
         </label>
@@ -163,7 +151,6 @@ export default function ChoreFormModal({
             Excluir tarefa
           </button>
         )}
-      </div>
-    </div>
+    </ModalShell>
   );
 }

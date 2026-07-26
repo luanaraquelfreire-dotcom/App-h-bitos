@@ -1,5 +1,6 @@
 import { PartyPopper, Plus } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import HabitCard from "../components/HabitCard";
 import ProgressBar from "../components/ProgressBar";
 import HabitFormModal from "../components/HabitFormModal";
@@ -63,10 +64,10 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
       )}
 
       {todayHabits.length === 0 && (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Nada programado para hoje</p>
-          <p className="text-sm text-duo-gray-dark">Adicione um hábito para começar sua rotina.</p>
-        </div>
+        <EmptyState
+          title="Nada programado para hoje"
+          description="Adicione um hábito para começar sua rotina."
+        />
       )}
 
       <div className="space-y-2.5">

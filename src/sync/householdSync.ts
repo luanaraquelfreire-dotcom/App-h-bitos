@@ -5,7 +5,6 @@ import { useHabitStore } from "../store/useHabitStore";
 const SYNC_KEYS = [
   "habits",
   "completions",
-  "xp",
   "tasks",
   "drawnTaskId",
   "completedTasksCount",

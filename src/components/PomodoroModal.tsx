@@ -1,5 +1,6 @@
-import { Check, Pause, Play, RotateCcw, X } from "lucide-react";
+import { Check, Pause, Play, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import ModalShell from "./ModalShell";
 
 interface PomodoroModalProps {
   title: string;
@@ -60,21 +61,7 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
   const dashOffset = CIRCUMFERENCE * (1 - progress);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-      <div className="w-full max-w-md rounded-t-3xl bg-white p-5 sm:rounded-3xl">
-        <div className="mb-2 flex items-center justify-between">
-          <h2 className="truncate text-lg font-extrabold text-duo-text">
-            {emoji ? `${emoji} ` : ""}
-            {title}
-          </h2>
-          <button
-            onClick={onClose}
-            className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
+    <ModalShell title={emoji ? `${emoji} ${title}` : title} onClose={onClose}>
         <div className="relative mx-auto my-4 h-56 w-56">
           <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
             <circle cx="60" cy="60" r={RADIUS} strokeWidth="10" className="fill-none stroke-duo-gray" />
@@ -159,7 +146,6 @@ export default function PomodoroModal({ title, emoji, onClose, onComplete }: Pom
             </div>
           </>
         )}
-      </div>
-    </div>
+    </ModalShell>
   );
 }

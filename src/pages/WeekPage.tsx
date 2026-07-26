@@ -1,5 +1,6 @@
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import ProgressBar from "../components/ProgressBar";
 import { useHabitStore } from "../store/useHabitStore";
 import { COLOR_MAP } from "../utils/colors";
@@ -72,10 +73,10 @@ export default function WeekPage({ embedded }: WeekPageProps = {}) {
       )}
 
       {activeHabits.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="font-extrabold text-duo-text">Nenhum hábito cadastrado</p>
-          <p className="text-sm text-duo-gray-dark">Crie hábitos na aba "Hábitos".</p>
-        </div>
+        <EmptyState
+          title="Nenhum hábito cadastrado"
+          description='Crie hábitos na aba "Hábitos".'
+        />
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full min-w-[520px] border-separate border-spacing-y-2">

@@ -1,8 +1,9 @@
-import { Trash2, X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { StudyItem, StudyStatus, StudyType } from "../types";
 import { DAY_LABELS } from "../utils/date";
 import { STUDY_EMOJIS, STUDY_STATUS_LABELS, STUDY_TYPE_LABELS } from "../utils/study";
+import ModalShell from "./ModalShell";
 
 interface StudyItemFormModalProps {
   initial?: StudyItem;
@@ -61,20 +62,7 @@ export default function StudyItemFormModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 sm:items-center">
-      <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-t-3xl bg-white p-5 sm:rounded-3xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-extrabold text-duo-text">
-            {initial ? "Editar item" : "Novo item de estudo"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="grid h-8 w-8 place-items-center rounded-full text-duo-gray-dark hover:bg-duo-gray"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
+    <ModalShell title={initial ? "Editar item" : "Novo item de estudo"} onClose={onClose}>
         <label className="mb-1 block text-xs font-bold uppercase text-duo-gray-dark">
           Título
         </label>
@@ -219,7 +207,6 @@ export default function StudyItemFormModal({
             Excluir item
           </button>
         )}
-      </div>
-    </div>
+    </ModalShell>
   );
 }

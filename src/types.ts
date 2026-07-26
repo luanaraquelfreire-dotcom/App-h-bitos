@@ -142,7 +142,6 @@ export interface StudyItem {
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
-  xp: number;
   tasks: ProcrastinatedTask[];
   drawnTaskId: string | null;
   completedTasksCount: number;
@@ -162,7 +161,6 @@ export interface HabitState {
   toggleCompletion: (habitId: string, date: string) => void;
   /** alterna um horário específico (para hábitos com múltiplos horários no dia) */
   toggleHabitTime: (habitId: string, date: string, time: string) => void;
-  isCompleted: (habitId: string, date: string) => boolean;
   addTask: (text: string) => void;
   removeTask: (id: string) => void;
   completeTask: (id: string) => void;

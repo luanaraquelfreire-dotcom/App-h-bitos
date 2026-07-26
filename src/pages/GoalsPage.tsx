@@ -1,5 +1,6 @@
 import { Check, Target } from "lucide-react";
 import { useState } from "react";
+import EmptyState from "../components/EmptyState";
 import GoalFormModal from "../components/GoalFormModal";
 import ProgressBar from "../components/ProgressBar";
 import { useHabitStore } from "../store/useHabitStore";
@@ -51,13 +52,10 @@ export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
       </p>
 
       {goals.length === 0 ? (
-        <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">
-          <p className="mb-1 font-extrabold text-duo-text">Nenhuma meta cadastrada</p>
-          <p className="text-sm text-duo-gray-dark">
-            Cadastre um objetivo do ano: uma tarefa única (ex: renovar a CNH) ou uma
-            meta que precisa virar hábito (ex: praticar exercícios 200 dias).
-          </p>
-        </div>
+        <EmptyState
+          title="Nenhuma meta cadastrada"
+          description='Cadastre um objetivo do ano: uma tarefa única (ex: renovar a CNH) ou uma meta que precisa virar hábito (ex: praticar exercícios 200 dias).'
+        />
       ) : (
         <div className="mb-5 space-y-2.5">
           {goals.map((g) => {
