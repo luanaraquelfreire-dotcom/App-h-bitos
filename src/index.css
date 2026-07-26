@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Nunito", "Segoe UI", system-ui, sans-serif;
+  --font-sans:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --color-duo-green: #58cc02;
   --color-duo-green-dark: #46a302;
