@@ -2,7 +2,6 @@ import { Award, Flame, Gem, Trophy } from "lucide-react";
 import ProgressBar from "../components/ProgressBar";
 import WeeklySummaryCard from "../components/WeeklySummaryCard";
 import HouseholdMembersCard from "../components/HouseholdMembersCard";
-import BackupCard from "../components/BackupCard";
 import SyncStatusCard from "../components/SyncStatusCard";
 import { useHabitStore } from "../store/useHabitStore";
 import {
@@ -108,10 +107,6 @@ export default function ProfilePage() {
       <div className="mt-6">
         <SyncStatusCard />
         <HouseholdMembersCard />
-      </div>
-
-      <div className="mt-6">
-        <BackupCard />
       </div>
     </div>
   );
