@@ -1,11 +1,13 @@
 import { useState } from "react";
 import AgendaPage from "./AgendaPage";
 import MonthPage from "./MonthPage";
+import WeekPage from "./WeekPage";
 
-type View = "day" | "month";
+type View = "day" | "week" | "month";
 
 const VIEWS: { id: View; label: string }[] = [
   { id: "day", label: "Dia" },
+  { id: "week", label: "Semana" },
   { id: "month", label: "Mês" },
 ];
 
@@ -30,7 +32,9 @@ export default function CalendarPage() {
         ))}
       </div>
 
-      {view === "day" ? <AgendaPage embedded /> : <MonthPage embedded />}
+      {view === "day" && <AgendaPage embedded />}
+      {view === "week" && <WeekPage embedded />}
+      {view === "month" && <MonthPage embedded />}
     </div>
   );
 }
