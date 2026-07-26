@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Goal, Habit, HabitState, MealPlanEntry, Recipe, Transaction } from "../types";
+import type { Chore, Goal, Habit, HabitState, MealPlanEntry, Recipe, Transaction } from "../types";
 import { todayKey } from "../utils/date";
 import { generateId } from "../utils/id";
 
@@ -19,6 +19,7 @@ export const useHabitStore = create<HabitState>()(
       peopleCount: 2,
       shoppingChecked: {},
       transactions: [],
+      chores: [],
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -186,6 +187,27 @@ export const useHabitStore = create<HabitState>()(
 
       removeTransaction: (id) => {
         set((state) => ({ transactions: state.transactions.filter((t) => t.id !== id) }));
+      },
+
+      addChore: (chore) => {
+        const newChore: Chore = { ...chore, id: generateId(), createdAt: todayKey() };
+        set((state) => ({ chores: [...state.chores, newChore] }));
+      },
+
+      updateChore: (id, updates) => {
+        set((state) => ({
+          chores: state.chores.map((c) => (c.id === id ? { ...c, ...updates } : c)),
+        }));
+      },
+
+      removeChore: (id) => {
+        set((state) => ({ chores: state.chores.filter((c) => c.id !== id) }));
+      },
+
+      markChoreDone: (id) => {
+        set((state) => ({
+          chores: state.chores.map((c) => (c.id === id ? { ...c, lastDoneAt: todayKey() } : c)),
+        }));
       },
     }),
     {

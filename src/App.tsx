@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BottomNav, { type Tab } from "./components/BottomNav";
 import TopBar from "./components/TopBar";
+import ChoresPage from "./pages/ChoresPage";
 import FinancePage from "./pages/FinancePage";
 import FoodPage from "./pages/FoodPage";
 import GoalsPage from "./pages/GoalsPage";
@@ -67,6 +68,7 @@ function App() {
         {tab === "goals" && <GoalsPage />}
         {tab === "food" && <FoodPage />}
         {tab === "finance" && <FinancePage />}
+        {tab === "chores" && <ChoresPage />}
         {tab === "tasks" && <TasksPage />}
         {tab === "profile" && <ProfilePage />}
       </main>

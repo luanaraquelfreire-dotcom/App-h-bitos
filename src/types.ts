@@ -78,6 +78,17 @@ export interface Transaction {
   createdAt: string;
 }
 
+export interface Chore {
+  id: string;
+  name: string;
+  emoji: string;
+  /** repetir a cada quantos dias */
+  intervalDays: number;
+  /** yyyy-MM-dd da última vez que foi feita (undefined = nunca feita) */
+  lastDoneAt?: string;
+  createdAt: string;
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
@@ -92,6 +103,7 @@ export interface HabitState {
   /** "yyyy-MM" -> chaves de itens já marcados como comprados naquele mês */
   shoppingChecked: Record<string, string[]>;
   transactions: Transaction[];
+  chores: Chore[];
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -117,4 +129,8 @@ export interface HabitState {
   addTransaction: (transaction: Omit<Transaction, "id" | "createdAt">) => void;
   updateTransaction: (id: string, updates: Partial<Omit<Transaction, "id">>) => void;
   removeTransaction: (id: string) => void;
+  addChore: (chore: Omit<Chore, "id" | "createdAt" | "lastDoneAt">) => void;
+  updateChore: (id: string, updates: Partial<Omit<Chore, "id">>) => void;
+  removeChore: (id: string) => void;
+  markChoreDone: (id: string) => void;
 }
