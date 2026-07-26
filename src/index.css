@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito", "Segoe UI", system-ui, sans-serif;
+
+  --color-duo-green: #58cc02;
+  --color-duo-green-dark: #46a302;
+  --color-duo-blue: #1cb0f6;
+  --color-duo-blue-dark: #0090c9;
+  --color-duo-red: #ff4b4b;
+  --color-duo-red-dark: #d93030;
+  --color-duo-yellow: #ffc800;
+  --color-duo-yellow-dark: #e0ab00;
+  --color-duo-purple: #ce82ff;
+  --color-duo-purple-dark: #a568d1;
+  --color-duo-gray: #e5e5e5;
+  --color-duo-gray-dark: #afafaf;
+  --color-duo-text: #3c3c3c;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: #fbfbfb;
+    color: var(--color-duo-text);
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer utilities {
+  .duo-btn {
+    border-bottom-width: 4px;
+    transition:
+      transform 0.05s ease,
+      filter 0.15s ease;
+  }
+  .duo-btn:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+  }
+  .duo-card {
+    border-width: 2px;
+    border-bottom-width: 4px;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
