@@ -77,7 +77,11 @@ function layoutEvents(habits: Habit[]): PositionedEvent[] {
   return result;
 }
 
-export default function AgendaPage() {
+interface AgendaPageProps {
+  embedded?: boolean;
+}
+
+export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
@@ -96,8 +100,8 @@ export default function AgendaPage() {
   const eventHeight = (EVENT_DURATION_MIN / 60) * HOUR_HEIGHT - 3;
 
   return (
-    <div className="px-4 py-4">
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Agenda</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Agenda</h1>}
 
       <div className="mb-2 flex items-center justify-between">
         <button

@@ -28,7 +28,11 @@ function ratioColorClass(ratio: number): string {
   return "bg-duo-green";
 }
 
-export default function MonthPage() {
+interface MonthPageProps {
+  embedded?: boolean;
+}
+
+export default function MonthPage({ embedded }: MonthPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const goals = useHabitStore((s) => s.goals);
@@ -58,8 +62,8 @@ export default function MonthPage() {
   }
 
   return (
-    <div className="px-4 py-4">
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Mês</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Mês</h1>}
 
       <div className="mb-4 flex items-center justify-between">
         <button

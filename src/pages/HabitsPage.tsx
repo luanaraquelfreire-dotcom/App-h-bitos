@@ -7,7 +7,11 @@ import { COLOR_MAP } from "../utils/colors";
 import { DAY_LABELS } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
 
-export default function HabitsPage() {
+interface HabitsPageProps {
+  embedded?: boolean;
+}
+
+export default function HabitsPage({ embedded }: HabitsPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const goals = useHabitStore((s) => s.goals);
   const completions = useHabitStore((s) => s.completions);
@@ -20,8 +24,8 @@ export default function HabitsPage() {
   const activeHabits = habits.filter((h) => !h.archived);
 
   return (
-    <div className="px-4 py-4">
-      <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meus hábitos</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      {!embedded && <h1 className="mb-4 text-2xl font-extrabold text-duo-text">Meus hábitos</h1>}
 
       {activeHabits.length === 0 ? (
         <div className="rounded-2xl border-2 border-dashed border-duo-gray px-4 py-8 text-center">

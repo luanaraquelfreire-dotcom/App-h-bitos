@@ -7,7 +7,11 @@ import type { Goal, Habit, HabitColor } from "../types";
 import { daysUntilYearEnd } from "../utils/date";
 import { goalProgress } from "../utils/gamification";
 
-export default function GoalsPage() {
+interface GoalsPageProps {
+  embedded?: boolean;
+}
+
+export default function GoalsPage({ embedded }: GoalsPageProps = {}) {
   const goals = useHabitStore((s) => s.goals);
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
@@ -37,8 +41,8 @@ export default function GoalsPage() {
   const activeHabits = habits.filter((h: Habit) => !h.archived);
 
   return (
-    <div className="px-4 py-4">
-      <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Metas do ano</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      {!embedded && <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Metas do ano</h1>}
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Faltam {daysLeft} dias para o fim do ano.
       </p>

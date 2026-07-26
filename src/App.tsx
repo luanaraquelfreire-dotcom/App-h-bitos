@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import BottomNav, { type Tab } from "./components/BottomNav";
 import TopBar from "./components/TopBar";
-import AgendaPage from "./pages/AgendaPage";
-import ChoresPage from "./pages/ChoresPage";
+import CalendarPage from "./pages/CalendarPage";
 import FinancePage from "./pages/FinancePage";
 import FoodPage from "./pages/FoodPage";
-import GoalsPage from "./pages/GoalsPage";
-import HabitsPage from "./pages/HabitsPage";
-import MonthPage from "./pages/MonthPage";
 import ProfilePage from "./pages/ProfilePage";
+import RoutinePage from "./pages/RoutinePage";
 import StudiesPage from "./pages/StudiesPage";
 import TasksPage from "./pages/TasksPage";
 import TodayPage from "./pages/TodayPage";
@@ -65,13 +62,10 @@ function App() {
       <TopBar streak={streak} xp={xp} />
       <main className="flex-1 pb-6">
         {tab === "today" && <TodayPage />}
-        {tab === "agenda" && <AgendaPage />}
-        {tab === "month" && <MonthPage />}
-        {tab === "habits" && <HabitsPage />}
-        {tab === "goals" && <GoalsPage />}
+        {tab === "calendar" && <CalendarPage />}
+        {tab === "habits" && <RoutinePage />}
         {tab === "food" && <FoodPage />}
         {tab === "finance" && <FinancePage />}
-        {tab === "chores" && <ChoresPage />}
         {tab === "studies" && <StudiesPage />}
         {tab === "tasks" && <TasksPage />}
         {tab === "profile" && <ProfilePage />}

@@ -23,7 +23,11 @@ function statusLabel(chore: Chore): string {
   return `Faltam ${status.daysUntilDue} dia${status.daysUntilDue !== 1 ? "s" : ""}`;
 }
 
-export default function ChoresPage() {
+interface ChoresPageProps {
+  embedded?: boolean;
+}
+
+export default function ChoresPage({ embedded }: ChoresPageProps = {}) {
   const chores = useHabitStore((s) => s.chores);
   const addChore = useHabitStore((s) => s.addChore);
   const updateChore = useHabitStore((s) => s.updateChore);
@@ -36,8 +40,10 @@ export default function ChoresPage() {
   const sortedChores = sortChoresByUrgency(chores);
 
   return (
-    <div className="px-4 py-4">
-      <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Tarefas de casa</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      {!embedded && (
+        <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Tarefas de casa</h1>
+      )}
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Cadastre os afazeres domésticos e a recorrência de cada um.
       </p>
