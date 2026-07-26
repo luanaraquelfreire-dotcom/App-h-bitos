@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Goal, Habit, HabitState, MealPlanEntry, Recipe } from "../types";
+import type { Goal, Habit, HabitState, MealPlanEntry, Recipe, Transaction } from "../types";
 import { todayKey } from "../utils/date";
 import { generateId } from "../utils/id";
 
@@ -18,6 +18,7 @@ export const useHabitStore = create<HabitState>()(
       mealPlans: [],
       peopleCount: 2,
       shoppingChecked: {},
+      transactions: [],
 
       addHabit: (habit) => {
         const newHabit: Habit = {
@@ -166,6 +167,25 @@ export const useHabitStore = create<HabitState>()(
             : [...existing, itemKey];
           return { shoppingChecked: { ...state.shoppingChecked, [monthKey]: updated } };
         });
+      },
+
+      addTransaction: (transaction) => {
+        const newTransaction: Transaction = {
+          ...transaction,
+          id: generateId(),
+          createdAt: todayKey(),
+        };
+        set((state) => ({ transactions: [...state.transactions, newTransaction] }));
+      },
+
+      updateTransaction: (id, updates) => {
+        set((state) => ({
+          transactions: state.transactions.map((t) => (t.id === id ? { ...t, ...updates } : t)),
+        }));
+      },
+
+      removeTransaction: (id) => {
+        set((state) => ({ transactions: state.transactions.filter((t) => t.id !== id) }));
       },
     }),
     {

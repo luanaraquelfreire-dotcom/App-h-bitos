@@ -65,6 +65,19 @@ export interface MealPlanEntry {
   createdAt: string;
 }
 
+export type TransactionType = "income" | "expense";
+export type TransactionCategory = "fixed" | "variable";
+
+export interface Transaction {
+  id: string;
+  type: TransactionType;
+  category: TransactionCategory;
+  description: string;
+  amount: number;
+  date: string; // yyyy-MM-dd
+  createdAt: string;
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
@@ -78,6 +91,7 @@ export interface HabitState {
   peopleCount: number;
   /** "yyyy-MM" -> chaves de itens já marcados como comprados naquele mês */
   shoppingChecked: Record<string, string[]>;
+  transactions: Transaction[];
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -100,4 +114,7 @@ export interface HabitState {
   removeMealPlan: (id: string) => void;
   setPeopleCount: (count: number) => void;
   toggleShoppingChecked: (monthKey: string, itemKey: string) => void;
+  addTransaction: (transaction: Omit<Transaction, "id" | "createdAt">) => void;
+  updateTransaction: (id: string, updates: Partial<Omit<Transaction, "id">>) => void;
+  removeTransaction: (id: string) => void;
 }

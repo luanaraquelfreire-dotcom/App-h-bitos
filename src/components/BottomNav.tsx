@@ -6,9 +6,18 @@ import {
   Target,
   User,
   UtensilsCrossed,
+  Wallet,
 } from "lucide-react";
 
-export type Tab = "today" | "month" | "habits" | "goals" | "tasks" | "food" | "profile";
+export type Tab =
+  | "today"
+  | "month"
+  | "habits"
+  | "goals"
+  | "tasks"
+  | "food"
+  | "finance"
+  | "profile";
 
 interface BottomNavProps {
   active: Tab;
@@ -21,6 +30,7 @@ const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "habits", label: "Hábitos", icon: ListChecks },
   { id: "goals", label: "Metas", icon: Target },
   { id: "food", label: "Alimentação", icon: UtensilsCrossed },
+  { id: "finance", label: "Finanças", icon: Wallet },
   { id: "tasks", label: "Procrastinação", icon: Dices },
   { id: "profile", label: "Perfil", icon: User },
 ];
