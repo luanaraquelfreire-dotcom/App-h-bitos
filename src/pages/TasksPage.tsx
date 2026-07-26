@@ -1,5 +1,6 @@
-import { Check, Dices, Eye, EyeOff, PartyPopper, Plus, Shuffle, X } from "lucide-react";
+import { Check, Dices, Eye, EyeOff, PartyPopper, Plus, Shuffle, Timer, X } from "lucide-react";
 import { useState } from "react";
+import PomodoroModal from "../components/PomodoroModal";
 import { useHabitStore } from "../store/useHabitStore";
 
 const SPIN_DURATION_MS = 1200;
@@ -18,6 +19,7 @@ export default function TasksPage() {
   const [spinning, setSpinning] = useState(false);
   const [spinText, setSpinText] = useState("");
   const [revealedIds, setRevealedIds] = useState<Set<string>>(new Set());
+  const [showTimer, setShowTimer] = useState(false);
 
   const drawnTask = tasks.find((t) => t.id === drawnTaskId) ?? null;
 
@@ -72,30 +74,49 @@ export default function TasksPage() {
           </p>
 
           {!spinning && drawnTask && (
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <button
-                onClick={() => completeTask(drawnTask.id)}
-                className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green py-3 font-extrabold uppercase tracking-wide text-white"
-              >
-                <Check size={18} strokeWidth={3} />
-                Concluí!
-              </button>
-              <button
-                onClick={handleDraw}
-                className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3 font-extrabold uppercase tracking-wide text-white"
-              >
-                <Shuffle size={18} />
-                Sortear outra
-              </button>
-              <button
-                onClick={clearDrawnTask}
-                className="rounded-2xl px-3 py-3 text-sm font-extrabold uppercase tracking-wide text-duo-gray-dark"
-              >
-                Depois
-              </button>
-            </div>
+            <>
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <button
+                  onClick={() => completeTask(drawnTask.id)}
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-green-dark bg-duo-green py-3 font-extrabold uppercase tracking-wide text-white"
+                >
+                  <Check size={18} strokeWidth={3} />
+                  Concluí!
+                </button>
+                <button
+                  onClick={() => setShowTimer(true)}
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-yellow-dark bg-duo-yellow py-3 font-extrabold uppercase tracking-wide text-white"
+                >
+                  <Timer size={18} />
+                  Cronômetro
+                </button>
+              </div>
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+                <button
+                  onClick={handleDraw}
+                  className="duo-btn flex flex-1 items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue py-3 font-extrabold uppercase tracking-wide text-white"
+                >
+                  <Shuffle size={18} />
+                  Sortear outra
+                </button>
+                <button
+                  onClick={clearDrawnTask}
+                  className="rounded-2xl px-3 py-3 text-sm font-extrabold uppercase tracking-wide text-duo-gray-dark"
+                >
+                  Depois
+                </button>
+              </div>
+            </>
           )}
         </div>
+      )}
+
+      {showTimer && drawnTask && (
+        <PomodoroModal
+          title={drawnTask.text}
+          onClose={() => setShowTimer(false)}
+          onComplete={() => completeTask(drawnTask.id)}
+        />
       )}
 
       <div className="mb-4 flex gap-2">
