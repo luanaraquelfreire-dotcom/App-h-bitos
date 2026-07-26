@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import BottomNav, { type Tab } from "./components/BottomNav";
 import TopBar from "./components/TopBar";
+import AgendaPage from "./pages/AgendaPage";
 import ChoresPage from "./pages/ChoresPage";
 import FinancePage from "./pages/FinancePage";
 import FoodPage from "./pages/FoodPage";
@@ -64,6 +65,7 @@ function App() {
       <TopBar streak={streak} xp={xp} />
       <main className="flex-1 pb-6">
         {tab === "today" && <TodayPage />}
+        {tab === "agenda" && <AgendaPage />}
         {tab === "month" && <MonthPage />}
         {tab === "habits" && <HabitsPage />}
         {tab === "goals" && <GoalsPage />}

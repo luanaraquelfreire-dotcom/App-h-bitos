@@ -74,6 +74,14 @@ export function prevWeek(reference: Date): Date {
   return addDays(reference, -7);
 }
 
+export function nextDay(reference: Date): Date {
+  return addDays(reference, 1);
+}
+
+export function prevDay(reference: Date): Date {
+  return addDays(reference, -1);
+}
+
 export function formatLong(date: Date): string {
   return format(date, "EEEE, d 'de' MMMM", { locale: ptBR });
 }
