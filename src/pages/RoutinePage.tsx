@@ -2,13 +2,15 @@ import { useState } from "react";
 import ChoresPage from "./ChoresPage";
 import GoalsPage from "./GoalsPage";
 import HabitsPage from "./HabitsPage";
+import StudiesPage from "./StudiesPage";
 
-type View = "habits" | "goals" | "chores";
+type View = "habits" | "goals" | "chores" | "studies";
 
 const VIEWS: { id: View; label: string }[] = [
   { id: "habits", label: "Hábitos" },
   { id: "goals", label: "Metas" },
   { id: "chores", label: "Casa" },
+  { id: "studies", label: "Estudos" },
 ];
 
 export default function RoutinePage() {
@@ -35,6 +37,7 @@ export default function RoutinePage() {
       {view === "habits" && <HabitsPage embedded />}
       {view === "goals" && <GoalsPage embedded />}
       {view === "chores" && <ChoresPage embedded />}
+      {view === "studies" && <StudiesPage embedded />}
     </div>
   );
 }

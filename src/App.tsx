@@ -6,7 +6,6 @@ import FinancePage from "./pages/FinancePage";
 import FoodPage from "./pages/FoodPage";
 import ProfilePage from "./pages/ProfilePage";
 import RoutinePage from "./pages/RoutinePage";
-import StudiesPage from "./pages/StudiesPage";
 import TasksPage from "./pages/TasksPage";
 import TodayPage from "./pages/TodayPage";
 import { useHabitStore } from "./store/useHabitStore";
@@ -66,7 +65,6 @@ function App() {
         {tab === "habits" && <RoutinePage />}
         {tab === "food" && <FoodPage />}
         {tab === "finance" && <FinancePage />}
-        {tab === "studies" && <StudiesPage />}
         {tab === "tasks" && <TasksPage />}
         {tab === "profile" && <ProfilePage />}
       </main>

@@ -1,7 +1,6 @@
 import {
   CalendarClock,
   Dices,
-  GraduationCap,
   ListChecks,
   Sun,
   User,
@@ -9,15 +8,7 @@ import {
   Wallet,
 } from "lucide-react";
 
-export type Tab =
-  | "today"
-  | "calendar"
-  | "habits"
-  | "tasks"
-  | "food"
-  | "finance"
-  | "studies"
-  | "profile";
+export type Tab = "today" | "calendar" | "habits" | "tasks" | "food" | "finance" | "profile";
 
 interface BottomNavProps {
   active: Tab;
@@ -30,7 +21,6 @@ const ITEMS: { id: Tab; label: string; icon: typeof Sun }[] = [
   { id: "habits", label: "Hábitos", icon: ListChecks },
   { id: "food", label: "Alimentação", icon: UtensilsCrossed },
   { id: "finance", label: "Finanças", icon: Wallet },
-  { id: "studies", label: "Estudos", icon: GraduationCap },
   { id: "tasks", label: "Procrastinação", icon: Dices },
   { id: "profile", label: "Perfil", icon: User },
 ];

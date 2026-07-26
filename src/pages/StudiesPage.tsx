@@ -36,7 +36,11 @@ function formatNoteDate(dateKey: string): string {
   return new Date(`${dateKey}T00:00:00`).toLocaleDateString("pt-BR");
 }
 
-export default function StudiesPage() {
+interface StudiesPageProps {
+  embedded?: boolean;
+}
+
+export default function StudiesPage({ embedded }: StudiesPageProps = {}) {
   const studyItems = useHabitStore((s) => s.studyItems);
   const addStudyItem = useHabitStore((s) => s.addStudyItem);
   const updateStudyItem = useHabitStore((s) => s.updateStudyItem);
@@ -74,7 +78,7 @@ export default function StudiesPage() {
     }
 
     return (
-      <div className="px-4 py-4">
+      <div className={embedded ? "" : "px-4 py-4"}>
         <button
           onClick={() => setSelectedId(null)}
           className="mb-4 flex items-center gap-1 text-sm font-extrabold text-duo-gray-dark"
@@ -257,8 +261,8 @@ export default function StudiesPage() {
   const filteredItems = studyItems.filter((i) => filter === "all" || i.type === filter);
 
   return (
-    <div className="px-4 py-4">
-      <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Estudos</h1>
+    <div className={embedded ? "" : "px-4 py-4"}>
+      {!embedded && <h1 className="mb-1 text-2xl font-extrabold text-duo-text">Estudos</h1>}
       <p className="mb-4 text-sm font-semibold text-duo-gray-dark">
         Seus cursos, leituras e idiomas, com um caderno de anotações para cada um.
       </p>
