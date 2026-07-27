@@ -320,6 +320,14 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
                   >
                     <span className="shrink-0 text-sm">{it.emoji}</span>
                     {label}
+                    {it.assignee && (
+                      <span
+                        title={it.assignee}
+                        className={`grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full text-[9px] font-semibold text-white ${it.colors.bgStrong}`}
+                      >
+                        {it.assignee.charAt(0).toUpperCase()}
+                      </span>
+                    )}
                   </button>
                   <button
                     onClick={it.onToggle}
