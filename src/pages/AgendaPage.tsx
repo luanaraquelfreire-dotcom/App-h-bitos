@@ -7,6 +7,7 @@ import { COLOR_MAP, type ColorSet } from "../utils/colors";
 import { isChoreDueOn } from "../utils/chores";
 import { formatLong, isToday, nextDay, prevDay, toDateKey } from "../utils/date";
 import { habitsScheduledOn } from "../utils/gamification";
+import { memberName } from "../utils/household";
 import { studyDoneOn, studyItemsScheduledOn } from "../utils/study";
 
 const HOUR_HEIGHT = 72;
@@ -32,6 +33,7 @@ interface AgendaItem {
   done: boolean;
   colors: ColorSet;
   onToggle: () => void;
+  assignee?: string;
 }
 
 interface PositionedItem extends AgendaItem {
@@ -100,6 +102,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
   const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const chores = useHabitStore((s) => s.chores);
   const markChoreDone = useHabitStore((s) => s.markChoreDone);
+  const householdMembers = useHabitStore((s) => s.householdMembers);
   const goals = useHabitStore((s) => s.goals);
   const toggleGoalDone = useHabitStore((s) => s.toggleGoalDone);
   const studyItems = useHabitStore((s) => s.studyItems);
@@ -116,6 +119,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
   const scheduledStudy = studyItemsScheduledOn(studyItems, selected);
 
   const habitItems: AgendaItem[] = scheduledHabits.flatMap((h) => {
+    const assignee = memberName(householdMembers, h.assignedTo);
     if (h.times && h.times.length > 0) {
       return h.times.map((t) => ({
         id: `habit-${h.id}-${t}`,
@@ -125,6 +129,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
         done: completions[h.id]?.includes(`${dateKey}::${t}`) ?? false,
         colors: COLOR_MAP[h.color],
         onToggle: () => toggleHabitTime(h.id, dateKey, t),
+        assignee,
       }));
     }
     return [
@@ -136,6 +141,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
         done: completions[h.id]?.includes(dateKey) ?? false,
         colors: COLOR_MAP[h.color],
         onToggle: () => toggleCompletion(h.id, dateKey),
+        assignee,
       },
     ];
   });
@@ -150,6 +156,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
       done: c.lastDoneAt === dateKey,
       colors: COLOR_MAP.purple,
       onToggle: () => markChoreDone(c.id),
+      assignee: memberName(householdMembers, c.assignedTo),
     })),
     ...scheduledGoals.map((g) => ({
       id: `goal-${g.id}`,
@@ -222,6 +229,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
               }`}
             >
               {it.emoji} {it.name}
+              {it.assignee && <span className="font-medium opacity-70">· {it.assignee}</span>}
             </button>
           ))}
         </div>

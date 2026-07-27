@@ -1,10 +1,11 @@
-import { PartyPopper, Plus } from "lucide-react";
+import { Check, PartyPopper, Plus, User } from "lucide-react";
 import { useState } from "react";
 import EmptyState from "../components/EmptyState";
 import HabitCard from "../components/HabitCard";
 import ProgressBar from "../components/ProgressBar";
 import HabitFormModal from "../components/HabitFormModal";
 import { useHabitStore } from "../store/useHabitStore";
+import { isChoreDueOn } from "../utils/chores";
 import { formatLong, todayKey } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
 import { memberName } from "../utils/household";
@@ -17,6 +18,8 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const goals = useHabitStore((s) => s.goals);
+  const chores = useHabitStore((s) => s.chores);
+  const markChoreDone = useHabitStore((s) => s.markChoreDone);
   const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
   const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
@@ -33,6 +36,8 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const doneCount = todayHabits.filter((h) => completions[h.id]?.includes(key)).length;
   const allDone = todayHabits.length > 0 && doneCount === todayHabits.length;
   const ratio = todayHabits.length > 0 ? doneCount / todayHabits.length : 0;
+
+  const todayChores = chores.filter((c) => isChoreDueOn(c, today) || c.lastDoneAt === key);
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
@@ -107,6 +112,55 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
           ];
         })}
       </div>
+
+      {todayChores.length > 0 && (
+        <div className="mt-6">
+          <h2 className="mb-2.5 text-sm font-semibold uppercase text-duo-gray-dark">
+            Tarefas de casa
+          </h2>
+          <div className="space-y-2.5">
+            {todayChores.map((c) => {
+              const done = c.lastDoneAt === key;
+              const assignee = memberName(householdMembers, c.assignedTo);
+              return (
+                <div
+                  key={c.id}
+                  className={`duo-card flex items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 transition-opacity ${
+                    done ? "opacity-60" : ""
+                  }`}
+                >
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-purple/15 text-xl">
+                    {c.emoji}
+                  </span>
+                  <span className="flex-1">
+                    <span
+                      className={`block font-medium ${done ? "text-duo-gray-dark line-through" : "text-duo-text"}`}
+                    >
+                      {c.name}
+                    </span>
+                    {assignee && (
+                      <span className="mt-0.5 inline-flex items-center gap-0.5 rounded-full bg-duo-purple/15 px-2 py-0.5 text-[10px] font-semibold text-duo-purple-dark">
+                        <User size={10} />
+                        {assignee}
+                      </span>
+                    )}
+                  </span>
+                  <button
+                    onClick={() => markChoreDone(c.id)}
+                    className={`duo-btn grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 ${
+                      done
+                        ? "border-duo-purple-dark bg-duo-purple-dark text-white"
+                        : "border-duo-gray/60 bg-white/55 backdrop-blur-xl text-duo-gray"
+                    }`}
+                  >
+                    <Check size={20} strokeWidth={3} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <button
         onClick={() => setShowAdd(true)}
