@@ -1,8 +1,9 @@
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
+import ChoreFormModal from "../components/ChoreFormModal";
 import PomodoroModal from "../components/PomodoroModal";
 import { useHabitStore } from "../store/useHabitStore";
-import type { StudyItem } from "../types";
+import type { Chore, StudyItem } from "../types";
 import { COLOR_MAP, type ColorSet } from "../utils/colors";
 import { isChoreDueOn } from "../utils/chores";
 import { formatLong, isToday, nextDay, prevDay, toDateKey } from "../utils/date";
@@ -34,6 +35,8 @@ interface AgendaItem {
   colors: ColorSet;
   onToggle: () => void;
   assignee?: string;
+  /** presente só nas tarefas de casa: abre a edição (incl. troca de responsável). */
+  onEdit?: () => void;
 }
 
 interface PositionedItem extends AgendaItem {
@@ -102,6 +105,8 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
   const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const chores = useHabitStore((s) => s.chores);
   const markChoreDone = useHabitStore((s) => s.markChoreDone);
+  const updateChore = useHabitStore((s) => s.updateChore);
+  const removeChore = useHabitStore((s) => s.removeChore);
   const householdMembers = useHabitStore((s) => s.householdMembers);
   const goals = useHabitStore((s) => s.goals);
   const toggleGoalDone = useHabitStore((s) => s.toggleGoalDone);
@@ -110,6 +115,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
 
   const [selected, setSelected] = useState(new Date());
   const [studyTimerFor, setStudyTimerFor] = useState<StudyItem | null>(null);
+  const [editingChore, setEditingChore] = useState<Chore | null>(null);
   const dateKey = toDateKey(selected);
   const viewingToday = isToday(selected);
 
@@ -157,6 +163,7 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
       colors: COLOR_MAP.purple,
       onToggle: () => markChoreDone(c.id),
       assignee: memberName(householdMembers, c.assignedTo),
+      onEdit: () => setEditingChore(c),
     })),
     ...scheduledGoals.map((g) => ({
       id: `goal-${g.id}`,
@@ -220,18 +227,37 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
 
       {allDayItems.length > 0 && (
         <div className="mb-3 flex flex-wrap gap-1.5 border-b-2 border-duo-gray pb-3">
-          {allDayItems.map((it) => (
-            <button
-              key={it.id}
-              onClick={it.onToggle}
-              className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${it.colors.bgSoft} ${it.colors.text} ${
-                it.done ? "opacity-50 line-through" : ""
-              }`}
-            >
-              {it.emoji} {it.name}
-              {it.assignee && <span className="font-medium opacity-70">· {it.assignee}</span>}
-            </button>
-          ))}
+          {allDayItems.map((it) =>
+            it.onEdit ? (
+              <div
+                key={it.id}
+                className={`flex items-center rounded-full ${it.colors.bgSoft} ${it.colors.text} ${
+                  it.done ? "opacity-50" : ""
+                }`}
+              >
+                <button
+                  onClick={it.onToggle}
+                  className={`rounded-full py-1 pl-2.5 pr-1 text-xs font-semibold ${it.done ? "line-through" : ""}`}
+                >
+                  {it.emoji} {it.name}
+                </button>
+                <button onClick={it.onEdit} className="rounded-full py-1 pr-2.5 pl-0.5 text-xs font-semibold opacity-70">
+                  · {it.assignee ?? "definir"}
+                </button>
+              </div>
+            ) : (
+              <button
+                key={it.id}
+                onClick={it.onToggle}
+                className={`flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${it.colors.bgSoft} ${it.colors.text} ${
+                  it.done ? "opacity-50 line-through" : ""
+                }`}
+              >
+                {it.emoji} {it.name}
+                {it.assignee && <span className="font-medium opacity-70">· {it.assignee}</span>}
+              </button>
+            ),
+          )}
         </div>
       )}
 
@@ -262,6 +288,53 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
           {positioned.map((it) => {
             const widthPct = 100 / it.colCount;
             const top = (it.start / 60) * HOUR_HEIGHT;
+            const style = {
+              top: top + 1,
+              height: eventHeight,
+              left: `calc(3.25rem + ${it.colIndex * widthPct}%)`,
+              width: `calc(${widthPct}% - 0.375rem)`,
+            };
+            const label = (
+              <span
+                className={`truncate text-[11px] font-semibold ${it.colors.text} ${
+                  it.done ? "line-through" : ""
+                }`}
+              >
+                {it.name}
+                <span className="ml-1 font-medium text-duo-gray-dark">{it.time}</span>
+              </span>
+            );
+
+            if (it.onEdit) {
+              return (
+                <div
+                  key={it.id}
+                  className={`duo-card absolute flex items-center gap-1 overflow-hidden rounded-lg border px-1.5 py-0.5 ${it.colors.bgSoft} ${it.colors.border} ${
+                    it.done ? "opacity-50" : ""
+                  }`}
+                  style={style}
+                >
+                  <button
+                    onClick={it.onEdit}
+                    className="flex flex-1 items-center gap-1 overflow-hidden text-left"
+                  >
+                    <span className="shrink-0 text-sm">{it.emoji}</span>
+                    {label}
+                  </button>
+                  <button
+                    onClick={it.onToggle}
+                    className={`ml-auto grid h-4 w-4 shrink-0 place-items-center rounded-full border ${
+                      it.done
+                        ? `${it.colors.bgStrong} ${it.colors.border} text-white`
+                        : "border-duo-gray-dark text-transparent"
+                    }`}
+                  >
+                    <Check size={10} strokeWidth={3} />
+                  </button>
+                </div>
+              );
+            }
+
             return (
               <button
                 key={it.id}
@@ -269,22 +342,10 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
                 className={`duo-card absolute flex items-center gap-1 overflow-hidden rounded-lg border px-1.5 py-0.5 text-left ${it.colors.bgSoft} ${it.colors.border} ${
                   it.done ? "opacity-50" : ""
                 }`}
-                style={{
-                  top: top + 1,
-                  height: eventHeight,
-                  left: `calc(3.25rem + ${it.colIndex * widthPct}%)`,
-                  width: `calc(${widthPct}% - 0.375rem)`,
-                }}
+                style={style}
               >
                 <span className="shrink-0 text-sm">{it.emoji}</span>
-                <span
-                  className={`truncate text-[11px] font-semibold ${it.colors.text} ${
-                    it.done ? "line-through" : ""
-                  }`}
-                >
-                  {it.name}
-                  <span className="ml-1 font-medium text-duo-gray-dark">{it.time}</span>
-                </span>
+                {label}
                 {it.done && (
                   <Check size={12} className={`ml-auto shrink-0 ${it.colors.text}`} strokeWidth={3} />
                 )}
@@ -308,6 +369,22 @@ export default function AgendaPage({ embedded }: AgendaPageProps = {}) {
           onComplete={(minutes) => {
             addStudySession(studyTimerFor.id, minutes);
             setStudyTimerFor(null);
+          }}
+        />
+      )}
+
+      {editingChore && (
+        <ChoreFormModal
+          initial={editingChore}
+          householdMembers={householdMembers}
+          onClose={() => setEditingChore(null)}
+          onSave={(data) => {
+            updateChore(editingChore.id, data);
+            setEditingChore(null);
+          }}
+          onDelete={() => {
+            removeChore(editingChore.id);
+            setEditingChore(null);
           }}
         />
       )}

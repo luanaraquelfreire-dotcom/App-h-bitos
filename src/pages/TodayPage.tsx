@@ -1,10 +1,12 @@
 import { Check, PartyPopper, Plus, User } from "lucide-react";
 import { useState } from "react";
+import ChoreFormModal from "../components/ChoreFormModal";
 import EmptyState from "../components/EmptyState";
 import HabitCard from "../components/HabitCard";
 import ProgressBar from "../components/ProgressBar";
 import HabitFormModal from "../components/HabitFormModal";
 import { useHabitStore } from "../store/useHabitStore";
+import type { Chore } from "../types";
 import { isChoreDueOn } from "../utils/chores";
 import { formatLong, todayKey } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
@@ -20,11 +22,14 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const goals = useHabitStore((s) => s.goals);
   const chores = useHabitStore((s) => s.chores);
   const markChoreDone = useHabitStore((s) => s.markChoreDone);
+  const updateChore = useHabitStore((s) => s.updateChore);
+  const removeChore = useHabitStore((s) => s.removeChore);
   const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
   const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const addHabit = useHabitStore((s) => s.addHabit);
   const [showAdd, setShowAdd] = useState(false);
+  const [editingChore, setEditingChore] = useState<Chore | null>(null);
 
   const today = new Date();
   const key = todayKey();
@@ -129,22 +134,31 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
                     done ? "opacity-60" : ""
                   }`}
                 >
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-purple/15 text-xl">
-                    {c.emoji}
-                  </span>
-                  <span className="flex-1">
-                    <span
-                      className={`block font-medium ${done ? "text-duo-gray-dark line-through" : "text-duo-text"}`}
-                    >
-                      {c.name}
+                  <button
+                    onClick={() => setEditingChore(c)}
+                    className="flex flex-1 items-center gap-3 text-left"
+                  >
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-purple/15 text-xl">
+                      {c.emoji}
                     </span>
-                    {assignee && (
-                      <span className="mt-0.5 inline-flex items-center gap-0.5 rounded-full bg-duo-purple/15 px-2 py-0.5 text-[10px] font-semibold text-duo-purple-dark">
-                        <User size={10} />
-                        {assignee}
+                    <span className="flex-1">
+                      <span
+                        className={`block font-medium ${done ? "text-duo-gray-dark line-through" : "text-duo-text"}`}
+                      >
+                        {c.name}
                       </span>
-                    )}
-                  </span>
+                      <span
+                        className={`mt-0.5 inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                          assignee
+                            ? "bg-duo-purple/15 text-duo-purple-dark"
+                            : "bg-duo-gray/60 text-duo-gray-dark"
+                        }`}
+                      >
+                        <User size={10} />
+                        {assignee ?? "Definir responsável"}
+                      </span>
+                    </span>
+                  </button>
                   <button
                     onClick={() => markChoreDone(c.id)}
                     className={`duo-btn grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 ${
@@ -177,6 +191,22 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
           onSave={(data) => {
             addHabit(data);
             setShowAdd(false);
+          }}
+        />
+      )}
+
+      {editingChore && (
+        <ChoreFormModal
+          initial={editingChore}
+          householdMembers={householdMembers}
+          onClose={() => setEditingChore(null)}
+          onSave={(data) => {
+            updateChore(editingChore.id, data);
+            setEditingChore(null);
+          }}
+          onDelete={() => {
+            removeChore(editingChore.id);
+            setEditingChore(null);
           }}
         />
       )}
