@@ -14,6 +14,7 @@ const SYNC_KEYS = [
   "peopleCount",
   "shoppingChecked",
   "transactions",
+  "plannedPurchases",
   "chores",
   "studyItems",
   "householdMembers",

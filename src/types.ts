@@ -91,6 +91,14 @@ export interface Transaction {
   createdAt: string;
 }
 
+export interface PlannedPurchase {
+  id: string;
+  name: string;
+  estimatedPrice?: number;
+  notes?: string;
+  createdAt: string; // yyyy-MM-dd, usado para calcular há quantos dias está na lista
+}
+
 export interface Chore {
   id: string;
   name: string;
@@ -152,6 +160,7 @@ export interface HabitState {
   /** "yyyy-MM" -> chaves de itens já marcados como comprados naquele mês */
   shoppingChecked: Record<string, string[]>;
   transactions: Transaction[];
+  plannedPurchases: PlannedPurchase[];
   chores: Chore[];
   studyItems: StudyItem[];
   householdMembers: HouseholdMember[];
@@ -181,6 +190,9 @@ export interface HabitState {
   addTransaction: (transaction: Omit<Transaction, "id" | "createdAt">) => void;
   updateTransaction: (id: string, updates: Partial<Omit<Transaction, "id">>) => void;
   removeTransaction: (id: string) => void;
+  addPlannedPurchase: (purchase: Omit<PlannedPurchase, "id" | "createdAt">) => void;
+  updatePlannedPurchase: (id: string, updates: Partial<Omit<PlannedPurchase, "id">>) => void;
+  removePlannedPurchase: (id: string) => void;
   addChore: (chore: Omit<Chore, "id" | "createdAt" | "lastDoneAt">) => void;
   updateChore: (id: string, updates: Partial<Omit<Chore, "id">>) => void;
   removeChore: (id: string) => void;

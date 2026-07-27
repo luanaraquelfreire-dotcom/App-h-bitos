@@ -7,6 +7,7 @@ import type {
   HabitState,
   HouseholdMember,
   MealPlanEntry,
+  PlannedPurchase,
   Recipe,
   StudyItem,
   Transaction,
@@ -28,6 +29,7 @@ export const useHabitStore = create<HabitState>()(
       peopleCount: 2,
       shoppingChecked: {},
       transactions: [],
+      plannedPurchases: [],
       chores: [],
       studyItems: [],
       householdMembers: [
@@ -234,6 +236,29 @@ export const useHabitStore = create<HabitState>()(
 
       removeTransaction: (id) => {
         set((state) => ({ transactions: state.transactions.filter((t) => t.id !== id) }));
+      },
+
+      addPlannedPurchase: (purchase) => {
+        const newPurchase: PlannedPurchase = {
+          ...purchase,
+          id: generateId(),
+          createdAt: todayKey(),
+        };
+        set((state) => ({ plannedPurchases: [...state.plannedPurchases, newPurchase] }));
+      },
+
+      updatePlannedPurchase: (id, updates) => {
+        set((state) => ({
+          plannedPurchases: state.plannedPurchases.map((p) =>
+            p.id === id ? { ...p, ...updates } : p,
+          ),
+        }));
+      },
+
+      removePlannedPurchase: (id) => {
+        set((state) => ({
+          plannedPurchases: state.plannedPurchases.filter((p) => p.id !== id),
+        }));
       },
 
       addChore: (chore) => {

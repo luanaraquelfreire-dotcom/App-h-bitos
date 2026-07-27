@@ -7,6 +7,13 @@ import ModalShell from "./ModalShell";
 
 interface TransactionFormModalProps {
   initial?: Transaction;
+  /** Pré-preenche os campos sem entrar no modo de edição (sem título "Editar" nem excluir). */
+  prefill?: Partial<{
+    type: TransactionType;
+    category: TransactionCategory;
+    description: string;
+    amount: number;
+  }>;
   onClose: () => void;
   onSave: (data: {
     type: TransactionType;
@@ -20,14 +27,19 @@ interface TransactionFormModalProps {
 
 export default function TransactionFormModal({
   initial,
+  prefill,
   onClose,
   onSave,
   onDelete,
 }: TransactionFormModalProps) {
-  const [type, setType] = useState<TransactionType>(initial?.type ?? "expense");
-  const [category, setCategory] = useState<TransactionCategory>(initial?.category ?? "variable");
-  const [description, setDescription] = useState(initial?.description ?? "");
-  const [amount, setAmount] = useState(initial?.amount?.toString() ?? "");
+  const [type, setType] = useState<TransactionType>(initial?.type ?? prefill?.type ?? "expense");
+  const [category, setCategory] = useState<TransactionCategory>(
+    initial?.category ?? prefill?.category ?? "variable",
+  );
+  const [description, setDescription] = useState(initial?.description ?? prefill?.description ?? "");
+  const [amount, setAmount] = useState(
+    (initial?.amount ?? prefill?.amount)?.toString() ?? "",
+  );
   const [date, setDate] = useState(initial?.date ?? todayKey());
   const [confirmingDelete, setConfirmingDelete] = useState(false);
 

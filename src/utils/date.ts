@@ -38,6 +38,11 @@ export function monthKey(date: Date): string {
   return format(date, "yyyy-MM");
 }
 
+/** Quantos dias se passaram desde uma dateKey (yyyy-MM-dd) até hoje. */
+export function daysSince(dateKey: string): number {
+  return differenceInCalendarDays(new Date(), new Date(`${dateKey}T00:00:00`));
+}
+
 export function weekDays(reference: Date): Date[] {
   const start = startOfWeek(reference, { weekStartsOn: 0 });
   const end = endOfWeek(reference, { weekStartsOn: 0 });
