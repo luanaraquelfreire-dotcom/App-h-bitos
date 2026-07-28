@@ -147,6 +147,14 @@ export interface StudyItem {
   time?: string;
 }
 
+export interface ActivityEntry {
+  id: string;
+  /** id de HouseholdMember que fez a mudança nesse aparelho (opcional, se não configurado) */
+  actorId?: string;
+  message: string;
+  createdAt: string; // ISO datetime completo
+}
+
 export interface HabitState {
   habits: Habit[];
   completions: CompletionMap;
@@ -165,6 +173,11 @@ export interface HabitState {
   chores: Chore[];
   studyItems: StudyItem[];
   householdMembers: HouseholdMember[];
+  activityLog: ActivityEntry[];
+  /** id do HouseholdMember que usa este aparelho (local, não sincronizado) */
+  currentMemberId: string | null;
+  /** ISO datetime da última vez que as notificações foram abertas (local, não sincronizado) */
+  lastSeenActivityAt: string | null;
   addHabit: (habit: Omit<Habit, "id" | "createdAt" | "archived">) => void;
   updateHabit: (id: string, updates: Partial<Omit<Habit, "id">>) => void;
   removeHabit: (id: string) => void;
@@ -211,4 +224,6 @@ export interface HabitState {
   addHouseholdMember: (name: string) => void;
   renameHouseholdMember: (id: string, name: string) => void;
   removeHouseholdMember: (id: string) => void;
+  setCurrentMemberId: (id: string | null) => void;
+  markActivitySeen: () => void;
 }

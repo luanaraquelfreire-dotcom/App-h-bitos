@@ -46,6 +46,7 @@ function App() {
   const completions = useHabitStore((s) => s.completions);
   const addHabit = useHabitStore((s) => s.addHabit);
   const updateHabit = useHabitStore((s) => s.updateHabit);
+  const markActivitySeen = useHabitStore((s) => s.markActivitySeen);
 
   useEffect(() => {
     if (!localStorage.getItem(ROUTINE_SEED_FLAG)) {
@@ -56,6 +57,8 @@ function App() {
           addHabit(h);
         }
       });
+      // não conta a rotina inicial como "notificação" de mudança de alguém
+      markActivitySeen();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -70,6 +73,7 @@ function App() {
           updateHabit(h.id, { times: defaults, time: undefined });
         }
       });
+      markActivitySeen();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

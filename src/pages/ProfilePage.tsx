@@ -4,6 +4,7 @@ import WeeklySummaryCard from "../components/WeeklySummaryCard";
 import HouseholdMembersCard from "../components/HouseholdMembersCard";
 import RemindersCard from "../components/RemindersCard";
 import SyncStatusCard from "../components/SyncStatusCard";
+import WhoAmICard from "../components/WhoAmICard";
 import { useHabitStore } from "../store/useHabitStore";
 import {
   calcXp,
@@ -111,6 +112,7 @@ export default function ProfilePage() {
       <div className="mt-6 space-y-6">
         <RemindersCard />
         <SyncStatusCard />
+        <WhoAmICard />
         <HouseholdMembersCard />
       </div>
     </div>

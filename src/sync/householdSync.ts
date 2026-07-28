@@ -1,6 +1,19 @@
 import type { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabase";
 import { useHabitStore } from "../store/useHabitStore";
+import type { ActivityEntry } from "../types";
+
+const MAX_ACTIVITY_LOG = 300;
+
+/** Une os logs de atividade local e remoto por id (em vez de sobrescrever),
+ * pra não perder eventos registrados offline em cada aparelho. */
+function mergeActivityLogs(local: ActivityEntry[], remote: ActivityEntry[]): ActivityEntry[] {
+  const byId = new Map<string, ActivityEntry>();
+  for (const entry of local) byId.set(entry.id, entry);
+  for (const entry of remote) byId.set(entry.id, entry);
+  const merged = [...byId.values()].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  return merged.length > MAX_ACTIVITY_LOG ? merged.slice(merged.length - MAX_ACTIVITY_LOG) : merged;
+}
 
 const SYNC_KEYS = [
   "habits",
@@ -19,6 +32,7 @@ const SYNC_KEYS = [
   "chores",
   "studyItems",
   "householdMembers",
+  "activityLog",
 ] as const;
 
 export type SyncStatus = "connecting" | "online" | "offline";
@@ -55,8 +69,15 @@ export function startHouseholdSync(
 
   function applyRemoteData(data: Record<string, unknown>) {
     applyingRemote = true;
-    lastSyncedJson = JSON.stringify(data);
-    useHabitStore.setState(data);
+    const merged = { ...data };
+    if (Array.isArray(data.activityLog)) {
+      merged.activityLog = mergeActivityLogs(
+        useHabitStore.getState().activityLog,
+        data.activityLog as ActivityEntry[],
+      );
+    }
+    lastSyncedJson = JSON.stringify(merged);
+    useHabitStore.setState(merged);
     queueMicrotask(() => {
       applyingRemote = false;
     });
