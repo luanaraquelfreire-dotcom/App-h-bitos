@@ -23,6 +23,7 @@ export const useHabitStore = create<HabitState>()(
       tasks: [],
       drawnTaskId: null,
       completedTasksCount: 0,
+      choresDoneCount: 0,
       goals: [],
       recipes: [],
       mealPlans: [],
@@ -277,9 +278,14 @@ export const useHabitStore = create<HabitState>()(
       },
 
       markChoreDone: (id) => {
-        set((state) => ({
-          chores: state.chores.map((c) => (c.id === id ? { ...c, lastDoneAt: todayKey() } : c)),
-        }));
+        set((state) => {
+          const today = todayKey();
+          const alreadyDoneToday = state.chores.find((c) => c.id === id)?.lastDoneAt === today;
+          return {
+            chores: state.chores.map((c) => (c.id === id ? { ...c, lastDoneAt: today } : c)),
+            choresDoneCount: alreadyDoneToday ? state.choresDoneCount : state.choresDoneCount + 1,
+          };
+        });
       },
 
       addStudyItem: (item) => {

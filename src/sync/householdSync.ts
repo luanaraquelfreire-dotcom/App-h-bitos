@@ -8,6 +8,7 @@ const SYNC_KEYS = [
   "tasks",
   "drawnTaskId",
   "completedTasksCount",
+  "choresDoneCount",
   "goals",
   "recipes",
   "mealPlans",

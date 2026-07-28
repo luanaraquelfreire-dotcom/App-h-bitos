@@ -24,8 +24,10 @@ export default function ProfilePage() {
   const habits = useHabitStore((s) => s.habits);
   const completions = useHabitStore((s) => s.completions);
   const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
+  const choresDoneCount = useHabitStore((s) => s.choresDoneCount);
+  const studyItems = useHabitStore((s) => s.studyItems);
 
-  const xp = calcXp(habits, completions, completedTasksCount);
+  const xp = calcXp(habits, completions, completedTasksCount, choresDoneCount, studyItems);
   const { level, xpIntoLevel, xpForNextLevel } = levelFromXp(xp);
   const streak = currentStreak(habits, completions);
   const best = longestStreak(habits, completions);
@@ -84,7 +86,8 @@ export default function ProfilePage() {
           {activeHabits.length} hábito{activeHabits.length !== 1 ? "s" : ""} ativo
           {activeHabits.length !== 1 ? "s" : ""} · {total} conclus{total !== 1 ? "ões" : "ão"} no total ·{" "}
           {completedTasksCount} tarefa{completedTasksCount !== 1 ? "s" : ""} vencida
-          {completedTasksCount !== 1 ? "s" : ""} no sorteio
+          {completedTasksCount !== 1 ? "s" : ""} no sorteio · {choresDoneCount} tarefa
+          {choresDoneCount !== 1 ? "s" : ""} de casa feita{choresDoneCount !== 1 ? "s" : ""}
         </p>
       </div>
 

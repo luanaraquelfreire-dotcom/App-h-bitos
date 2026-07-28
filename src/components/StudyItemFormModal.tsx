@@ -51,6 +51,10 @@ export default function StudyItemFormModal({
 
   function handleSave() {
     if (!canSave) return;
+    // Se uma meta semanal foi definida mas nenhum dia específico foi escolhido,
+    // assume que é todo dia — assim já aparece na agenda sem precisar configurar duas vezes.
+    const effectiveDaysOfWeek =
+      daysOfWeek.length > 0 ? daysOfWeek : targetDays ? [0, 1, 2, 3, 4, 5, 6] : undefined;
     onSave({
       title: title.trim(),
       type,
@@ -58,7 +62,7 @@ export default function StudyItemFormModal({
       status,
       targetDaysPerWeek: targetDays ? Number(targetDays) : undefined,
       targetHoursPerWeek: targetHours ? Number(targetHours) : undefined,
-      daysOfWeek: daysOfWeek.length > 0 ? daysOfWeek : undefined,
+      daysOfWeek: effectiveDaysOfWeek,
       time: time || undefined,
     });
   }
@@ -168,7 +172,9 @@ export default function StudyItemFormModal({
           Agendar na semana (opcional)
         </label>
         <p className="mb-2 text-xs font-semibold text-duo-gray-dark">
-          Escolha os dias e um horário pra esse item aparecer na agenda do dia.
+          Se você já definiu uma meta semanal acima e não escolher dias aqui, a
+          gente agenda todo dia automaticamente. Só ajuste se quiser dias
+          específicos, e defina um horário se quiser um lembrete.
         </p>
         <div className="mb-3 flex gap-1.5">
           {DAY_LABELS.map((label, i) => (

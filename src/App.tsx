@@ -75,7 +75,9 @@ function App() {
   }, []);
 
   const completedTasksCount = useHabitStore((s) => s.completedTasksCount);
-  const xp = calcXp(habits, completions, completedTasksCount);
+  const choresDoneCount = useHabitStore((s) => s.choresDoneCount);
+  const studyItems = useHabitStore((s) => s.studyItems);
+  const xp = calcXp(habits, completions, completedTasksCount, choresDoneCount, studyItems);
   const streak = currentStreak(habits, completions);
 
   useHabitReminders();

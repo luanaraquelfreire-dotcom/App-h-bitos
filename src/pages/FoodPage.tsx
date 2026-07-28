@@ -1,9 +1,10 @@
-import { Check, ChevronLeft, ChevronRight, Minus, Plus } from "lucide-react";
+import { Check, ChevronLeft, ChevronRight, Minus, Plus, Wallet } from "lucide-react";
 import { useState } from "react";
 import EmptyState from "../components/EmptyState";
 import MealPlanFormModal from "../components/MealPlanFormModal";
 import RecipeFormModal from "../components/RecipeFormModal";
 import SegmentedControl from "../components/SegmentedControl";
+import TransactionFormModal from "../components/TransactionFormModal";
 import { useHabitStore } from "../store/useHabitStore";
 import type { Ingredient, MealPlanEntry, Recipe } from "../types";
 import { DAY_LABELS, formatMonthYear, monthKey, nextMonth, prevMonth } from "../utils/date";
@@ -30,6 +31,7 @@ export default function FoodPage() {
   const removeMealPlan = useHabitStore((s) => s.removeMealPlan);
   const setPeopleCount = useHabitStore((s) => s.setPeopleCount);
   const toggleShoppingChecked = useHabitStore((s) => s.toggleShoppingChecked);
+  const addTransaction = useHabitStore((s) => s.addTransaction);
 
   const [subView, setSubView] = useState<SubView>("recipes");
   const [showRecipeAdd, setShowRecipeAdd] = useState(false);
@@ -37,6 +39,7 @@ export default function FoodPage() {
   const [showPlanAdd, setShowPlanAdd] = useState(false);
   const [editingPlan, setEditingPlan] = useState<MealPlanEntry | null>(null);
   const [reference, setReference] = useState(new Date());
+  const [showLogSpend, setShowLogSpend] = useState(false);
 
   function createRecipeAndGetId(data: {
     name: string;
@@ -226,9 +229,32 @@ export default function FoodPage() {
                   );
                 })}
               </div>
+
+              <button
+                onClick={() => setShowLogSpend(true)}
+                className="duo-btn mt-4 flex w-full items-center justify-center gap-2 rounded-2xl border-duo-purple-dark bg-duo-purple-dark py-3.5 font-semibold uppercase tracking-wide text-white"
+              >
+                <Wallet size={20} />
+                Registrar gasto do mercado
+              </button>
             </>
           )}
         </>
+      )}
+
+      {showLogSpend && (
+        <TransactionFormModal
+          prefill={{
+            type: "expense",
+            category: "variable",
+            description: "Mercado",
+          }}
+          onClose={() => setShowLogSpend(false)}
+          onSave={(data) => {
+            addTransaction(data);
+            setShowLogSpend(false);
+          }}
+        />
       )}
 
       {showRecipeAdd && (

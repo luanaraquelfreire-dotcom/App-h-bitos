@@ -153,6 +153,7 @@ export interface HabitState {
   tasks: ProcrastinatedTask[];
   drawnTaskId: string | null;
   completedTasksCount: number;
+  choresDoneCount: number;
   goals: Goal[];
   recipes: Recipe[];
   mealPlans: MealPlanEntry[];

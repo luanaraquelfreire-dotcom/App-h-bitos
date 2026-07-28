@@ -3,14 +3,16 @@ import { useState } from "react";
 import ChoreFormModal from "../components/ChoreFormModal";
 import EmptyState from "../components/EmptyState";
 import HabitCard from "../components/HabitCard";
+import PomodoroModal from "../components/PomodoroModal";
 import ProgressBar from "../components/ProgressBar";
 import HabitFormModal from "../components/HabitFormModal";
 import { useHabitStore } from "../store/useHabitStore";
-import type { Chore } from "../types";
+import type { Chore, StudyItem } from "../types";
 import { isChoreDueOn } from "../utils/chores";
 import { formatLong, todayKey } from "../utils/date";
 import { goalForHabit, goalProgress } from "../utils/gamification";
 import { memberName } from "../utils/household";
+import { studyDoneOn, studyItemsScheduledOn } from "../utils/study";
 
 interface TodayPageProps {
   embedded?: boolean;
@@ -24,12 +26,15 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const markChoreDone = useHabitStore((s) => s.markChoreDone);
   const updateChore = useHabitStore((s) => s.updateChore);
   const removeChore = useHabitStore((s) => s.removeChore);
+  const studyItems = useHabitStore((s) => s.studyItems);
+  const addStudySession = useHabitStore((s) => s.addStudySession);
   const householdMembers = useHabitStore((s) => s.householdMembers);
   const toggleCompletion = useHabitStore((s) => s.toggleCompletion);
   const toggleHabitTime = useHabitStore((s) => s.toggleHabitTime);
   const addHabit = useHabitStore((s) => s.addHabit);
   const [showAdd, setShowAdd] = useState(false);
   const [editingChore, setEditingChore] = useState<Chore | null>(null);
+  const [studyTimerFor, setStudyTimerFor] = useState<StudyItem | null>(null);
 
   const today = new Date();
   const key = todayKey();
@@ -43,6 +48,7 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
   const ratio = todayHabits.length > 0 ? doneCount / todayHabits.length : 0;
 
   const todayChores = chores.filter((c) => isChoreDueOn(c, today) || c.lastDoneAt === key);
+  const todayStudy = studyItemsScheduledOn(studyItems, today);
 
   return (
     <div className={embedded ? "" : "px-4 py-4"}>
@@ -176,6 +182,41 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
         </div>
       )}
 
+      {todayStudy.length > 0 && (
+        <div className="mt-6">
+          <h2 className="mb-2.5 text-sm font-semibold uppercase text-duo-gray-dark">Estudos</h2>
+          <div className="space-y-2.5">
+            {todayStudy.map((s) => {
+              const done = studyDoneOn(s, key);
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => setStudyTimerFor(s)}
+                  className={`duo-card flex w-full items-center gap-3 rounded-2xl border-duo-gray/60 bg-white/55 backdrop-blur-xl px-4 py-3 text-left transition-opacity ${
+                    done ? "opacity-60" : ""
+                  }`}
+                >
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-duo-blue/15 text-xl">
+                    {s.emoji}
+                  </span>
+                  <span className="flex-1">
+                    <span
+                      className={`block font-medium ${done ? "text-duo-gray-dark line-through" : "text-duo-text"}`}
+                    >
+                      {s.title}
+                    </span>
+                    {s.time && (
+                      <span className="block text-xs font-semibold text-duo-gray-dark">{s.time}</span>
+                    )}
+                  </span>
+                  {done && <Check size={20} className="shrink-0 text-duo-blue-dark" strokeWidth={3} />}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <button
         onClick={() => setShowAdd(true)}
         className="duo-btn mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-duo-blue-dark bg-duo-blue-dark py-3.5 font-semibold uppercase tracking-wide text-white"
@@ -207,6 +248,18 @@ export default function TodayPage({ embedded }: TodayPageProps = {}) {
           onDelete={() => {
             removeChore(editingChore.id);
             setEditingChore(null);
+          }}
+        />
+      )}
+
+      {studyTimerFor && (
+        <PomodoroModal
+          title={studyTimerFor.title}
+          emoji={studyTimerFor.emoji}
+          onClose={() => setStudyTimerFor(null)}
+          onComplete={(minutes) => {
+            addStudySession(studyTimerFor.id, minutes);
+            setStudyTimerFor(null);
           }}
         />
       )}

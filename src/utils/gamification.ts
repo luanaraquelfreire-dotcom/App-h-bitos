@@ -1,10 +1,12 @@
 import { addDays, parseISO } from "date-fns";
-import type { CompletionMap, Goal, Habit } from "../types";
+import type { CompletionMap, Goal, Habit, StudyItem } from "../types";
 import { toDateKey } from "./date";
 
 export const XP_PER_COMPLETION = 10;
 export const XP_PER_TIME_SLOT = 4;
 export const XP_PER_PROCRASTINATED_TASK = 20;
+export const XP_PER_CHORE_DONE = 8;
+export const XP_PER_STUDY_MINUTE = 1;
 
 /** Entradas de conclusão "de horário" (hábitos com múltiplos horários) usam a chave "data::horário". */
 function isTimeSlotEntry(entry: string): boolean {
@@ -18,7 +20,13 @@ export function totalCompletions(completions: CompletionMap): number {
   );
 }
 
-export function calcXp(habits: Habit[], completions: CompletionMap, completedTasksCount = 0): number {
+export function calcXp(
+  habits: Habit[],
+  completions: CompletionMap,
+  completedTasksCount = 0,
+  choresDoneCount = 0,
+  studyItems: StudyItem[] = [],
+): number {
   const multiTimeIds = new Set(
     habits.filter((h) => h.times && h.times.length > 0).map((h) => h.id),
   );
@@ -34,7 +42,17 @@ export function calcXp(habits: Habit[], completions: CompletionMap, completedTas
     }
   }
 
-  return habitsXp + completedTasksCount * XP_PER_PROCRASTINATED_TASK;
+  const studyMinutes = studyItems.reduce(
+    (sum, item) => sum + item.sessions.reduce((s, session) => s + session.minutes, 0),
+    0,
+  );
+
+  return (
+    habitsXp +
+    completedTasksCount * XP_PER_PROCRASTINATED_TASK +
+    choresDoneCount * XP_PER_CHORE_DONE +
+    studyMinutes * XP_PER_STUDY_MINUTE
+  );
 }
 
 /** Nível cresce progressivamente: cada nível exige mais XP que o anterior. */
